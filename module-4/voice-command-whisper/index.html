@@ -1,0 +1,336 @@
+<!doctype html>
+<html lang="en" dir="ltr" class="docs-wrapper plugin-docs plugin-id-default docs-version-current docs-doc-page docs-doc-id-module-4/voice-command-whisper" data-has-hydrated="false">
+<head>
+<meta charset="UTF-8">
+<meta name="generator" content="Docusaurus v3.9.2">
+<title data-rh="true">4.2 Voice Command Systems with Whisper | Humanoid Robotics Book</title><meta data-rh="true" name="viewport" content="width=device-width,initial-scale=1"><meta data-rh="true" name="twitter:card" content="summary_large_image"><meta data-rh="true" property="og:url" content="https://muhammadmuneeb12k.github.io/Book-Hackathon-physical-ai-humanoid/module-4/voice-command-whisper/"><meta data-rh="true" property="og:locale" content="en"><meta data-rh="true" name="docusaurus_locale" content="en"><meta data-rh="true" name="docsearch:language" content="en"><meta data-rh="true" name="docusaurus_version" content="current"><meta data-rh="true" name="docusaurus_tag" content="docs-default-current"><meta data-rh="true" name="docsearch:version" content="current"><meta data-rh="true" name="docsearch:docusaurus_tag" content="docs-default-current"><meta data-rh="true" property="og:title" content="4.2 Voice Command Systems with Whisper | Humanoid Robotics Book"><meta data-rh="true" name="description" content="The journey into Vision-Language-Action (VLA) begins with the most natural form of human communication: spoken language. For a humanoid robot to truly understand and respond to human directives, it must first accurately transcribe spoken words into text. This chapter introduces voice command systems and focuses on OpenAI Whisper, a state-of-the-art Automatic Speech Recognition (ASR) model. We will explore how Whisper can be integrated into a robotic pipeline to reliably convert human speech into text commands, serving as the foundational input for intelligent robot planning and action."><meta data-rh="true" property="og:description" content="The journey into Vision-Language-Action (VLA) begins with the most natural form of human communication: spoken language. For a humanoid robot to truly understand and respond to human directives, it must first accurately transcribe spoken words into text. This chapter introduces voice command systems and focuses on OpenAI Whisper, a state-of-the-art Automatic Speech Recognition (ASR) model. We will explore how Whisper can be integrated into a robotic pipeline to reliably convert human speech into text commands, serving as the foundational input for intelligent robot planning and action."><link data-rh="true" rel="icon" href="/Book-Hackathon-physical-ai-humanoid/img/favicon.ico"><link data-rh="true" rel="canonical" href="https://muhammadmuneeb12k.github.io/Book-Hackathon-physical-ai-humanoid/module-4/voice-command-whisper/"><link data-rh="true" rel="alternate" href="https://muhammadmuneeb12k.github.io/Book-Hackathon-physical-ai-humanoid/module-4/voice-command-whisper/" hreflang="en"><link data-rh="true" rel="alternate" href="https://muhammadmuneeb12k.github.io/Book-Hackathon-physical-ai-humanoid/module-4/voice-command-whisper/" hreflang="x-default"><script data-rh="true" type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Module 4: Humanoid Robot Control","item":"https://muhammadmuneeb12k.github.io/Book-Hackathon-physical-ai-humanoid/category/module-4-humanoid-robot-control"},{"@type":"ListItem","position":2,"name":"4.2 Voice Command Systems with Whisper","item":"https://muhammadmuneeb12k.github.io/Book-Hackathon-physical-ai-humanoid/module-4/voice-command-whisper"}]}</script><link rel="stylesheet" href="/Book-Hackathon-physical-ai-humanoid/assets/css/styles.43713d77.css">
+<script src="/Book-Hackathon-physical-ai-humanoid/assets/js/runtime~main.1ded580c.js" defer="defer"></script>
+<script src="/Book-Hackathon-physical-ai-humanoid/assets/js/main.66668575.js" defer="defer"></script>
+</head>
+<body class="navigation-with-keyboard">
+<svg style="display: none;"><defs>
+<symbol id="theme-svg-external-link" viewBox="0 0 24 24"><path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z"/></symbol>
+</defs></svg>
+<script>!function(){var t=function(){try{return new URLSearchParams(window.location.search).get("docusaurus-theme")}catch(t){}}()||function(){try{return window.localStorage.getItem("theme")}catch(t){}}();document.documentElement.setAttribute("data-theme",t||"light"),document.documentElement.setAttribute("data-theme-choice",t||"light")}(),function(){try{const c=new URLSearchParams(window.location.search).entries();for(var[t,e]of c)if(t.startsWith("docusaurus-data-")){var a=t.replace("docusaurus-data-","data-");document.documentElement.setAttribute(a,e)}}catch(t){}}()</script><div id="__docusaurus"><div role="region" aria-label="Skip to main content"><a class="skipToContent_fXgn" href="#__docusaurus_skipToContent_fallback">Skip to main content</a></div><nav aria-label="Main" class="theme-layout-navbar navbar navbar--fixed-top"><div class="navbar__inner"><div class="theme-layout-navbar-left navbar__items"><a class="navbar__brand" href="/Book-Hackathon-physical-ai-humanoid/"></a></div><div class="theme-layout-navbar-right navbar__items navbar__items--right"><div class="toggle_vylO colorModeToggle_DEke"><button class="clean-btn toggleButton_gllP toggleButtonDisabled_aARS" type="button" disabled="" title="system mode" aria-label="Switch between dark and light mode (currently system mode)"><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP lightToggleIcon_pyhR"><path fill="currentColor" d="M12,9c1.65,0,3,1.35,3,3s-1.35,3-3,3s-3-1.35-3-3S10.35,9,12,9 M12,7c-2.76,0-5,2.24-5,5s2.24,5,5,5s5-2.24,5-5 S14.76,7,12,7L12,7z M2,13l2,0c0.55,0,1-0.45,1-1s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S1.45,13,2,13z M20,13l2,0c0.55,0,1-0.45,1-1 s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S19.45,13,20,13z M11,2v2c0,0.55,0.45,1,1,1s1-0.45,1-1V2c0-0.55-0.45-1-1-1S11,1.45,11,2z M11,20v2c0,0.55,0.45,1,1,1s1-0.45,1-1v-2c0-0.55-0.45-1-1-1C11.45,19,11,19.45,11,20z M5.99,4.58c-0.39-0.39-1.03-0.39-1.41,0 c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0s0.39-1.03,0-1.41L5.99,4.58z M18.36,16.95 c-0.39-0.39-1.03-0.39-1.41,0c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0c0.39-0.39,0.39-1.03,0-1.41 L18.36,16.95z M19.42,5.99c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06c-0.39,0.39-0.39,1.03,0,1.41 s1.03,0.39,1.41,0L19.42,5.99z M7.05,18.36c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06 c-0.39,0.39-0.39,1.03,0,1.41s1.03,0.39,1.41,0L7.05,18.36z"></path></svg><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP darkToggleIcon_wfgR"><path fill="currentColor" d="M9.37,5.51C9.19,6.15,9.1,6.82,9.1,7.5c0,4.08,3.32,7.4,7.4,7.4c0.68,0,1.35-0.09,1.99-0.27C17.45,17.19,14.93,19,12,19 c-3.86,0-7-3.14-7-7C5,9.07,6.81,6.55,9.37,5.51z M12,3c-4.97,0-9,4.03-9,9s4.03,9,9,9s9-4.03,9-9c0-0.46-0.04-0.92-0.1-1.36 c-0.98,1.37-2.58,2.26-4.4,2.26c-2.98,0-5.4-2.42-5.4-5.4c0-1.81,0.89-3.42,2.26-4.4C12.92,3.04,12.46,3,12,3L12,3z"></path></svg><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP systemToggleIcon_QzmC"><path fill="currentColor" d="m12 21c4.971 0 9-4.029 9-9s-4.029-9-9-9-9 4.029-9 9 4.029 9 9 9zm4.95-13.95c1.313 1.313 2.05 3.093 2.05 4.95s-0.738 3.637-2.05 4.95c-1.313 1.313-3.093 2.05-4.95 2.05v-14c1.857 0 3.637 0.737 4.95 2.05z"></path></svg></button></div><div class="navbarSearchContainer_Bca1"></div></div></div><div role="presentation" class="navbar-sidebar__backdrop"></div></nav><div id="__docusaurus_skipToContent_fallback" class="theme-layout-main main-wrapper mainWrapper_z2l0"><div class="docsWrapper_hBAB"><button aria-label="Scroll back to top" class="clean-btn theme-back-to-top-button backToTopButton_sjWU" type="button"></button><div class="docRoot_UBD9"><aside class="theme-doc-sidebar-container docSidebarContainer_YfHR"><div class="sidebarViewport_aRkj"><div class="sidebar_njMd"><nav aria-label="Docs sidebar" class="menu thin-scrollbar menu_SIkG"><ul class="theme-doc-sidebar-menu menu__list"><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist" href="/Book-Hackathon-physical-ai-humanoid/category/module-1-the-robotic-nervous-system-ros-2/"><span title="Module 1: The Robotic Nervous System (ROS 2)" class="categoryLinkLabel_W154">Module 1: The Robotic Nervous System (ROS 2)</span></a><button aria-label="Expand sidebar category &#x27;Module 1: The Robotic Nervous System (ROS 2)&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist" href="/Book-Hackathon-physical-ai-humanoid/category/module-2-humanoid-robot-kinematics/"><span title="Module 2: Humanoid Robot Kinematics" class="categoryLinkLabel_W154">Module 2: Humanoid Robot Kinematics</span></a><button aria-label="Expand sidebar category &#x27;Module 2: Humanoid Robot Kinematics&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist" href="/Book-Hackathon-physical-ai-humanoid/category/module-3-humanoid-robot-dynamics/"><span title="Module 3: Humanoid Robot Dynamics" class="categoryLinkLabel_W154">Module 3: Humanoid Robot Dynamics</span></a><button aria-label="Expand sidebar category &#x27;Module 3: Humanoid Robot Dynamics&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--active" href="/Book-Hackathon-physical-ai-humanoid/category/module-4-humanoid-robot-control/"><span title="Module 4: Humanoid Robot Control" class="categoryLinkLabel_W154">Module 4: Humanoid Robot Control</span></a><button aria-label="Collapse sidebar category &#x27;Module 4: Humanoid Robot Control&#x27;" aria-expanded="true" type="button" class="clean-btn menu__caret"></button></div><ul class="menu__list"><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/Book-Hackathon-physical-ai-humanoid/module-4/what-is-vla/"><span title="4.1 What Is Vision-Language-Action (VLA)?" class="linkLabel_WmDU">4.1 What Is Vision-Language-Action (VLA)?</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link menu__link--active" aria-current="page" tabindex="0" href="/Book-Hackathon-physical-ai-humanoid/module-4/voice-command-whisper/"><span title="4.2 Voice Command Systems with Whisper" class="linkLabel_WmDU">4.2 Voice Command Systems with Whisper</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/Book-Hackathon-physical-ai-humanoid/module-4/llm-cognitive-planning/"><span title="4.3 LLM-Based Cognitive Planning" class="linkLabel_WmDU">4.3 LLM-Based Cognitive Planning</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/Book-Hackathon-physical-ai-humanoid/module-4/visual-object-grounding/"><span title="4.4 Visual Object Grounding" class="linkLabel_WmDU">4.4 Visual Object Grounding</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/Book-Hackathon-physical-ai-humanoid/module-4/full-vla-pipeline/"><span title="4.5 Full Voice-to-Action Integration Pipeline" class="linkLabel_WmDU">4.5 Full Voice-to-Action Integration Pipeline</span></a></li></ul></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist" href="/Book-Hackathon-physical-ai-humanoid/category/miscellaneous/"><span title="Miscellaneous" class="categoryLinkLabel_W154">Miscellaneous</span></a><button aria-label="Expand sidebar category &#x27;Miscellaneous&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/Book-Hackathon-physical-ai-humanoid/appendices/"><span title="7.1 Appendices - Resources and Further Reading" class="linkLabel_WmDU">7.1 Appendices - Resources and Further Reading</span></a></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/Book-Hackathon-physical-ai-humanoid/capstone/capstone-integration-guide/"><span title="capstone" class="categoryLinkLabel_W154">capstone</span></a></div></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/Book-Hackathon-physical-ai-humanoid/getting-started/"><span title="Getting Started - Setting Up Your Environment" class="linkLabel_WmDU">Getting Started - Setting Up Your Environment</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/Book-Hackathon-physical-ai-humanoid/hardware-lab-setup/"><span title="6.1 Hardware &amp; Lab Setup - Beyond Simulation" class="linkLabel_WmDU">6.1 Hardware &amp; Lab Setup - Beyond Simulation</span></a></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/Book-Hackathon-physical-ai-humanoid/home/overview/"><span title="home" class="categoryLinkLabel_W154">home</span></a></div></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/Book-Hackathon-physical-ai-humanoid/"><span title="Welcome to the Humanoid Robotics Book" class="linkLabel_WmDU">Welcome to the Humanoid Robotics Book</span></a></li></ul></nav></div></div></aside><main class="docMainContainer_TBSr"><div class="container padding-top--md padding-bottom--lg"><div class="row"><div class="col docItemCol_VOVn"><div class="docItemContainer_Djhp"><article><nav class="theme-doc-breadcrumbs breadcrumbsContainer_Z_bl" aria-label="Breadcrumbs"><ul class="breadcrumbs"><li class="breadcrumbs__item"><a aria-label="Home page" class="breadcrumbs__link" href="/Book-Hackathon-physical-ai-humanoid/"><svg viewBox="0 0 24 24" class="breadcrumbHomeIcon_YNFT"><path d="M10 19v-5h4v5c0 .55.45 1 1 1h3c.55 0 1-.45 1-1v-7h1.7c.46 0 .68-.57.33-.87L12.67 3.6c-.38-.34-.96-.34-1.34 0l-8.36 7.53c-.34.3-.13.87.33.87H5v7c0 .55.45 1 1 1h3c.55 0 1-.45 1-1z" fill="currentColor"></path></svg></a></li><li class="breadcrumbs__item"><a class="breadcrumbs__link" href="/Book-Hackathon-physical-ai-humanoid/category/module-4-humanoid-robot-control/"><span>Module 4: Humanoid Robot Control</span></a></li><li class="breadcrumbs__item breadcrumbs__item--active"><span class="breadcrumbs__link">4.2 Voice Command Systems with Whisper</span></li></ul></nav><div class="tocCollapsible_ETCw theme-doc-toc-mobile tocMobile_ITEo"><button type="button" class="clean-btn tocCollapsibleButton_TO0P">On this page</button></div><div class="theme-doc-markdown markdown"><header><h1>4.2 Voice Command Systems with Whisper</h1></header><p>The journey into Vision-Language-Action (VLA) begins with the most natural form of human communication: spoken language. For a humanoid robot to truly understand and respond to human directives, it must first accurately transcribe spoken words into text. This chapter introduces voice command systems and focuses on OpenAI Whisper, a state-of-the-art Automatic Speech Recognition (ASR) model. We will explore how Whisper can be integrated into a robotic pipeline to reliably convert human speech into text commands, serving as the foundational input for intelligent robot planning and action.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="goal">Goal<a href="#goal" class="hash-link" aria-label="Direct link to Goal" title="Direct link to Goal" translate="no">​</a></h2>
+<p>The goal of this chapter is to teach students how to use OpenAI Whisper for voice-to-text commands, forming the initial input mechanism for VLA-controlled humanoid robots, and to understand the process of speech recognition in robotics.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="learning-objectives">Learning Objectives<a href="#learning-objectives" class="hash-link" aria-label="Direct link to Learning Objectives" title="Direct link to Learning Objectives" translate="no">​</a></h2>
+<ul>
+<li class="">Understand the basic principles and challenges of Automatic Speech Recognition (ASR).</li>
+<li class="">Grasp the capabilities and architecture of OpenAI Whisper for speech-to-text transcription.</li>
+<li class="">Learn how to integrate Whisper into a ROS 2 robotic system.</li>
+<li class="">Process audio input from microphones or audio files using Whisper.</li>
+<li class="">Convert spoken natural language commands into accurate text for downstream VLA components.</li>
+<li class="">Evaluate the performance of Whisper in various acoustic environments.</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="prerequisites">Prerequisites<a href="#prerequisites" class="hash-link" aria-label="Direct link to Prerequisites" title="Direct link to Prerequisites" translate="no">​</a></h2>
+<ul>
+<li class="">Basic understanding of digital audio concepts (sampling rate, channels).</li>
+<li class="">Familiarity with Python programming and <code>rclpy</code>.</li>
+<li class="">A functional ROS 2 environment.</li>
+<li class="">(Optional but recommended): Access to a microphone on your development machine.</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="key-concepts">Key Concepts<a href="#key-concepts" class="hash-link" aria-label="Direct link to Key Concepts" title="Direct link to Key Concepts" translate="no">​</a></h2>
+<ul>
+<li class=""><strong>Automatic Speech Recognition (ASR):</strong> The technology that enables computers to identify and process human speech and convert it into text.</li>
+<li class=""><strong>OpenAI Whisper:</strong> A pre-trained, general-purpose ASR model capable of transcribing speech in multiple languages and translating them into English.</li>
+<li class=""><strong>Speech-to-Text:</strong> The primary function of ASR, converting spoken words into written text.</li>
+<li class=""><strong>Audio Processing:</strong> Capturing, filtering, and preparing audio data for ASR.</li>
+<li class=""><strong>Natural Language Processing (NLP):</strong> The field of AI that deals with understanding and generating human language, which often begins with ASR output.</li>
+<li class=""><strong>Robustness:</strong> The ability of an ASR system to perform well across different speakers, accents, noise levels, and environmental conditions.</li>
+<li class=""><strong>Latency:</strong> The time delay between when speech is uttered and when its transcription is available.</li>
+<li class=""><strong>Word Error Rate (WER):</strong> A common metric for evaluating the accuracy of ASR systems.</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="tools">Tools<a href="#tools" class="hash-link" aria-label="Direct link to Tools" title="Direct link to Tools" translate="no">​</a></h2>
+<ul>
+<li class=""><strong>OpenAI Whisper:</strong> The primary ASR model.</li>
+<li class=""><strong><code>whisper</code> Python package:</strong> For programmatic access to Whisper.</li>
+<li class=""><strong><code>PyAudio</code> (or similar audio library):</strong> For capturing live audio from a microphone.</li>
+<li class=""><strong>ROS 2 Humble:</strong> For integrating the Whisper node into the robotic system.</li>
+<li class=""><strong><code>audio_common</code> (ROS 2 package):</strong> For handling audio streams in ROS 2 (optional).</li>
+<li class=""><strong>Code Editor:</strong> Visual Studio Code.</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="chapter-sections">Chapter Sections<a href="#chapter-sections" class="hash-link" aria-label="Direct link to Chapter Sections" title="Direct link to Chapter Sections" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="421-introduction-to-automatic-speech-recognition-asr-in-robotics">4.2.1 Introduction to Automatic Speech Recognition (ASR) in Robotics<a href="#421-introduction-to-automatic-speech-recognition-asr-in-robotics" class="hash-link" aria-label="Direct link to 4.2.1 Introduction to Automatic Speech Recognition (ASR) in Robotics" title="Direct link to 4.2.1 Introduction to Automatic Speech Recognition (ASR) in Robotics" translate="no">​</a></h3>
+<ul>
+<li class="">The need for ASR in human-robot interaction.</li>
+<li class="">Challenges: background noise, multiple speakers, accents, domain-specific terminology.</li>
+<li class="">Traditional ASR vs. End-to-End Deep Learning ASR.</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="422-openai-whisper-architecture-and-capabilities">4.2.2 OpenAI Whisper: Architecture and Capabilities<a href="#422-openai-whisper-architecture-and-capabilities" class="hash-link" aria-label="Direct link to 4.2.2 OpenAI Whisper: Architecture and Capabilities" title="Direct link to 4.2.2 OpenAI Whisper: Architecture and Capabilities" translate="no">​</a></h3>
+<ul>
+<li class=""><strong>Encoder-Decoder Transformer Architecture:</strong> How Whisper processes audio and generates text.</li>
+<li class=""><strong>Pre-training on Diverse Data:</strong> The reason for Whisper&#x27;s strong generalization.</li>
+<li class=""><strong>Multilinguality and Translation:</strong> Capabilities beyond simple transcription.</li>
+<li class=""><strong>Model Sizes:</strong> Different Whisper models (tiny, base, small, medium, large) and their trade-offs (accuracy vs. speed vs. resource usage).</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="423-setting-up-whisper-in-a-python-environment">4.2.3 Setting Up Whisper in a Python Environment<a href="#423-setting-up-whisper-in-a-python-environment" class="hash-link" aria-label="Direct link to 4.2.3 Setting Up Whisper in a Python Environment" title="Direct link to 4.2.3 Setting Up Whisper in a Python Environment" translate="no">​</a></h3>
+<ul>
+<li class="">Installing the <code>whisper</code> Python package and dependencies (<code>ffmpeg</code>, <code>torch</code>).</li>
+<li class="">Downloading Whisper models.</li>
+<li class="">Basic usage: transcribing an audio file.</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="424-integrating-whisper-into-a-ros-2-node">4.2.4 Integrating Whisper into a ROS 2 Node<a href="#424-integrating-whisper-into-a-ros-2-node" class="hash-link" aria-label="Direct link to 4.2.4 Integrating Whisper into a ROS 2 Node" title="Direct link to 4.2.4 Integrating Whisper into a ROS 2 Node" translate="no">​</a></h3>
+<ul>
+<li class=""><strong>Audio Input:</strong>
+<ul>
+<li class="">Using <code>PyAudio</code> to capture live microphone input.</li>
+<li class="">Reading audio from a file or a ROS 2 audio topic (e.g., from <code>audio_common</code>).</li>
+</ul>
+</li>
+<li class=""><strong>ROS 2 Node Design:</strong>
+<ul>
+<li class="">A subscriber node that receives audio data (or a node that continuously captures from microphone).</li>
+<li class="">Processing the audio through the Whisper model.</li>
+<li class="">Publishing the transcribed text to a ROS 2 topic (e.g., <code>std_msgs/msg/String</code>).</li>
+</ul>
+</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="425-practical-considerations-for-voice-commands">4.2.5 Practical Considerations for Voice Commands<a href="#425-practical-considerations-for-voice-commands" class="hash-link" aria-label="Direct link to 4.2.5 Practical Considerations for Voice Commands" title="Direct link to 4.2.5 Practical Considerations for Voice Commands" translate="no">​</a></h3>
+<ul>
+<li class=""><strong>Noise Reduction:</strong> Pre-processing audio to improve ASR accuracy.</li>
+<li class=""><strong>VAD (Voice Activity Detection):</strong> Detecting when speech begins and ends to avoid transcribing silence or noise.</li>
+<li class=""><strong>Push-to-Talk (PTT):</strong> Implementing a button-activated recording to minimize unwanted transcriptions.</li>
+<li class=""><strong>Confidence Scores:</strong> Using Whisper&#x27;s confidence scores to filter out unreliable transcriptions.</li>
+<li class=""><strong>Resource Management:</strong> Running Whisper on a dedicated machine, GPU, or edge device (e.g., Jetson).</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="required-diagrams">Required Diagrams<a href="#required-diagrams" class="hash-link" aria-label="Direct link to Required Diagrams" title="Direct link to Required Diagrams" translate="no">​</a></h2>
+<ul>
+<li class=""><strong>Voice Command System Pipeline:</strong> A diagram showing microphone input -&gt; audio processing -&gt; Whisper ASR -&gt; text output -&gt; ROS 2 topic.</li>
+<li class=""><strong>Whisper Model Architecture (Simplified):</strong> A high-level block diagram of Whisper&#x27;s encoder-decoder structure.</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="hands-on-labs">Hands-on Labs<a href="#hands-on-labs" class="hash-link" aria-label="Direct link to Hands-on Labs" title="Direct link to Hands-on Labs" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="lab-421-build-voice-command-translator-with-whisper">Lab 4.2.1: Build Voice Command Translator with Whisper<a href="#lab-421-build-voice-command-translator-with-whisper" class="hash-link" aria-label="Direct link to Lab 4.2.1: Build Voice Command Translator with Whisper" title="Direct link to Lab 4.2.1: Build Voice Command Translator with Whisper" translate="no">​</a></h3>
+<p><strong>Objective:</strong> Create a ROS 2 Python node that captures live audio from a microphone, uses OpenAI Whisper to transcribe it, and publishes the transcribed text to a ROS 2 topic.</p>
+<p><strong>Prerequisites:</strong> ROS 2 Humble installed, Python 3, <code>pip</code>, a working microphone. Install <code>openai-whisper</code>, <code>pyaudio</code>, and <code>soundfile</code> via pip (<code>pip install openai-whisper pyaudio soundfile</code>). You might also need <code>ffmpeg</code> (<code>sudo apt update &amp;&amp; sudo apt install ffmpeg</code>).</p>
+<p><strong>Instructions:</strong></p>
+<ol>
+<li class=""><strong>Create a new ROS 2 Python package:</strong>
+<div class="language-bash codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#bfc7d5;--prism-background-color:#292d3e"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-bash codeBlock_bY9V thin-scrollbar" style="color:#bfc7d5;background-color:#292d3e"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#bfc7d5"><span class="token plain">cd &lt;your_ros2_ws&gt;/src</span><br></span><span class="token-line" style="color:#bfc7d5"><span class="token plain">ros2 pkg create --build-type ament_python whisper_ros_asr --dependencies rclpy std_msgs</span><br></span></code></pre></div></div>
+</li>
+<li class=""><strong>Navigate into the package and create <code>src/whisper_ros_asr/whisper_node.py</code>:</strong>
+<pre tabindex="0" class="codeBlockStandalone_MEMb thin-scrollbar language-python codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#bfc7d5;--prism-background-color:#292d3e"><code class="codeBlockLines_e6Vv"></code></pre>
+</li>
+</ol>
+<!-- -->
+import rclpy
+from rclpy.node import Node
+from std_msgs.msg import String
+import pyaudio
+import numpy as np
+import whisper
+import time
+import threading
+import collections
+import scipy.signal
+
+# Audio parameters
+FORMAT = pyaudio.paInt16
+CHANNELS = 1
+RATE = 16000 # Whisper expects 16kHz audio
+CHUNK = 1024 # Buffer size
+RECORD_SECONDS_BUFFER = 5 # Keep last 5 seconds of audio
+ACTIVATION_THRESHOLD = 500 # Adjust based on your microphone and noise level
+VOICE_DETECTION_WINDOW = 0.5 # Seconds of continuous voice to trigger transcription
+SILENCE_DETECTION_WINDOW = 1.0 # Seconds of continuous silence to stop transcription
+MIN_AUDIO_DURATION = 1.0 # Minimum duration of audio to transcribe
+
+class WhisperASRNode(Node):
+
+  def __init__(self):
+      super().__init__(&#x27;whisper_ros_asr_node&#x27;)
+      self.publisher_ = self.create_publisher(String, &#x27;/speech_to_text&#x27;, 10)
+      self.get_logger().info(&#x27;Whisper ASR Node initialized.&#x27;)
+
+      # Declare a parameter for the Whisper model size
+      self.declare_parameter(&#x27;whisper_model&#x27;, &#x27;base.en&#x27;)
+      self.model_name = self.get_parameter(&#x27;whisper_model&#x27;).get_parameter_value().string_value
+      self.get_logger().info(&#x27;Loading Whisper model: {}&#x27;.format(self.model_name))
+      self.model = whisper.load_model(self.model_name)
+      self.get_logger().info(&#x27;Whisper model loaded.&#x27;)
+
+      # Audio buffer for recording
+      self.audio_buffer = collections.deque()
+      self.recording_started_time = None
+      self.is_transcribing = False
+      self.last_voice_activity_time = time.time()
+      self.voice_activity_detected = False
+
+      # PyAudio setup
+      self.p = pyaudio.PyAudio()
+      self.stream = self.p.open(format=FORMAT,
+                                channels=CHANNELS,
+                                rate=RATE,
+                                input=True,
+                                frames_per_buffer=CHUNK,
+                                stream_callback=self._audio_callback)
+
+      self.get_logger().info(&#x27;Audio stream opened. Listening for speech...&#x27;)
+      self.stream.start_stream()
+
+      # Thread for transcription
+      self.transcription_thread = threading.Thread(target=self._transcription_loop)
+      self.transcription_thread.daemon = True
+      self.transcription_thread.start()
+
+  def _audio_callback(self, in_data, frame_count, time_info, status):
+      # Convert bytes to numpy array
+      audio_chunk = np.frombuffer(in_data, dtype=np.int16)
+      
+      # Simple voice activity detection based on amplitude
+      amplitude = np.max(np.abs(audio_chunk))
+
+      current_time = time.time()
+
+      if amplitude &gt; ACTIVATION_THRESHOLD:
+          self.last_voice_activity_time = current_time
+          if not self.voice_activity_detected:
+              # Started speaking
+              if self.recording_started_time is None:
+                  self.recording_started_time = current_time
+              elif (current_time - self.recording_started_time) &gt; VOICE_DETECTION_WINDOW:
+                  self.voice_activity_detected = True
+                  self.get_logger().info(&quot;Voice activity detected, starting recording.&quot;)
+      else:
+          if self.voice_activity_detected and (current_time - self.last_voice_activity_time) &gt; SILENCE_DETECTION_WINDOW:
+              self.voice_activity_detected = False
+              self.get_logger().info(&quot;Silence detected, stopping recording and queueing for transcription.&quot;)
+              self.is_transcribing = True # Signal transcription thread to process current buffer
+              self.recording_started_time = None # Reset recording start time
+
+      if self.voice_activity_detected or self.recording_started_time is not None:
+           self.audio_buffer.append(audio_chunk)
+
+
+      # Keep only the last N seconds of audio for transcription context
+      max_chunks = int(RATE / CHUNK * RECORD_SECONDS_BUFFER)
+      while len(self.audio_buffer) &gt; max_chunks:
+          self.audio_buffer.popleft()
+
+      return (in_data, pyaudio.paContinue)
+
+  def _transcription_loop(self):
+      while rclpy.ok():
+          if self.is_transcribing:
+              if len(self.audio_buffer) == 0:
+                  self.get_logger().warn(&quot;Transcription triggered but audio buffer is empty.&quot;)
+                  self.is_transcribing = False
+                  continue
+
+              self.get_logger().info(&quot;Transcribing audio...&quot;)
+              
+              # Concatenate buffered audio chunks
+              recorded_audio = np.concatenate(self.audio_buffer)
+              
+              # Normalize to float32 and convert to Whisper&#x27;s expected format (mono, 16kHz)
+              # Pyaudio already handles mono 16kHz for us if configured.
+              # Whisper expects float32 in range [-1, 1]
+              audio_float32 = recorded_audio.astype(np.float32) / 32768.0
+
+              if audio_float32.shape[0] / RATE &lt; MIN_AUDIO_DURATION:
+                  self.get_logger().info(&quot;Audio too short ({:.2f}s), discarding.&quot;.format(audio_float32.shape[0] / RATE))
+                  self.audio_buffer.clear()
+                  self.is_transcribing = False
+                  continue
+
+              try:
+                  result = self.model.transcribe(audio_float32, fp16={&#x27;type&#x27;: &#x27;boolean&#x27;, &#x27;value&#x27;: &#x27;torch.cuda.is_available()&#x27;})
+                  transcribed_text = result[&quot;text&quot;].strip()
+                  if transcribed_text:
+                      msg = String()
+                      msg.data = transcribed_text
+                      self.publisher_.publish(msg)
+                      self.get_logger().info(f&#x27;Published: &quot;{transcribed_text}&quot;&#x27;)
+                  else:
+                      self.get_logger().info(&quot;Transcription was empty.&quot;)
+              except Exception as e:
+                  self.get_logger().error(f&quot;Error during transcription: {e}&quot;)
+              finally:
+                  self.audio_buffer.clear()
+                  self.is_transcribing = False
+          time.sleep(0.1) # Small delay to prevent busy-waiting
+
+  def destroy_node(self):
+      self.stream.stop_stream()
+      self.stream.close()
+      self.p.terminate()
+      super().destroy_node()
+
+def main(args=None):
+  rclpy.init(args=args)
+  whisper_node = WhisperASRNode()
+  try:
+      rclpy.spin(whisper_node)
+  except KeyboardInterrupt:
+      pass
+  finally:
+      whisper_node.destroy_node()
+      rclpy.shutdown()
+
+if __name__ == &#x27;__main__&#x27;:
+  main()
+<!-- -->
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#bfc7d5;--prism-background-color:#292d3e"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#bfc7d5;background-color:#292d3e"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#bfc7d5"><span class="token plain">3.  **Edit `setup.py` for `whisper_ros_asr`:** Add the entry point.</span><br></span><span class="token-line" style="color:#bfc7d5"><span class="token plain">    ```python</span><br></span><span class="token-line" style="color:#bfc7d5"><span class="token plain">    from setuptools import find_packages, setup</span><br></span><span class="token-line" style="color:#bfc7d5"><span class="token plain" style="display:inline-block"></span><br></span><span class="token-line" style="color:#bfc7d5"><span class="token plain">    package_name = &#x27;whisper_ros_asr&#x27;</span><br></span><span class="token-line" style="color:#bfc7d5"><span class="token plain" style="display:inline-block"></span><br></span><span class="token-line" style="color:#bfc7d5"><span class="token plain">    setup(</span><br></span><span class="token-line" style="color:#bfc7d5"><span class="token plain">        name=package_name,</span><br></span><span class="token-line" style="color:#bfc7d5"><span class="token plain">        version=&#x27;0.0.0&#x27;,</span><br></span><span class="token-line" style="color:#bfc7d5"><span class="token plain">        packages=find_packages(exclude=[&#x27;test&#x27;]),</span><br></span><span class="token-line" style="color:#bfc7d5"><span class="token plain">        data_files=[</span><br></span><span class="token-line" style="color:#bfc7d5"><span class="token plain">            (&#x27;share/&#x27; + package_name, [&#x27;package.xml&#x27;]),</span><br></span><span class="token-line" style="color:#bfc7d5"><span class="token plain">        ],</span><br></span><span class="token-line" style="color:#bfc7d5"><span class="token plain">        install_requires=[&#x27;setuptools&#x27;, &#x27;pyaudio&#x27;, &#x27;numpy&#x27;, &#x27;openai-whisper&#x27;, &#x27;soundfile&#x27;, &#x27;scipy&#x27;], # Added dependencies</span><br></span><span class="token-line" style="color:#bfc7d5"><span class="token plain">        zip_safe=True,</span><br></span><span class="token-line" style="color:#bfc7d5"><span class="token plain">        maintainer=&#x27;your_name&#x27;,</span><br></span><span class="token-line" style="color:#bfc7d5"><span class="token plain">        maintainer_email=&#x27;your_email@example.com&#x27;,</span><br></span><span class="token-line" style="color:#bfc7d5"><span class="token plain">        description=&#x27;ROS 2 package for voice command translation using OpenAI Whisper.&#x27;,</span><br></span><span class="token-line" style="color:#bfc7d5"><span class="token plain">        license=&#x27;Apache-2.0&#x27;,</span><br></span><span class="token-line" style="color:#bfc7d5"><span class="token plain">        tests_require=[&#x27;pytest&#x27;],</span><br></span><span class="token-line" style="color:#bfc7d5"><span class="token plain">        entry_points={</span><br></span><span class="token-line" style="color:#bfc7d5"><span class="token plain">            &#x27;console_scripts&#x27;: [</span><br></span><span class="token-line" style="color:#bfc7d5"><span class="token plain">                &#x27;whisper_node = whisper_ros_asr.whisper_node:main&#x27;,</span><br></span><span class="token-line" style="color:#bfc7d5"><span class="token plain">            ],</span><br></span><span class="token-line" style="color:#bfc7d5"><span class="token plain">        },</span><br></span><span class="token-line" style="color:#bfc7d5"><span class="token plain">    )</span><br></span></code></pre></div></div>
+<ol start="4">
+<li class=""><strong>Build your package and source your workspace:</strong>
+<div class="language-bash codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#bfc7d5;--prism-background-color:#292d3e"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-bash codeBlock_bY9V thin-scrollbar" style="color:#bfc7d5;background-color:#292d3e"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#bfc7d5"><span class="token plain">cd &lt;your_ros2_ws&gt;</span><br></span><span class="token-line" style="color:#bfc7d5"><span class="token plain">colcon build --packages-select whisper_ros_asr</span><br></span><span class="token-line" style="color:#bfc7d5"><span class="token plain">source install/setup.bash</span><br></span></code></pre></div></div>
+</li>
+<li class=""><strong>Run the Whisper ASR node:</strong>
+<div class="language-bash codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#bfc7d5;--prism-background-color:#292d3e"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-bash codeBlock_bY9V thin-scrollbar" style="color:#bfc7d5;background-color:#292d3e"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#bfc7d5"><span class="token plain">ros2 run whisper_ros_asr whisper_node --ros-args -p whisper_model:=&#x27;base.en&#x27; # Or &#x27;small.en&#x27; for more accuracy, but slower</span><br></span></code></pre></div></div>
+<em>Note: The first time you run this, Whisper will download the specified model, which can take some time.</em></li>
+<li class=""><strong>Speak into your microphone.</strong> After a short period of silence, the node should transcribe your speech and publish it.</li>
+<li class=""><strong>Monitor the <code>/speech_to_text</code> topic:</strong>
+<div class="language-bash codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#bfc7d5;--prism-background-color:#292d3e"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-bash codeBlock_bY9V thin-scrollbar" style="color:#bfc7d5;background-color:#292d3e"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#bfc7d5"><span class="token plain">ros2 topic echo /speech_to_text</span><br></span></code></pre></div></div>
+<!-- -->You should see your transcribed speech printed in the terminal.</li>
+</ol>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="expected-output">Expected Output<a href="#expected-output" class="hash-link" aria-label="Direct link to Expected Output" title="Direct link to Expected Output" translate="no">​</a></h2>
+<ul>
+<li class="">A functional ROS 2 node that continuously monitors microphone input.</li>
+<li class="">Accurate transcription of spoken commands into text using OpenAI Whisper.</li>
+<li class="">The transcribed text published to a ROS 2 topic (<code>/speech_to_text</code>).</li>
+<li class="">Understanding of how to integrate external Python libraries (like Whisper and PyAudio) into a ROS 2 system.</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="assessment-questions">Assessment Questions<a href="#assessment-questions" class="hash-link" aria-label="Direct link to Assessment Questions" title="Direct link to Assessment Questions" translate="no">​</a></h2>
+<ul>
+<li class="">What are the main advantages of using a pre-trained model like OpenAI Whisper for ASR in robotics compared to training a custom model from scratch?</li>
+<li class="">How can environmental noise affect the accuracy of Whisper&#x27;s transcription, and what strategies might be employed to mitigate this in a real-world robotic setting?</li>
+<li class="">Explain the role of <code>PyAudio</code> in the provided example and how it interfaces with the microphone hardware.</li>
+<li class="">Describe how the <code>whisper_model</code> parameter allows you to balance transcription accuracy with computational resource usage.</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="real-world-applications">Real-world Applications<a href="#real-world-applications" class="hash-link" aria-label="Direct link to Real-world Applications" title="Direct link to Real-world Applications" translate="no">​</a></h2>
+<ul>
+<li class=""><strong>Humanoid Home Assistants:</strong> Enabling robots to understand and execute verbal instructions for household tasks.</li>
+<li class=""><strong>Command and Control in Hazardous Environments:</strong> Allowing human operators to verbally command robots in situations where physical interaction is difficult or dangerous.</li>
+<li class=""><strong>Robotics for Individuals with Disabilities:</strong> Providing an intuitive voice interface for controlling assistive humanoid robots.</li>
+<li class=""><strong>Interactive Kiosks and Service Robots:</strong> Enhancing user experience by allowing natural language interaction at public service points.</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="edge-cases">Edge Cases<a href="#edge-cases" class="hash-link" aria-label="Direct link to Edge Cases" title="Direct link to Edge Cases" translate="no">​</a></h2>
+<ul>
+<li class=""><strong>Background Noise:</strong> High levels of ambient noise can significantly degrade transcription accuracy.</li>
+<li class=""><strong>Multiple Speakers:</strong> Differentiating between commands from different users or handling overlapping speech is challenging.</li>
+<li class=""><strong>Accents and Dialects:</strong> While Whisper is robust, very strong or unfamiliar accents might reduce accuracy.</li>
+<li class=""><strong>Domain-Specific Terminology:</strong> Uncommon technical terms or proper nouns might be transcribed incorrectly without fine-tuning or contextual hints.</li>
+<li class=""><strong>Computational Latency:</strong> Larger Whisper models require more processing power, potentially leading to noticeable delays between speech and transcription.</li>
+</ul>
+<hr>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="key-entities"><strong>Key Entities</strong><a href="#key-entities" class="hash-link" aria-label="Direct link to key-entities" title="Direct link to key-entities" translate="no">​</a></h3>
+<ul>
+<li class=""><strong>Automatic Speech Recognition (ASR):</strong> The technology that converts spoken language into written text, a critical component for natural human-robot interaction.</li>
+<li class=""><strong>OpenAI Whisper:</strong> A highly accurate, general-purpose, pre-trained ASR model developed by OpenAI, capable of transcribing multilingual speech and translating it into English.</li>
+<li class=""><strong><code>PyAudio</code>:</strong> A Python library that provides bindings for PortAudio, enabling cross-platform access to audio input and output devices (e.g., microphones).</li>
+<li class=""><strong><code>whisper</code> Python Package:</strong> The official Python wrapper for OpenAI Whisper, facilitating easy loading of models and transcription of audio data.</li>
+<li class=""><strong>Voice Activity Detection (VAD):</strong> An algorithm or technique used to detect the presence or absence of human speech in an audio stream, helping to filter out silence or noise.</li>
+<li class=""><strong><code>std_msgs/msg/String</code>:</strong> A standard ROS 2 message type used to publish simple text data, perfect for carrying the transcribed speech.</li>
+<li class=""><strong>Computational Latency:</strong> The delay introduced by the ASR process, from the end of a spoken phrase to the availability of its transcribed text, which is a key consideration for real-time robotic response.</li>
+<li class=""><strong>Model Sizes:</strong> Different versions of the Whisper model (e.g., <code>tiny</code>, <code>base</code>, <code>small</code>, ``medium<code>, </code>large`) offering trade-offs between transcription accuracy, inference speed, and memory footprint.</li>
+</ul>
+<hr>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="references"><strong>References</strong><a href="#references" class="hash-link" aria-label="Direct link to references" title="Direct link to references" translate="no">​</a></h3>
+<ul>
+<li class="">Radford, A., et al. (2022). Robust Speech Recognition via Large-Scale Weak Supervision. <em>arXiv preprint arXiv:2212.04356</em>. (Placeholder citation)</li>
+<li class="">OpenAI. (n.d.). <em>Introducing Whisper</em>. (Placeholder citation)</li>
+<li class="">PortAudio. (n.d.). <em>PyAudio documentation</em>. (Placeholder citation)</li>
+<li class="">Dhar, P., et al. (2021). A Survey on Speech Recognition for Robotics. <em>Sensors, 21</em>(14), 4811. (Placeholder citation)</li>
+</ul></div></article><nav class="docusaurus-mt-lg pagination-nav" aria-label="Docs pages"><a class="pagination-nav__link pagination-nav__link--prev" href="/Book-Hackathon-physical-ai-humanoid/module-4/what-is-vla/"><div class="pagination-nav__sublabel">Previous</div><div class="pagination-nav__label">4.1 What Is Vision-Language-Action (VLA)?</div></a><a class="pagination-nav__link pagination-nav__link--next" href="/Book-Hackathon-physical-ai-humanoid/module-4/llm-cognitive-planning/"><div class="pagination-nav__sublabel">Next</div><div class="pagination-nav__label">4.3 LLM-Based Cognitive Planning</div></a></nav></div></div><div class="col col--3"><div class="tableOfContents_bqdL thin-scrollbar theme-doc-toc-desktop"><ul class="table-of-contents table-of-contents__left-border"><li><a href="#goal" class="table-of-contents__link toc-highlight">Goal</a></li><li><a href="#learning-objectives" class="table-of-contents__link toc-highlight">Learning Objectives</a></li><li><a href="#prerequisites" class="table-of-contents__link toc-highlight">Prerequisites</a></li><li><a href="#key-concepts" class="table-of-contents__link toc-highlight">Key Concepts</a></li><li><a href="#tools" class="table-of-contents__link toc-highlight">Tools</a></li><li><a href="#chapter-sections" class="table-of-contents__link toc-highlight">Chapter Sections</a><ul><li><a href="#421-introduction-to-automatic-speech-recognition-asr-in-robotics" class="table-of-contents__link toc-highlight">4.2.1 Introduction to Automatic Speech Recognition (ASR) in Robotics</a></li><li><a href="#422-openai-whisper-architecture-and-capabilities" class="table-of-contents__link toc-highlight">4.2.2 OpenAI Whisper: Architecture and Capabilities</a></li><li><a href="#423-setting-up-whisper-in-a-python-environment" class="table-of-contents__link toc-highlight">4.2.3 Setting Up Whisper in a Python Environment</a></li><li><a href="#424-integrating-whisper-into-a-ros-2-node" class="table-of-contents__link toc-highlight">4.2.4 Integrating Whisper into a ROS 2 Node</a></li><li><a href="#425-practical-considerations-for-voice-commands" class="table-of-contents__link toc-highlight">4.2.5 Practical Considerations for Voice Commands</a></li></ul></li><li><a href="#required-diagrams" class="table-of-contents__link toc-highlight">Required Diagrams</a></li><li><a href="#hands-on-labs" class="table-of-contents__link toc-highlight">Hands-on Labs</a><ul><li><a href="#lab-421-build-voice-command-translator-with-whisper" class="table-of-contents__link toc-highlight">Lab 4.2.1: Build Voice Command Translator with Whisper</a></li></ul></li><li><a href="#expected-output" class="table-of-contents__link toc-highlight">Expected Output</a></li><li><a href="#assessment-questions" class="table-of-contents__link toc-highlight">Assessment Questions</a></li><li><a href="#real-world-applications" class="table-of-contents__link toc-highlight">Real-world Applications</a></li><li><a href="#edge-cases" class="table-of-contents__link toc-highlight">Edge Cases</a><ul><li><a href="#key-entities" class="table-of-contents__link toc-highlight"><strong>Key Entities</strong></a></li><li><a href="#references" class="table-of-contents__link toc-highlight"><strong>References</strong></a></li></ul></li></ul></div></div></div></div></main></div></div></div></div>
+</body>
+</html>

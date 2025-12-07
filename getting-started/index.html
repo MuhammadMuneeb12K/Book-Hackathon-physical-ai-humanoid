@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en" dir="ltr" class="docs-wrapper plugin-docs plugin-id-default docs-version-current docs-doc-page docs-doc-id-getting-started" data-has-hydrated="false">
+<head>
+<meta charset="UTF-8">
+<meta name="generator" content="Docusaurus v3.9.2">
+<title data-rh="true">Getting Started - Setting Up Your Environment | Humanoid Robotics Book</title><meta data-rh="true" name="viewport" content="width=device-width,initial-scale=1"><meta data-rh="true" name="twitter:card" content="summary_large_image"><meta data-rh="true" property="og:url" content="https://muhammadmuneeb12k.github.io/Book-Hackathon-physical-ai-humanoid/getting-started/"><meta data-rh="true" property="og:locale" content="en"><meta data-rh="true" name="docusaurus_locale" content="en"><meta data-rh="true" name="docsearch:language" content="en"><meta data-rh="true" name="docusaurus_version" content="current"><meta data-rh="true" name="docusaurus_tag" content="docs-default-current"><meta data-rh="true" name="docsearch:version" content="current"><meta data-rh="true" name="docsearch:docusaurus_tag" content="docs-default-current"><meta data-rh="true" property="og:title" content="Getting Started - Setting Up Your Environment | Humanoid Robotics Book"><meta data-rh="true" name="description" content="This section provides essential guidance for setting up your development environment, ensuring you have all the necessary tools and configurations to follow along with the book&#x27;s practical exercises. A well-prepared environment is crucial for a smooth learning experience in the complex domain of humanoid robotics."><meta data-rh="true" property="og:description" content="This section provides essential guidance for setting up your development environment, ensuring you have all the necessary tools and configurations to follow along with the book&#x27;s practical exercises. A well-prepared environment is crucial for a smooth learning experience in the complex domain of humanoid robotics."><link data-rh="true" rel="icon" href="/Book-Hackathon-physical-ai-humanoid/img/favicon.ico"><link data-rh="true" rel="canonical" href="https://muhammadmuneeb12k.github.io/Book-Hackathon-physical-ai-humanoid/getting-started/"><link data-rh="true" rel="alternate" href="https://muhammadmuneeb12k.github.io/Book-Hackathon-physical-ai-humanoid/getting-started/" hreflang="en"><link data-rh="true" rel="alternate" href="https://muhammadmuneeb12k.github.io/Book-Hackathon-physical-ai-humanoid/getting-started/" hreflang="x-default"><script data-rh="true" type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Getting Started - Setting Up Your Environment","item":"https://muhammadmuneeb12k.github.io/Book-Hackathon-physical-ai-humanoid/getting-started"}]}</script><link rel="stylesheet" href="/Book-Hackathon-physical-ai-humanoid/assets/css/styles.43713d77.css">
+<script src="/Book-Hackathon-physical-ai-humanoid/assets/js/runtime~main.1ded580c.js" defer="defer"></script>
+<script src="/Book-Hackathon-physical-ai-humanoid/assets/js/main.66668575.js" defer="defer"></script>
+</head>
+<body class="navigation-with-keyboard">
+<svg style="display: none;"><defs>
+<symbol id="theme-svg-external-link" viewBox="0 0 24 24"><path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z"/></symbol>
+</defs></svg>
+<script>!function(){var t=function(){try{return new URLSearchParams(window.location.search).get("docusaurus-theme")}catch(t){}}()||function(){try{return window.localStorage.getItem("theme")}catch(t){}}();document.documentElement.setAttribute("data-theme",t||"light"),document.documentElement.setAttribute("data-theme-choice",t||"light")}(),function(){try{const c=new URLSearchParams(window.location.search).entries();for(var[t,e]of c)if(t.startsWith("docusaurus-data-")){var a=t.replace("docusaurus-data-","data-");document.documentElement.setAttribute(a,e)}}catch(t){}}()</script><div id="__docusaurus"><div role="region" aria-label="Skip to main content"><a class="skipToContent_fXgn" href="#__docusaurus_skipToContent_fallback">Skip to main content</a></div><nav aria-label="Main" class="theme-layout-navbar navbar navbar--fixed-top"><div class="navbar__inner"><div class="theme-layout-navbar-left navbar__items"><a class="navbar__brand" href="/Book-Hackathon-physical-ai-humanoid/"></a></div><div class="theme-layout-navbar-right navbar__items navbar__items--right"><div class="toggle_vylO colorModeToggle_DEke"><button class="clean-btn toggleButton_gllP toggleButtonDisabled_aARS" type="button" disabled="" title="system mode" aria-label="Switch between dark and light mode (currently system mode)"><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP lightToggleIcon_pyhR"><path fill="currentColor" d="M12,9c1.65,0,3,1.35,3,3s-1.35,3-3,3s-3-1.35-3-3S10.35,9,12,9 M12,7c-2.76,0-5,2.24-5,5s2.24,5,5,5s5-2.24,5-5 S14.76,7,12,7L12,7z M2,13l2,0c0.55,0,1-0.45,1-1s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S1.45,13,2,13z M20,13l2,0c0.55,0,1-0.45,1-1 s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S19.45,13,20,13z M11,2v2c0,0.55,0.45,1,1,1s1-0.45,1-1V2c0-0.55-0.45-1-1-1S11,1.45,11,2z M11,20v2c0,0.55,0.45,1,1,1s1-0.45,1-1v-2c0-0.55-0.45-1-1-1C11.45,19,11,19.45,11,20z M5.99,4.58c-0.39-0.39-1.03-0.39-1.41,0 c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0s0.39-1.03,0-1.41L5.99,4.58z M18.36,16.95 c-0.39-0.39-1.03-0.39-1.41,0c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0c0.39-0.39,0.39-1.03,0-1.41 L18.36,16.95z M19.42,5.99c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06c-0.39,0.39-0.39,1.03,0,1.41 s1.03,0.39,1.41,0L19.42,5.99z M7.05,18.36c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06 c-0.39,0.39-0.39,1.03,0,1.41s1.03,0.39,1.41,0L7.05,18.36z"></path></svg><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP darkToggleIcon_wfgR"><path fill="currentColor" d="M9.37,5.51C9.19,6.15,9.1,6.82,9.1,7.5c0,4.08,3.32,7.4,7.4,7.4c0.68,0,1.35-0.09,1.99-0.27C17.45,17.19,14.93,19,12,19 c-3.86,0-7-3.14-7-7C5,9.07,6.81,6.55,9.37,5.51z M12,3c-4.97,0-9,4.03-9,9s4.03,9,9,9s9-4.03,9-9c0-0.46-0.04-0.92-0.1-1.36 c-0.98,1.37-2.58,2.26-4.4,2.26c-2.98,0-5.4-2.42-5.4-5.4c0-1.81,0.89-3.42,2.26-4.4C12.92,3.04,12.46,3,12,3L12,3z"></path></svg><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP systemToggleIcon_QzmC"><path fill="currentColor" d="m12 21c4.971 0 9-4.029 9-9s-4.029-9-9-9-9 4.029-9 9 4.029 9 9 9zm4.95-13.95c1.313 1.313 2.05 3.093 2.05 4.95s-0.738 3.637-2.05 4.95c-1.313 1.313-3.093 2.05-4.95 2.05v-14c1.857 0 3.637 0.737 4.95 2.05z"></path></svg></button></div><div class="navbarSearchContainer_Bca1"></div></div></div><div role="presentation" class="navbar-sidebar__backdrop"></div></nav><div id="__docusaurus_skipToContent_fallback" class="theme-layout-main main-wrapper mainWrapper_z2l0"><div class="docsWrapper_hBAB"><button aria-label="Scroll back to top" class="clean-btn theme-back-to-top-button backToTopButton_sjWU" type="button"></button><div class="docRoot_UBD9"><aside class="theme-doc-sidebar-container docSidebarContainer_YfHR"><div class="sidebarViewport_aRkj"><div class="sidebar_njMd"><nav aria-label="Docs sidebar" class="menu thin-scrollbar menu_SIkG"><ul class="theme-doc-sidebar-menu menu__list"><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist" href="/Book-Hackathon-physical-ai-humanoid/category/module-1-the-robotic-nervous-system-ros-2/"><span title="Module 1: The Robotic Nervous System (ROS 2)" class="categoryLinkLabel_W154">Module 1: The Robotic Nervous System (ROS 2)</span></a><button aria-label="Expand sidebar category &#x27;Module 1: The Robotic Nervous System (ROS 2)&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist" href="/Book-Hackathon-physical-ai-humanoid/category/module-2-humanoid-robot-kinematics/"><span title="Module 2: Humanoid Robot Kinematics" class="categoryLinkLabel_W154">Module 2: Humanoid Robot Kinematics</span></a><button aria-label="Expand sidebar category &#x27;Module 2: Humanoid Robot Kinematics&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist" href="/Book-Hackathon-physical-ai-humanoid/category/module-3-humanoid-robot-dynamics/"><span title="Module 3: Humanoid Robot Dynamics" class="categoryLinkLabel_W154">Module 3: Humanoid Robot Dynamics</span></a><button aria-label="Expand sidebar category &#x27;Module 3: Humanoid Robot Dynamics&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist" href="/Book-Hackathon-physical-ai-humanoid/category/module-4-humanoid-robot-control/"><span title="Module 4: Humanoid Robot Control" class="categoryLinkLabel_W154">Module 4: Humanoid Robot Control</span></a><button aria-label="Expand sidebar category &#x27;Module 4: Humanoid Robot Control&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist" href="/Book-Hackathon-physical-ai-humanoid/category/miscellaneous/"><span title="Miscellaneous" class="categoryLinkLabel_W154">Miscellaneous</span></a><button aria-label="Expand sidebar category &#x27;Miscellaneous&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/Book-Hackathon-physical-ai-humanoid/appendices/"><span title="7.1 Appendices - Resources and Further Reading" class="linkLabel_WmDU">7.1 Appendices - Resources and Further Reading</span></a></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/Book-Hackathon-physical-ai-humanoid/capstone/capstone-integration-guide/"><span title="capstone" class="categoryLinkLabel_W154">capstone</span></a></div></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link menu__link--active" aria-current="page" href="/Book-Hackathon-physical-ai-humanoid/getting-started/"><span title="Getting Started - Setting Up Your Environment" class="linkLabel_WmDU">Getting Started - Setting Up Your Environment</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/Book-Hackathon-physical-ai-humanoid/hardware-lab-setup/"><span title="6.1 Hardware &amp; Lab Setup - Beyond Simulation" class="linkLabel_WmDU">6.1 Hardware &amp; Lab Setup - Beyond Simulation</span></a></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/Book-Hackathon-physical-ai-humanoid/home/overview/"><span title="home" class="categoryLinkLabel_W154">home</span></a></div></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/Book-Hackathon-physical-ai-humanoid/"><span title="Welcome to the Humanoid Robotics Book" class="linkLabel_WmDU">Welcome to the Humanoid Robotics Book</span></a></li></ul></nav></div></div></aside><main class="docMainContainer_TBSr"><div class="container padding-top--md padding-bottom--lg"><div class="row"><div class="col docItemCol_VOVn"><div class="docItemContainer_Djhp"><article><nav class="theme-doc-breadcrumbs breadcrumbsContainer_Z_bl" aria-label="Breadcrumbs"><ul class="breadcrumbs"><li class="breadcrumbs__item"><a aria-label="Home page" class="breadcrumbs__link" href="/Book-Hackathon-physical-ai-humanoid/"><svg viewBox="0 0 24 24" class="breadcrumbHomeIcon_YNFT"><path d="M10 19v-5h4v5c0 .55.45 1 1 1h3c.55 0 1-.45 1-1v-7h1.7c.46 0 .68-.57.33-.87L12.67 3.6c-.38-.34-.96-.34-1.34 0l-8.36 7.53c-.34.3-.13.87.33.87H5v7c0 .55.45 1 1 1h3c.55 0 1-.45 1-1z" fill="currentColor"></path></svg></a></li><li class="breadcrumbs__item breadcrumbs__item--active"><span class="breadcrumbs__link">Getting Started - Setting Up Your Environment</span></li></ul></nav><div class="tocCollapsible_ETCw theme-doc-toc-mobile tocMobile_ITEo"><button type="button" class="clean-btn tocCollapsibleButton_TO0P">On this page</button></div><div class="theme-doc-markdown markdown"><header><h1>Getting Started - Setting Up Your Environment</h1></header><p>This section provides essential guidance for setting up your development environment, ensuring you have all the necessary tools and configurations to follow along with the book&#x27;s practical exercises. A well-prepared environment is crucial for a smooth learning experience in the complex domain of humanoid robotics.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="goal">Goal<a href="#goal" class="hash-link" aria-label="Direct link to Goal" title="Direct link to Goal" translate="no">​</a></h2>
+<p>The goal of this &quot;Getting Started&quot; guide is to establish a robust and consistent development environment that supports all the modules and hands-on labs presented in this book. Upon completion, you will have a functional setup for ROS 2 development, simulation, and AI model integration.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="learning-objectives">Learning Objectives<a href="#learning-objectives" class="hash-link" aria-label="Direct link to Learning Objectives" title="Direct link to Learning Objectives" translate="no">​</a></h2>
+<ul>
+<li class="">Understand the recommended operating system and hardware requirements.</li>
+<li class="">Successfully install and configure Ubuntu 22.04 LTS (Jammy Jellyfish).</li>
+<li class="">Install NVIDIA GPU drivers and CUDA Toolkit for accelerated computing.</li>
+<li class="">Set up ROS 2 Humble Hawksbill, including all necessary development tools.</li>
+<li class="">Configure Python environments and package managers (pip, conda).</li>
+<li class="">Understand and prepare for potential hardware-specific dependencies (e.g., NVIDIA Jetson, RTX GPUs).</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="prerequisites">Prerequisites<a href="#prerequisites" class="hash-link" aria-label="Direct link to Prerequisites" title="Direct link to Prerequisites" translate="no">​</a></h2>
+<ul>
+<li class="">A dedicated computer (desktop or laptop) capable of running Ubuntu.</li>
+<li class="">For advanced simulation (Isaac Sim) and AI tasks, an NVIDIA GPU (RTX series recommended) is highly advisable.</li>
+<li class="">Basic familiarity with Linux command-line operations.</li>
+<li class="">Stable internet connection for downloading software packages.</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="key-concepts">Key Concepts<a href="#key-concepts" class="hash-link" aria-label="Direct link to Key Concepts" title="Direct link to Key Concepts" translate="no">​</a></h2>
+<ul>
+<li class=""><strong>Operating System (OS) Choice:</strong> The importance of a stable Linux distribution for robotics development.</li>
+<li class=""><strong>Package Management:</strong> Using <code>apt</code> and <code>pip</code> for software installation.</li>
+<li class=""><strong>GPU Acceleration:</strong> Understanding the role of NVIDIA drivers and CUDA in AI and simulation.</li>
+<li class=""><strong>ROS 2 Distributions:</strong> The concept of long-term support (LTS) distributions like Humble Hawksbill.</li>
+<li class=""><strong>Python Virtual Environments:</strong> Best practices for managing Python dependencies.</li>
+<li class=""><strong>Containerization (Optional but Recommended):</strong> Introduction to Docker for consistent environments (briefly mentioned for advanced users).</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="tools">Tools<a href="#tools" class="hash-link" aria-label="Direct link to Tools" title="Direct link to Tools" translate="no">​</a></h2>
+<ul>
+<li class=""><strong>Operating System:</strong> Ubuntu 22.04 LTS (Jammy Jellyfish).</li>
+<li class=""><strong>ROS 2 Distribution:</strong> Humble Hawksbill.</li>
+<li class=""><strong>Python:</strong> Version 3.10 (default with Ubuntu 22.04).</li>
+<li class=""><strong>NVIDIA Drivers &amp; CUDA Toolkit:</strong> Specific versions compatible with your GPU and Isaac Sim.</li>
+<li class=""><strong><code>apt</code>:</strong> Ubuntu&#x27;s default package manager.</li>
+<li class=""><strong><code>pip</code>:</strong> Python&#x27;s package installer.</li>
+<li class=""><strong><code>git</code>:</strong> Version control system.</li>
+<li class=""><strong>Code Editor:</strong> Visual Studio Code (recommended) with relevant extensions (e.g., Python, ROS).</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="chapter-sections">Chapter Sections<a href="#chapter-sections" class="hash-link" aria-label="Direct link to Chapter Sections" title="Direct link to Chapter Sections" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="1-choosing-your-development-machine-and-operating-system">1. Choosing Your Development Machine and Operating System<a href="#1-choosing-your-development-machine-and-operating-system" class="hash-link" aria-label="Direct link to 1. Choosing Your Development Machine and Operating System" title="Direct link to 1. Choosing Your Development Machine and Operating System" translate="no">​</a></h3>
+<ul>
+<li class=""><strong>Hardware Recommendations:</strong> CPU, RAM, Storage, and GPU considerations.</li>
+<li class=""><strong>Why Ubuntu 22.04 LTS?</strong> Stability, community support, and compatibility with ROS 2 Humble.</li>
+<li class=""><strong>Installation Guide:</strong> A high-level overview of installing Ubuntu 22.04 (dual-boot or fresh install).</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="2-nvidia-gpu-setup-crucial-for-ai-and-simulation">2. NVIDIA GPU Setup (Crucial for AI and Simulation)<a href="#2-nvidia-gpu-setup-crucial-for-ai-and-simulation" class="hash-link" aria-label="Direct link to 2. NVIDIA GPU Setup (Crucial for AI and Simulation)" title="Direct link to 2. NVIDIA GPU Setup (Crucial for AI and Simulation)" translate="no">​</a></h3>
+<ul>
+<li class=""><strong>Verifying Your GPU:</strong> How to check your NVIDIA GPU model.</li>
+<li class=""><strong>Installing NVIDIA Drivers:</strong> Step-by-step guide for proprietary driver installation.</li>
+<li class=""><strong>CUDA Toolkit Installation:</strong> Ensuring correct CUDA version for Isaac Sim and other AI frameworks.</li>
+<li class=""><strong>cuDNN Installation:</strong> Configuring the CUDA Deep Neural Network library.</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="3-ros-2-humble-hawksbill-installation">3. ROS 2 Humble Hawksbill Installation<a href="#3-ros-2-humble-hawksbill-installation" class="hash-link" aria-label="Direct link to 3. ROS 2 Humble Hawksbill Installation" title="Direct link to 3. ROS 2 Humble Hawksbill Installation" translate="no">​</a></h3>
+<ul>
+<li class=""><strong>Adding the ROS 2 Repositories:</strong> Configuring your <code>apt</code> sources.</li>
+<li class=""><strong>Installing ROS 2 Desktop Full:</strong> Comprehensive installation of ROS 2 and development tools.</li>
+<li class=""><strong>Environment Setup:</strong> Sourcing the ROS 2 setup files.</li>
+<li class=""><strong>Verifying ROS 2 Installation:</strong> Running basic <code>talker</code> and <code>listener</code> examples.</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="4-python-environment-and-dependencies">4. Python Environment and Dependencies<a href="#4-python-environment-and-dependencies" class="hash-link" aria-label="Direct link to 4. Python Environment and Dependencies" title="Direct link to 4. Python Environment and Dependencies" translate="no">​</a></h3>
+<ul>
+<li class=""><strong>Default Python 3.10:</strong> Utilizing the system&#x27;s Python.</li>
+<li class=""><strong>Managing Python Packages with <code>pip</code>:</strong> Installing common robotics and AI libraries.</li>
+<li class=""><strong>Virtual Environments (Recommended):</strong> Creating and activating <code>venv</code> for project isolation.</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="5-git-and-other-essential-utilities">5. Git and Other Essential Utilities<a href="#5-git-and-other-essential-utilities" class="hash-link" aria-label="Direct link to 5. Git and Other Essential Utilities" title="Direct link to 5. Git and Other Essential Utilities" translate="no">​</a></h3>
+<ul>
+<li class=""><strong>Installing Git:</strong> Setting up version control.</li>
+<li class=""><strong>Configuring Git:</strong> User name and email.</li>
+<li class=""><strong>Other Useful Tools:</strong> <code>htop</code>, <code>tmux</code>, <code>curl</code>, <code>wget</code>.</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="6-code-editor-setup-visual-studio-code">6. Code Editor Setup (Visual Studio Code)<a href="#6-code-editor-setup-visual-studio-code" class="hash-link" aria-label="Direct link to 6. Code Editor Setup (Visual Studio Code)" title="Direct link to 6. Code Editor Setup (Visual Studio Code)" translate="no">​</a></h3>
+<ul>
+<li class=""><strong>Installing VS Code:</strong> Getting the popular code editor.</li>
+<li class=""><strong>Essential Extensions:</strong> Python, C/C++, ROS, Remote Development.</li>
+<li class=""><strong>Workspace Configuration:</strong> Setting up <code>settings.json</code> for consistent formatting and linting.</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="required-diagrams">Required Diagrams<a href="#required-diagrams" class="hash-link" aria-label="Direct link to Required Diagrams" title="Direct link to Required Diagrams" translate="no">​</a></h2>
+<ul>
+<li class=""><strong>Development Environment Stack:</strong> A layered diagram showing OS, drivers, CUDA, ROS 2, Python, and applications.</li>
+<li class=""><strong>ROS 2 Installation Flowchart:</strong> A step-by-step visual guide to ROS 2 setup.</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="hands-on-labs">Hands-on Labs<a href="#hands-on-labs" class="hash-link" aria-label="Direct link to Hands-on Labs" title="Direct link to Hands-on Labs" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="lab-1-verify-ubuntu-and-basic-utilities">Lab 1: Verify Ubuntu and Basic Utilities<a href="#lab-1-verify-ubuntu-and-basic-utilities" class="hash-link" aria-label="Direct link to Lab 1: Verify Ubuntu and Basic Utilities" title="Direct link to Lab 1: Verify Ubuntu and Basic Utilities" translate="no">​</a></h3>
+<ol>
+<li class=""><strong>Objective:</strong> Confirm a successful Ubuntu installation and basic command-line functionality.</li>
+<li class=""><strong>Instructions:</strong>
+<ul>
+<li class="">Open a terminal (<code>Ctrl+Alt+T</code>).</li>
+<li class="">Run <code>lsb_release -a</code> to verify Ubuntu 22.04.</li>
+<li class="">Run <code>python3 --version</code> to check Python installation (should be 3.10.x).</li>
+<li class="">Run <code>sudo apt update &amp;&amp; sudo apt upgrade -y</code> to update your system.</li>
+<li class="">Install <code>git</code> if not already present: <code>sudo apt install git -y</code>.</li>
+<li class="">Verify <code>git</code> installation: <code>git --version</code>.</li>
+</ul>
+</li>
+</ol>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="lab-2-confirm-nvidia-driver-and-cuda-installation">Lab 2: Confirm NVIDIA Driver and CUDA Installation<a href="#lab-2-confirm-nvidia-driver-and-cuda-installation" class="hash-link" aria-label="Direct link to Lab 2: Confirm NVIDIA Driver and CUDA Installation" title="Direct link to Lab 2: Confirm NVIDIA Driver and CUDA Installation" translate="no">​</a></h3>
+<ol>
+<li class=""><strong>Objective:</strong> Ensure NVIDIA GPU drivers and CUDA Toolkit are correctly installed and detected.</li>
+<li class=""><strong>Instructions:</strong>
+<ul>
+<li class="">Open a terminal.</li>
+<li class="">Run <code>nvidia-smi</code> to verify driver installation and GPU status. Note the CUDA version reported by <code>nvidia-smi</code> (this is the driver-API compatibility, not the toolkit version).</li>
+<li class="">Run <code>nvcc --version</code> to confirm the CUDA Toolkit installation and its version. This version should ideally match or be compatible with the CUDA version required by Isaac Sim or other deep learning frameworks you intend to use.</li>
+<li class="">(Optional) Run a CUDA sample to verify functionality: <code>cuda-install-samples-$(nvcc -V | grep -oP &#x27;V\d+\.\d+&#x27; | cut -c 2-)/NVIDIA_CUDA-$(nvcc -V | grep -oP &#x27;V\d+\.\d+&#x27; | cut -c 2-)/bin/x86_64/linux/release/deviceQuery</code>. Look for &quot;Result = PASS&quot;.</li>
+</ul>
+</li>
+</ol>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="lab-3-validate-ros-2-humble-setup">Lab 3: Validate ROS 2 Humble Setup<a href="#lab-3-validate-ros-2-humble-setup" class="hash-link" aria-label="Direct link to Lab 3: Validate ROS 2 Humble Setup" title="Direct link to Lab 3: Validate ROS 2 Humble Setup" translate="no">​</a></h3>
+<ol>
+<li class=""><strong>Objective:</strong> Verify that ROS 2 Humble Hawksbill is correctly installed and configured.</li>
+<li class=""><strong>Instructions:</strong>
+<ul>
+<li class="">Open a new terminal.</li>
+<li class="">Source the ROS 2 setup script: <code>source /opt/ros/humble/setup.bash</code>.</li>
+<li class="">Run a ROS 2 <code>talker</code> node: <code>ros2 run demo_nodes_cpp talker</code>.</li>
+<li class="">Open a <em>second</em> terminal.</li>
+<li class="">Source the ROS 2 setup script: <code>source /opt/ros/humble/setup.bash</code>.</li>
+<li class="">Run a ROS 2 <code>listener</code> node: <code>ros2 run demo_nodes_py listener</code>.</li>
+<li class="">Observe messages being exchanged between the two terminals.</li>
+</ul>
+</li>
+</ol>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="expected-output">Expected Output<a href="#expected-output" class="hash-link" aria-label="Direct link to Expected Output" title="Direct link to Expected Output" translate="no">​</a></h2>
+<ul>
+<li class="">A fully configured Ubuntu 22.04 system with NVIDIA GPU drivers, CUDA Toolkit, and ROS 2 Humble Hawksbill installed.</li>
+<li class="">Ability to run basic ROS 2 example nodes (<code>talker</code>/<code>listener</code>).</li>
+<li class="">A functional Python environment ready for robotics and AI development.</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="assessment-questions">Assessment Questions<a href="#assessment-questions" class="hash-link" aria-label="Direct link to Assessment Questions" title="Direct link to Assessment Questions" translate="no">​</a></h2>
+<ul>
+<li class="">Why is an LTS (Long Term Support) version of Ubuntu recommended for ROS 2 development?</li>
+<li class="">Explain the role of NVIDIA drivers and the CUDA Toolkit in accelerating AI and simulation tasks.</li>
+<li class="">What is the purpose of sourcing the <code>setup.bash</code> file in ROS 2?</li>
+<li class="">How do Python virtual environments contribute to better project management in robotics?</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="real-world-applications">Real-world Applications<a href="#real-world-applications" class="hash-link" aria-label="Direct link to Real-world Applications" title="Direct link to Real-world Applications" translate="no">​</a></h2>
+<ul>
+<li class=""><strong>Robotics Development Labs:</strong> Standardizing development environments for student projects and research.</li>
+<li class=""><strong>Industrial Automation:</strong> Setting up consistent deployment targets for robot control software.</li>
+<li class=""><strong>AI/Machine Learning Engineering:</strong> Ensuring reproducible research environments for model training and deployment.</li>
+<li class=""><strong>Embedded Systems Development:</strong> Preparing cross-compilation environments for robotics hardware.</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="edge-cases">Edge Cases<a href="#edge-cases" class="hash-link" aria-label="Direct link to Edge Cases" title="Direct link to Edge Cases" translate="no">​</a></h2>
+<ul>
+<li class=""><strong>GPU Compatibility Issues:</strong> Older NVIDIA GPUs might not support the latest CUDA versions required by Isaac Sim.</li>
+<li class=""><strong>ROS 2 Dependency Conflicts:</strong> Other installed software might conflict with ROS 2 packages.</li>
+<li class=""><strong>Network Proxy Settings:</strong> Installation issues in environments with strict network proxies.</li>
+<li class=""><strong>Disk Space Limitations:</strong> Insufficient disk space for installing all necessary tools and datasets.</li>
+</ul>
+<hr>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="references"><strong>References</strong><a href="#references" class="hash-link" aria-label="Direct link to references" title="Direct link to references" translate="no">​</a></h3>
+<ul>
+<li class="">Canonical. (2022). <em>Ubuntu 22.04 LTS (Jammy Jellyfish) Release Notes</em>. (Placeholder citation)</li>
+<li class="">NVIDIA. (2023). <em>CUDA Toolkit Documentation</em>. (Placeholder citation)</li>
+<li class="">Open Robotics. (2022). <em>ROS 2 Documentation: Humble Hawksbill</em>. (Placeholder citation)</li>
+<li class="">Van Rossum, G., &amp; Drake, F. L. (2009). <em>Python 3 Reference Manual</em>. CreateSpace. (Placeholder citation)</li>
+</ul></div></article><nav class="docusaurus-mt-lg pagination-nav" aria-label="Docs pages"><a class="pagination-nav__link pagination-nav__link--prev" href="/Book-Hackathon-physical-ai-humanoid/capstone/capstone-integration-guide/"><div class="pagination-nav__sublabel">Previous</div><div class="pagination-nav__label">5.1 Capstone - The Integrated Humanoid Robotics System</div></a><a class="pagination-nav__link pagination-nav__link--next" href="/Book-Hackathon-physical-ai-humanoid/hardware-lab-setup/"><div class="pagination-nav__sublabel">Next</div><div class="pagination-nav__label">6.1 Hardware &amp; Lab Setup - Beyond Simulation</div></a></nav></div></div><div class="col col--3"><div class="tableOfContents_bqdL thin-scrollbar theme-doc-toc-desktop"><ul class="table-of-contents table-of-contents__left-border"><li><a href="#goal" class="table-of-contents__link toc-highlight">Goal</a></li><li><a href="#learning-objectives" class="table-of-contents__link toc-highlight">Learning Objectives</a></li><li><a href="#prerequisites" class="table-of-contents__link toc-highlight">Prerequisites</a></li><li><a href="#key-concepts" class="table-of-contents__link toc-highlight">Key Concepts</a></li><li><a href="#tools" class="table-of-contents__link toc-highlight">Tools</a></li><li><a href="#chapter-sections" class="table-of-contents__link toc-highlight">Chapter Sections</a><ul><li><a href="#1-choosing-your-development-machine-and-operating-system" class="table-of-contents__link toc-highlight">1. Choosing Your Development Machine and Operating System</a></li><li><a href="#2-nvidia-gpu-setup-crucial-for-ai-and-simulation" class="table-of-contents__link toc-highlight">2. NVIDIA GPU Setup (Crucial for AI and Simulation)</a></li><li><a href="#3-ros-2-humble-hawksbill-installation" class="table-of-contents__link toc-highlight">3. ROS 2 Humble Hawksbill Installation</a></li><li><a href="#4-python-environment-and-dependencies" class="table-of-contents__link toc-highlight">4. Python Environment and Dependencies</a></li><li><a href="#5-git-and-other-essential-utilities" class="table-of-contents__link toc-highlight">5. Git and Other Essential Utilities</a></li><li><a href="#6-code-editor-setup-visual-studio-code" class="table-of-contents__link toc-highlight">6. Code Editor Setup (Visual Studio Code)</a></li></ul></li><li><a href="#required-diagrams" class="table-of-contents__link toc-highlight">Required Diagrams</a></li><li><a href="#hands-on-labs" class="table-of-contents__link toc-highlight">Hands-on Labs</a><ul><li><a href="#lab-1-verify-ubuntu-and-basic-utilities" class="table-of-contents__link toc-highlight">Lab 1: Verify Ubuntu and Basic Utilities</a></li><li><a href="#lab-2-confirm-nvidia-driver-and-cuda-installation" class="table-of-contents__link toc-highlight">Lab 2: Confirm NVIDIA Driver and CUDA Installation</a></li><li><a href="#lab-3-validate-ros-2-humble-setup" class="table-of-contents__link toc-highlight">Lab 3: Validate ROS 2 Humble Setup</a></li></ul></li><li><a href="#expected-output" class="table-of-contents__link toc-highlight">Expected Output</a></li><li><a href="#assessment-questions" class="table-of-contents__link toc-highlight">Assessment Questions</a></li><li><a href="#real-world-applications" class="table-of-contents__link toc-highlight">Real-world Applications</a></li><li><a href="#edge-cases" class="table-of-contents__link toc-highlight">Edge Cases</a><ul><li><a href="#references" class="table-of-contents__link toc-highlight"><strong>References</strong></a></li></ul></li></ul></div></div></div></div></main></div></div></div></div>
+</body>
+</html>

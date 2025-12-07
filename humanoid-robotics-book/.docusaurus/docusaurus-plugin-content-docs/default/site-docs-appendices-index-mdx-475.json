@@ -1,0 +1,26 @@
+{
+  "id": "appendices/appendices",
+  "title": "7.1 Appendices - Resources and Further Reading",
+  "description": "The Appendices serve as a comprehensive resource, consolidating crucial supplementary information that enhances the reader's understanding and practical application of the concepts covered in this book. This section provides detailed installation guides, common troubleshooting tips, a glossary of key terms, and a comprehensive list of academic and technical references, all formatted according to APA style.",
+  "source": "@site/docs/appendices/index.mdx",
+  "sourceDirName": "appendices",
+  "slug": "/appendices/",
+  "permalink": "/appendices/",
+  "draft": false,
+  "unlisted": false,
+  "tags": [],
+  "version": "current",
+  "frontMatter": {
+    "id": "appendices",
+    "title": "7.1 Appendices - Resources and Further Reading"
+  },
+  "sidebar": "defaultSidebar",
+  "previous": {
+    "title": "Technical Plan: Physical AI & Humanoid Robotics Project",
+    "permalink": "/misc/technical-plan"
+  },
+  "next": {
+    "title": "5.1 Capstone - The Integrated Humanoid Robotics System",
+    "permalink": "/capstone/capstone-integration-guide"
+  }
+}

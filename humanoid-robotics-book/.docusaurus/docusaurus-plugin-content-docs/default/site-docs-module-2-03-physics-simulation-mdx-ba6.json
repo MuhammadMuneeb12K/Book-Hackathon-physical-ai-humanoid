@@ -1,0 +1,27 @@
+{
+  "id": "module-2/physics-simulation",
+  "title": "2.3 Physics Simulation (Gravity, Rigid Bodies, Collisions)",
+  "description": "Having set the stage by building our Gazebo world, we now dive into the core of realistic simulation: the physics engine. For humanoid robots, accurate physics simulation is paramount, as it dictates how the robot interacts with its environment, maintains balance, and executes dynamic movements. This chapter will explore how Gazebo models fundamental physical phenomena like gravity, rigid-body dynamics, and collisions, enabling you to create truly physics-accurate simulations for your humanoid systems.",
+  "source": "@site/docs/module-2/03-physics-simulation.mdx",
+  "sourceDirName": "module-2",
+  "slug": "/module-2/physics-simulation",
+  "permalink": "/module-2/physics-simulation",
+  "draft": false,
+  "unlisted": false,
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 3,
+  "frontMatter": {
+    "id": "physics-simulation",
+    "title": "2.3 Physics Simulation (Gravity, Rigid Bodies, Collisions)"
+  },
+  "sidebar": "defaultSidebar",
+  "previous": {
+    "title": "2.2 Building Gazebo Worlds",
+    "permalink": "/module-2/building-gazebo-worlds"
+  },
+  "next": {
+    "title": "2.4 Sensor Simulation (LiDAR, Depth, IMU)",
+    "permalink": "/module-2/sensor-simulation"
+  }
+}

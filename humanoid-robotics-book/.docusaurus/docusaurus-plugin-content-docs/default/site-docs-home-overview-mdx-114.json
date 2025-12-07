@@ -1,0 +1,26 @@
+{
+  "id": "home/overview",
+  "title": "Overview - Physical AI & Humanoid Robotics",
+  "description": "Welcome to the comprehensive guide on Physical AI and Humanoid Robotics. This book is designed for aspiring roboticists, engineers, and researchers who wish to delve into the intricate world of intelligent humanoid systems. Our journey will cover the foundational principles of robotic control, advanced simulation techniques, cutting-edge AI integration for perception and cognition, and sophisticated vision-language-action pipelines that enable humanoids to interact intelligently with their environment.",
+  "source": "@site/docs/home/overview.mdx",
+  "sourceDirName": "home",
+  "slug": "/home/overview",
+  "permalink": "/home/overview",
+  "draft": false,
+  "unlisted": false,
+  "tags": [],
+  "version": "current",
+  "frontMatter": {
+    "id": "overview",
+    "title": "Overview - Physical AI & Humanoid Robotics"
+  },
+  "sidebar": "defaultSidebar",
+  "previous": {
+    "title": "6.1 Hardware & Lab Setup - Beyond Simulation",
+    "permalink": "/hardware-lab-setup/"
+  },
+  "next": {
+    "title": "Welcome to the Humanoid Robotics Book",
+    "permalink": "/"
+  }
+}

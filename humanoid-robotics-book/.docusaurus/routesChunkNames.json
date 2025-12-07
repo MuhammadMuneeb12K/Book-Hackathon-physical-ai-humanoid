@@ -1,0 +1,186 @@
+{
+  "/__docusaurus/debug-5ff": {
+    "__comp": "__comp---theme-debug-config-23-a-2ff",
+    "__context": {
+      "plugin": "plugin---docusaurus-debugb-38-ad3"
+    }
+  },
+  "/__docusaurus/debug/config-5ba": {
+    "__comp": "__comp---theme-debug-config-23-a-2ff",
+    "__context": {
+      "plugin": "plugin---docusaurus-debugb-38-ad3"
+    }
+  },
+  "/__docusaurus/debug/content-a2b": {
+    "__comp": "__comp---theme-debug-contentba-8-ce7",
+    "__context": {
+      "plugin": "plugin---docusaurus-debugb-38-ad3"
+    },
+    "__props": "__props---docusaurus-debug-content-3-c-0-be2"
+  },
+  "/__docusaurus/debug/globalData-c3c": {
+    "__comp": "__comp---theme-debug-global-dataede-0fa",
+    "__context": {
+      "plugin": "plugin---docusaurus-debugb-38-ad3"
+    }
+  },
+  "/__docusaurus/debug/metadata-156": {
+    "__comp": "__comp---theme-debug-site-metadata-68-e-3d4",
+    "__context": {
+      "plugin": "plugin---docusaurus-debugb-38-ad3"
+    }
+  },
+  "/__docusaurus/debug/registry-88c": {
+    "__comp": "__comp---theme-debug-registry-679-501",
+    "__context": {
+      "plugin": "plugin---docusaurus-debugb-38-ad3"
+    }
+  },
+  "/__docusaurus/debug/routes-000": {
+    "__comp": "__comp---theme-debug-routes-946-699",
+    "__context": {
+      "plugin": "plugin---docusaurus-debugb-38-ad3"
+    }
+  },
+  "/-927": {
+    "__comp": "__comp---theme-docs-root-5-e-9-0b6",
+    "__context": {
+      "plugin": "plugin---aba-d70"
+    }
+  },
+  "/-574": {
+    "__comp": "__comp---theme-doc-version-roota-7-b-5de",
+    "__props": "__props---22-d-307"
+  },
+  "/-b95": {
+    "__comp": "__comp---theme-doc-roota-94-67a"
+  },
+  "/appendices/-19d": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---appendices-475-0d3"
+  },
+  "/capstone/capstone-integration-guide-725": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---capstone-capstone-integration-guide-2-b-2-e2a"
+  },
+  "/category/miscellaneous-3d9": {
+    "__comp": "__comp---theme-doc-category-generated-index-page-14-e-640",
+    "__props": "__props---category-miscellaneousc-3-c-578"
+  },
+  "/category/module-1-the-robotic-nervous-system-ros-2-020": {
+    "__comp": "__comp---theme-doc-category-generated-index-page-14-e-640",
+    "__props": "__props---category-module-1-the-robotic-nervous-system-ros-264-c-c14"
+  },
+  "/category/module-2-humanoid-robot-kinematics-357": {
+    "__comp": "__comp---theme-doc-category-generated-index-page-14-e-640",
+    "__props": "__props---category-module-2-humanoid-robot-kinematicsf-2-e-72b"
+  },
+  "/category/module-3-humanoid-robot-dynamics-539": {
+    "__comp": "__comp---theme-doc-category-generated-index-page-14-e-640",
+    "__props": "__props---category-module-3-humanoid-robot-dynamics-880-c17"
+  },
+  "/category/module-4-humanoid-robot-control-04b": {
+    "__comp": "__comp---theme-doc-category-generated-index-page-14-e-640",
+    "__props": "__props---category-module-4-humanoid-robot-control-99-d-3e3"
+  },
+  "/getting-started-cb7": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---getting-started-302-3d2"
+  },
+  "/hardware-lab-setup/-ef9": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---hardware-lab-setup-b-8-f-c82"
+  },
+  "/home/overview-d79": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---home-overview-114-8df"
+  },
+  "/misc/technical-plan-6d1": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---misc-technical-pland-7-a-fe2"
+  },
+  "/module-1/building-python-nodes-8aa": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---module-1-building-python-nodes-76-f-efd"
+  },
+  "/module-1/launch-files-multi-node-59b": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---module-1-launch-files-multi-nodee-1-b-79b"
+  },
+  "/module-1/ros2-architecture-7ba": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---module-1-ros-2-architecturee-16-949"
+  },
+  "/module-1/tf2-frames-transformations-4d4": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---module-1-tf-2-frames-transformations-1-bf-f51"
+  },
+  "/module-1/urdf-humanoid-robots-b79": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---module-1-urdf-humanoid-robots-2-f-9-fca"
+  },
+  "/module-2/building-gazebo-worlds-30d": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---module-2-building-gazebo-worldsd-9-a-61d"
+  },
+  "/module-2/physics-simulation-8f1": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---module-2-physics-simulationba-6-11e"
+  },
+  "/module-2/sensor-simulation-708": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---module-2-sensor-simulationc-60-76c"
+  },
+  "/module-2/unity-for-robotics-f36": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---module-2-unity-for-robotics-9-e-3-a24"
+  },
+  "/module-2/what-is-digital-twin-308": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---module-2-what-is-digital-twin-7-eb-bea"
+  },
+  "/module-3/introduction-isaac-sim-394": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---module-3-introduction-isaac-simb-6-d-37e"
+  },
+  "/module-3/navigation-nav2-humanoids-4ff": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---module-3-navigation-nav-2-humanoidsf-20-06e"
+  },
+  "/module-3/perception-isaac-ros-vslam-90d": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---module-3-perception-isaac-ros-vslam-738-fa0"
+  },
+  "/module-3/synthetic-data-domain-randomization-36d": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---module-3-synthetic-data-domain-randomization-7-c-3-c5b"
+  },
+  "/module-3/training-robot-policies-775": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---module-3-training-robot-policiesa-91-928"
+  },
+  "/module-4/full-vla-pipeline-3ef": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---module-4-full-vla-pipeline-584-bf5"
+  },
+  "/module-4/llm-cognitive-planning-f99": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---module-4-llm-cognitive-planning-926-87a"
+  },
+  "/module-4/visual-object-grounding-fe7": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---module-4-visual-object-grounding-1-f-3-d35"
+  },
+  "/module-4/voice-command-whisper-b19": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---module-4-voice-command-whisper-5-a-2-aa9"
+  },
+  "/module-4/what-is-vla-954": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---module-4-what-is-vlaf-77-e99"
+  },
+  "/-a61": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---c-37-d02"
+  }
+}

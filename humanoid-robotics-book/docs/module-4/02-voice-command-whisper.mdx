@@ -1,0 +1,361 @@
+---
+id: voice-command-whisper
+title: 4.2 Voice Command Systems with Whisper
+---
+The journey into Vision-Language-Action (VLA) begins with the most natural form of human communication: spoken language. For a humanoid robot to truly understand and respond to human directives, it must first accurately transcribe spoken words into text. This chapter introduces voice command systems and focuses on OpenAI Whisper, a state-of-the-art Automatic Speech Recognition (ASR) model. We will explore how Whisper can be integrated into a robotic pipeline to reliably convert human speech into text commands, serving as the foundational input for intelligent robot planning and action.
+
+## Goal
+
+The goal of this chapter is to teach students how to use OpenAI Whisper for voice-to-text commands, forming the initial input mechanism for VLA-controlled humanoid robots, and to understand the process of speech recognition in robotics.
+
+## Learning Objectives
+
+*   Understand the basic principles and challenges of Automatic Speech Recognition (ASR).
+*   Grasp the capabilities and architecture of OpenAI Whisper for speech-to-text transcription.
+*   Learn how to integrate Whisper into a ROS 2 robotic system.
+*   Process audio input from microphones or audio files using Whisper.
+*   Convert spoken natural language commands into accurate text for downstream VLA components.
+*   Evaluate the performance of Whisper in various acoustic environments.
+
+## Prerequisites
+
+*   Basic understanding of digital audio concepts (sampling rate, channels).
+*   Familiarity with Python programming and `rclpy`.
+*   A functional ROS 2 environment.
+*   (Optional but recommended): Access to a microphone on your development machine.
+
+## Key Concepts
+
+*   **Automatic Speech Recognition (ASR):** The technology that enables computers to identify and process human speech and convert it into text.
+*   **OpenAI Whisper:** A pre-trained, general-purpose ASR model capable of transcribing speech in multiple languages and translating them into English.
+*   **Speech-to-Text:** The primary function of ASR, converting spoken words into written text.
+*   **Audio Processing:** Capturing, filtering, and preparing audio data for ASR.
+*   **Natural Language Processing (NLP):** The field of AI that deals with understanding and generating human language, which often begins with ASR output.
+*   **Robustness:** The ability of an ASR system to perform well across different speakers, accents, noise levels, and environmental conditions.
+*   **Latency:** The time delay between when speech is uttered and when its transcription is available.
+*   **Word Error Rate (WER):** A common metric for evaluating the accuracy of ASR systems.
+
+## Tools
+
+*   **OpenAI Whisper:** The primary ASR model.
+*   **`whisper` Python package:** For programmatic access to Whisper.
+*   **`PyAudio` (or similar audio library):** For capturing live audio from a microphone.
+*   **ROS 2 Humble:** For integrating the Whisper node into the robotic system.
+*   **`audio_common` (ROS 2 package):** For handling audio streams in ROS 2 (optional).
+*   **Code Editor:** Visual Studio Code.
+
+## Chapter Sections
+
+### 4.2.1 Introduction to Automatic Speech Recognition (ASR) in Robotics
+
+*   The need for ASR in human-robot interaction.
+*   Challenges: background noise, multiple speakers, accents, domain-specific terminology.
+*   Traditional ASR vs. End-to-End Deep Learning ASR.
+
+### 4.2.2 OpenAI Whisper: Architecture and Capabilities
+
+*   **Encoder-Decoder Transformer Architecture:** How Whisper processes audio and generates text.
+*   **Pre-training on Diverse Data:** The reason for Whisper's strong generalization.
+*   **Multilinguality and Translation:** Capabilities beyond simple transcription.
+*   **Model Sizes:** Different Whisper models (tiny, base, small, medium, large) and their trade-offs (accuracy vs. speed vs. resource usage).
+
+### 4.2.3 Setting Up Whisper in a Python Environment
+
+*   Installing the `whisper` Python package and dependencies (`ffmpeg`, `torch`).
+*   Downloading Whisper models.
+*   Basic usage: transcribing an audio file.
+
+### 4.2.4 Integrating Whisper into a ROS 2 Node
+
+*   **Audio Input:**
+    *   Using `PyAudio` to capture live microphone input.
+    *   Reading audio from a file or a ROS 2 audio topic (e.g., from `audio_common`).
+*   **ROS 2 Node Design:**
+    *   A subscriber node that receives audio data (or a node that continuously captures from microphone).
+    *   Processing the audio through the Whisper model.
+    *   Publishing the transcribed text to a ROS 2 topic (e.g., `std_msgs/msg/String`).
+
+### 4.2.5 Practical Considerations for Voice Commands
+
+*   **Noise Reduction:** Pre-processing audio to improve ASR accuracy.
+*   **VAD (Voice Activity Detection):** Detecting when speech begins and ends to avoid transcribing silence or noise.
+*   **Push-to-Talk (PTT):** Implementing a button-activated recording to minimize unwanted transcriptions.
+*   **Confidence Scores:** Using Whisper's confidence scores to filter out unreliable transcriptions.
+*   **Resource Management:** Running Whisper on a dedicated machine, GPU, or edge device (e.g., Jetson).
+
+## Required Diagrams
+
+*   **Voice Command System Pipeline:** A diagram showing microphone input -> audio processing -> Whisper ASR -> text output -> ROS 2 topic.
+*   **Whisper Model Architecture (Simplified):** A high-level block diagram of Whisper's encoder-decoder structure.
+
+## Hands-on Labs
+
+### Lab 4.2.1: Build Voice Command Translator with Whisper
+
+**Objective:** Create a ROS 2 Python node that captures live audio from a microphone, uses OpenAI Whisper to transcribe it, and publishes the transcribed text to a ROS 2 topic.
+
+**Prerequisites:** ROS 2 Humble installed, Python 3, `pip`, a working microphone. Install `openai-whisper`, `pyaudio`, and `soundfile` via pip (`pip install openai-whisper pyaudio soundfile`). You might also need `ffmpeg` (`sudo apt update && sudo apt install ffmpeg`).
+
+**Instructions:**
+
+1.  **Create a new ROS 2 Python package:**
+    ```bash
+    cd <your_ros2_ws>/src
+    ros2 pkg create --build-type ament_python whisper_ros_asr --dependencies rclpy std_msgs
+    ```
+2.  **Navigate into the package and create `src/whisper_ros_asr/whisper_node.py`:**
+    ```python
+{`
+import rclpy
+from rclpy.node import Node
+from std_msgs.msg import String
+import pyaudio
+import numpy as np
+import whisper
+import time
+import threading
+import collections
+import scipy.signal
+
+# Audio parameters
+FORMAT = pyaudio.paInt16
+CHANNELS = 1
+RATE = 16000 # Whisper expects 16kHz audio
+CHUNK = 1024 # Buffer size
+RECORD_SECONDS_BUFFER = 5 # Keep last 5 seconds of audio
+ACTIVATION_THRESHOLD = 500 # Adjust based on your microphone and noise level
+VOICE_DETECTION_WINDOW = 0.5 # Seconds of continuous voice to trigger transcription
+SILENCE_DETECTION_WINDOW = 1.0 # Seconds of continuous silence to stop transcription
+MIN_AUDIO_DURATION = 1.0 # Minimum duration of audio to transcribe
+
+class WhisperASRNode(Node):
+
+    def __init__(self):
+        super().__init__('whisper_ros_asr_node')
+        self.publisher_ = self.create_publisher(String, '/speech_to_text', 10)
+        self.get_logger().info('Whisper ASR Node initialized.')
+
+        # Declare a parameter for the Whisper model size
+        self.declare_parameter('whisper_model', 'base.en')
+        self.model_name = self.get_parameter('whisper_model').get_parameter_value().string_value
+        self.get_logger().info('Loading Whisper model: {}'.format(self.model_name))
+        self.model = whisper.load_model(self.model_name)
+        self.get_logger().info('Whisper model loaded.')
+
+        # Audio buffer for recording
+        self.audio_buffer = collections.deque()
+        self.recording_started_time = None
+        self.is_transcribing = False
+        self.last_voice_activity_time = time.time()
+        self.voice_activity_detected = False
+
+        # PyAudio setup
+        self.p = pyaudio.PyAudio()
+        self.stream = self.p.open(format=FORMAT,
+                                  channels=CHANNELS,
+                                  rate=RATE,
+                                  input=True,
+                                  frames_per_buffer=CHUNK,
+                                  stream_callback=self._audio_callback)
+
+        self.get_logger().info('Audio stream opened. Listening for speech...')
+        self.stream.start_stream()
+
+        # Thread for transcription
+        self.transcription_thread = threading.Thread(target=self._transcription_loop)
+        self.transcription_thread.daemon = True
+        self.transcription_thread.start()
+
+    def _audio_callback(self, in_data, frame_count, time_info, status):
+        # Convert bytes to numpy array
+        audio_chunk = np.frombuffer(in_data, dtype=np.int16)
+        
+        # Simple voice activity detection based on amplitude
+        amplitude = np.max(np.abs(audio_chunk))
+
+        current_time = time.time()
+
+        if amplitude > ACTIVATION_THRESHOLD:
+            self.last_voice_activity_time = current_time
+            if not self.voice_activity_detected:
+                # Started speaking
+                if self.recording_started_time is None:
+                    self.recording_started_time = current_time
+                elif (current_time - self.recording_started_time) > VOICE_DETECTION_WINDOW:
+                    self.voice_activity_detected = True
+                    self.get_logger().info("Voice activity detected, starting recording.")
+        else:
+            if self.voice_activity_detected and (current_time - self.last_voice_activity_time) > SILENCE_DETECTION_WINDOW:
+                self.voice_activity_detected = False
+                self.get_logger().info("Silence detected, stopping recording and queueing for transcription.")
+                self.is_transcribing = True # Signal transcription thread to process current buffer
+                self.recording_started_time = None # Reset recording start time
+
+        if self.voice_activity_detected or self.recording_started_time is not None:
+             self.audio_buffer.append(audio_chunk)
+
+
+        # Keep only the last N seconds of audio for transcription context
+        max_chunks = int(RATE / CHUNK * RECORD_SECONDS_BUFFER)
+        while len(self.audio_buffer) > max_chunks:
+            self.audio_buffer.popleft()
+
+        return (in_data, pyaudio.paContinue)
+
+    def _transcription_loop(self):
+        while rclpy.ok():
+            if self.is_transcribing:
+                if len(self.audio_buffer) == 0:
+                    self.get_logger().warn("Transcription triggered but audio buffer is empty.")
+                    self.is_transcribing = False
+                    continue
+
+                self.get_logger().info("Transcribing audio...")
+                
+                # Concatenate buffered audio chunks
+                recorded_audio = np.concatenate(self.audio_buffer)
+                
+                # Normalize to float32 and convert to Whisper's expected format (mono, 16kHz)
+                # Pyaudio already handles mono 16kHz for us if configured.
+                # Whisper expects float32 in range [-1, 1]
+                audio_float32 = recorded_audio.astype(np.float32) / 32768.0
+
+                if audio_float32.shape[0] / RATE < MIN_AUDIO_DURATION:
+                    self.get_logger().info("Audio too short ({:.2f}s), discarding.".format(audio_float32.shape[0] / RATE))
+                    self.audio_buffer.clear()
+                    self.is_transcribing = False
+                    continue
+
+                try:
+                    result = self.model.transcribe(audio_float32, fp16={'type': 'boolean', 'value': 'torch.cuda.is_available()'})
+                    transcribed_text = result["text"].strip()
+                    if transcribed_text:
+                        msg = String()
+                        msg.data = transcribed_text
+                        self.publisher_.publish(msg)
+                        self.get_logger().info(f'Published: "{transcribed_text}"')
+                    else:
+                        self.get_logger().info("Transcription was empty.")
+                except Exception as e:
+                    self.get_logger().error(f"Error during transcription: {e}")
+                finally:
+                    self.audio_buffer.clear()
+                    self.is_transcribing = False
+            time.sleep(0.1) # Small delay to prevent busy-waiting
+
+    def destroy_node(self):
+        self.stream.stop_stream()
+        self.stream.close()
+        self.p.terminate()
+        super().destroy_node()
+
+def main(args=None):
+    rclpy.init(args=args)
+    whisper_node = WhisperASRNode()
+    try:
+        rclpy.spin(whisper_node)
+    except KeyboardInterrupt:
+        pass
+    finally:
+        whisper_node.destroy_node()
+        rclpy.shutdown()
+
+if __name__ == '__main__':
+    main()
+`}
+```
+3.  **Edit `setup.py` for `whisper_ros_asr`:** Add the entry point.
+    ```python
+    from setuptools import find_packages, setup
+
+    package_name = 'whisper_ros_asr'
+
+    setup(
+        name=package_name,
+        version='0.0.0',
+        packages=find_packages(exclude=['test']),
+        data_files=[
+            ('share/' + package_name, ['package.xml']),
+        ],
+        install_requires=['setuptools', 'pyaudio', 'numpy', 'openai-whisper', 'soundfile', 'scipy'], # Added dependencies
+        zip_safe=True,
+        maintainer='your_name',
+        maintainer_email='your_email@example.com',
+        description='ROS 2 package for voice command translation using OpenAI Whisper.',
+        license='Apache-2.0',
+        tests_require=['pytest'],
+        entry_points={
+            'console_scripts': [
+                'whisper_node = whisper_ros_asr.whisper_node:main',
+            ],
+        },
+    )
+    ```
+4.  **Build your package and source your workspace:**
+    ```bash
+    cd <your_ros2_ws>
+    colcon build --packages-select whisper_ros_asr
+    source install/setup.bash
+    ```
+5.  **Run the Whisper ASR node:**
+    ```bash
+    ros2 run whisper_ros_asr whisper_node --ros-args -p whisper_model:='base.en' # Or 'small.en' for more accuracy, but slower
+    ```
+    *Note: The first time you run this, Whisper will download the specified model, which can take some time.*
+6.  **Speak into your microphone.** After a short period of silence, the node should transcribe your speech and publish it.
+7.  **Monitor the `/speech_to_text` topic:**
+    ```bash
+    ros2 topic echo /speech_to_text
+    ```
+    You should see your transcribed speech printed in the terminal.
+
+## Expected Output
+
+*   A functional ROS 2 node that continuously monitors microphone input.
+*   Accurate transcription of spoken commands into text using OpenAI Whisper.
+*   The transcribed text published to a ROS 2 topic (`/speech_to_text`).
+*   Understanding of how to integrate external Python libraries (like Whisper and PyAudio) into a ROS 2 system.
+
+## Assessment Questions
+
+*   What are the main advantages of using a pre-trained model like OpenAI Whisper for ASR in robotics compared to training a custom model from scratch?
+*   How can environmental noise affect the accuracy of Whisper's transcription, and what strategies might be employed to mitigate this in a real-world robotic setting?
+*   Explain the role of `PyAudio` in the provided example and how it interfaces with the microphone hardware.
+*   Describe how the `whisper_model` parameter allows you to balance transcription accuracy with computational resource usage.
+
+## Real-world Applications
+
+*   **Humanoid Home Assistants:** Enabling robots to understand and execute verbal instructions for household tasks.
+*   **Command and Control in Hazardous Environments:** Allowing human operators to verbally command robots in situations where physical interaction is difficult or dangerous.
+*   **Robotics for Individuals with Disabilities:** Providing an intuitive voice interface for controlling assistive humanoid robots.
+*   **Interactive Kiosks and Service Robots:** Enhancing user experience by allowing natural language interaction at public service points.
+
+## Edge Cases
+
+*   **Background Noise:** High levels of ambient noise can significantly degrade transcription accuracy.
+*   **Multiple Speakers:** Differentiating between commands from different users or handling overlapping speech is challenging.
+*   **Accents and Dialects:** While Whisper is robust, very strong or unfamiliar accents might reduce accuracy.
+*   **Domain-Specific Terminology:** Uncommon technical terms or proper nouns might be transcribed incorrectly without fine-tuning or contextual hints.
+*   **Computational Latency:** Larger Whisper models require more processing power, potentially leading to noticeable delays between speech and transcription.
+
+---
+
+### **Key Entities**
+
+*   **Automatic Speech Recognition (ASR):** The technology that converts spoken language into written text, a critical component for natural human-robot interaction.
+*   **OpenAI Whisper:** A highly accurate, general-purpose, pre-trained ASR model developed by OpenAI, capable of transcribing multilingual speech and translating it into English.
+*   **`PyAudio`:** A Python library that provides bindings for PortAudio, enabling cross-platform access to audio input and output devices (e.g., microphones).
+*   **`whisper` Python Package:** The official Python wrapper for OpenAI Whisper, facilitating easy loading of models and transcription of audio data.
+*   **Voice Activity Detection (VAD):** An algorithm or technique used to detect the presence or absence of human speech in an audio stream, helping to filter out silence or noise.
+*   **`std_msgs/msg/String`:** A standard ROS 2 message type used to publish simple text data, perfect for carrying the transcribed speech.
+*   **Computational Latency:** The delay introduced by the ASR process, from the end of a spoken phrase to the availability of its transcribed text, which is a key consideration for real-time robotic response.
+*   **Model Sizes:** Different versions of the Whisper model (e.g., `tiny`, `base`, `small`, ``medium`, `large`) offering trade-offs between transcription accuracy, inference speed, and memory footprint.
+
+---
+
+### **References**
+
+*   Radford, A., et al. (2022). Robust Speech Recognition via Large-Scale Weak Supervision. *arXiv preprint arXiv:2212.04356*. (Placeholder citation)
+*   OpenAI. (n.d.). *Introducing Whisper*. (Placeholder citation)
+*   PortAudio. (n.d.). *PyAudio documentation*. (Placeholder citation)
+*   Dhar, P., et al. (2021). A Survey on Speech Recognition for Robotics. *Sensors, 21*(14), 4811. (Placeholder citation)

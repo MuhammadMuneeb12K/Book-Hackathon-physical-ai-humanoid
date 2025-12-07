@@ -1,0 +1,27 @@
+{
+  "id": "module-2/what-is-digital-twin",
+  "title": "2.1 What Is a Digital Twin?",
+  "description": "Welcome to Module 2: The Digital Twin (Gazebo & Unity). In the evolving landscape of robotics, particularly with complex humanoid systems, the concept of a \"digital twin\" has become indispensable. This chapter introduces the core idea of a digital twin, its significance in robot development and deployment, and how it serves as a critical bridge between the virtual and physical worlds. Understanding digital twins is fundamental to building, testing, and optimizing humanoid robots efficiently and safely.",
+  "source": "@site/docs/module-2/01-what-is-digital-twin.mdx",
+  "sourceDirName": "module-2",
+  "slug": "/module-2/what-is-digital-twin",
+  "permalink": "/module-2/what-is-digital-twin",
+  "draft": false,
+  "unlisted": false,
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 1,
+  "frontMatter": {
+    "id": "what-is-digital-twin",
+    "title": "2.1 What Is a Digital Twin?"
+  },
+  "sidebar": "defaultSidebar",
+  "previous": {
+    "title": "Module 2: Humanoid Robot Kinematics",
+    "permalink": "/category/module-2-humanoid-robot-kinematics"
+  },
+  "next": {
+    "title": "2.2 Building Gazebo Worlds",
+    "permalink": "/module-2/building-gazebo-worlds"
+  }
+}

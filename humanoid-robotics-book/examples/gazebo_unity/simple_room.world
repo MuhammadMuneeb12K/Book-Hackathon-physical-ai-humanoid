@@ -1,0 +1,73 @@
+<?xml version="1.0" ?>
+<sdf version="1.7">
+  <world name="simple_room_world">
+    <gravity>0 0 -9.8</gravity>
+
+    <!-- Sun Light -->
+    <include>
+      <uri>model://sun</uri>
+    </include>
+
+    <!-- Ground Plane -->
+    <include>
+      <uri>model://ground_plane</uri>
+    </include>
+
+    <!-- Walls to create a simple room -->
+    <model name="wall_north">
+      <pose>0 5 0.5 0 0 0</pose>
+      <link name="link">
+        <visual name="visual">
+          <geometry><box><size>10 0.1 1</size></box></geometry>
+          <material><ambient>0.7 0.7 0.7 1</ambient><diffuse>0.7 0.7 0.7 1</diffuse></material>
+        </visual>
+        <collision>
+          <geometry><box><size>10 0.1 1</size></box></geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="wall_south">
+      <pose>0 -5 0.5 0 0 0</pose>
+      <link name="link">
+        <visual name="visual">
+          <geometry><box><size>10 0.1 1</size></box></geometry>
+          <material><ambient>0.7 0.7 0.7 1</ambient><diffuse>0.7 0.7 0.7 1</diffuse></material>
+        </visual>
+        <collision>
+          <geometry><box><size>10 0.1 1</size></box></geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="wall_east">
+      <pose>5 0 0.5 0 0 1.5707</pose> <!-- Rotate 90 degrees -->
+      <link name="link">
+        <visual name="visual">
+          <geometry><box><size>10 0.1 1</size></box></geometry>
+          <material><ambient>0.7 0.7 0.7 1</ambient><diffuse>0.7 0.7 0.7 1</diffuse></material>
+        </visual>
+        <collision>
+          <geometry><box><size>10 0.1 1</size></box></geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="wall_west">
+      <pose>-5 0 0.5 0 0 1.5707</pose> <!-- Rotate 90 degrees -->
+      <link name="link">
+        <visual name="visual">
+          <geometry><box><size>10 0.1 1</size></box></geometry>
+          <material><ambient>0.7 0.7 0.7 1</ambient><diffuse>0.7 0.7 0.7 1</diffuse></material>
+        </visual>
+        <collision>
+          <geometry><box><size>10 0.1 1</size></box></geometry>
+        </collision>
+      </link>
+    </model>
+
+    <!-- Include the humanoid robot from humanoid_gazebo.sdf -->
+    <include>
+      <uri>model://humanoid_robot</uri>
+      <pose>0 0 0.0 0 0 0</pose> <!-- Adjust Z to be on the ground plane, robot's base_link is at 0.8 -->
+    </include>
+
+  </world>
+</sdf>

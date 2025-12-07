@@ -1,0 +1,27 @@
+{
+  "id": "module-4/full-vla-pipeline",
+  "title": "4.5 Full Voice-to-Action Integration Pipeline",
+  "description": "Throughout Module 4, we have built the individual components of a Vision-Language-Action (VLA) system: transcribing voice commands with Whisper, planning robot actions with LLMs, and visually grounding objects with computer vision. This final chapter of the module brings all these pieces together to construct a complete, end-to-end VLA pipeline. Our goal is to demonstrate how a humanoid robot can interpret a spoken instruction, generate an intelligent plan, perceive the necessary objects, and execute a multi-step task autonomously, showcasing the true power of embodied AI.",
+  "source": "@site/docs/module-4/05-full-vla-pipeline.mdx",
+  "sourceDirName": "module-4",
+  "slug": "/module-4/full-vla-pipeline",
+  "permalink": "/module-4/full-vla-pipeline",
+  "draft": false,
+  "unlisted": false,
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 5,
+  "frontMatter": {
+    "id": "full-vla-pipeline",
+    "title": "4.5 Full Voice-to-Action Integration Pipeline"
+  },
+  "sidebar": "defaultSidebar",
+  "previous": {
+    "title": "4.4 Visual Object Grounding",
+    "permalink": "/module-4/visual-object-grounding"
+  },
+  "next": {
+    "title": "Miscellaneous",
+    "permalink": "/category/miscellaneous"
+  }
+}

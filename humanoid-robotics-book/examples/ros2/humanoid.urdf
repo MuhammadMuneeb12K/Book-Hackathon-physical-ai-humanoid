@@ -1,0 +1,80 @@
+<?xml version="1.0"?>
+<robot name="simple_humanoid">
+
+  <!-- Base Link -->
+  <link name="base_link">
+    <visual>
+      <geometry>
+        <box size="0.01 0.01 0.01"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <!-- Torso -->
+  <link name="torso">
+    <visual>
+      <geometry>
+        <cylinder length="0.6" radius="0.2"/>
+      </geometry>
+      <material name="blue">
+        <color rgba="0.0 0.0 1.0 1.0"/>
+      </material>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder length="0.6" radius="0.2"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="10"/>
+      <inertia ixx="0.4" ixy="0.0" ixz="0.0" iyy="0.4" iyz="0.0" izz="0.2"/>
+    </inertial>
+  </link>
+
+  <joint name="base_to_torso" type="fixed">
+    <parent link="base_link"/>
+    <child link="torso"/>
+    <origin xyz="0 0 0.8"/>
+  </joint>
+
+  <!-- Head -->
+  <link name="head">
+    <visual>
+      <geometry>
+        <sphere radius="0.2"/>
+      </geometry>
+      <material name="white">
+        <color rgba="1.0 1.0 1.0 1.0"/>
+      </material>
+    </visual>
+    <collision>
+      <geometry>
+        <sphere radius="0.2"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="2"/>
+      <inertia ixx="0.1" ixy="0.0" ixz="0.0" iyy="0.1" iyz="0.0" izz="0.1"/>
+    </inertial>
+  </link>
+
+  <joint name="head_joint" type="revolute">
+    <parent link="torso"/>
+    <child link="head"/>
+    <origin xyz="0 0 0.4"/>
+    <axis xyz="0 0 1"/>
+    <limit effort="100" lower="-1.57" upper="1.57" velocity="1.0"/>
+  </joint>
+
+  <!-- A simple joint for the joint_publisher example -->
+    <link name="waist">
+    </link>
+    <joint name="torso_joint" type="revolute">
+        <parent link="torso"/>
+        <child link="waist"/>
+        <origin xyz="0 0 -0.3" rpy="0 0 0" />
+        <axis xyz="0 0 1" />
+        <limit effort="100" lower="-1.57" upper="1.57" velocity="1.0"/>
+    </joint>
+
+</robot>

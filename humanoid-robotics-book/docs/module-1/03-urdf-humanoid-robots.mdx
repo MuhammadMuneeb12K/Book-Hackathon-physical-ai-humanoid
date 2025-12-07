@@ -1,0 +1,547 @@
+---
+id: urdf-humanoid-robots
+title: 1.3 URDF for Humanoid Robots
+---
+With a grasp of ROS 2's communication paradigms and the ability to craft Python nodes, the next crucial step in humanoid robotics is understanding how to describe the robot itself. The Unified Robot Description Format (URDF) provides a standardized XML format for modeling a robot's physical structure, kinematics, and visual properties. This chapter will guide you through creating and interpreting URDF files specifically tailored for humanoid robots, bridging the gap between mechanical design and software control.
+
+## Goal
+
+The goal of this chapter is to teach students how to model humanoid robots using URDF (and Xacro for advanced features), enabling them to represent the physical structure and kinematics of a robot in a way that ROS 2 can understand and utilize for control, visualization, and simulation.
+
+## Learning Objectives
+
+*   Understand the fundamental components of a URDF file: links and joints.
+*   Learn how to define the kinematic chain of a humanoid robot using various joint types.
+*   Incorporate visual and collision properties into the URDF model.
+*   Utilize Xacro to create modular and reusable URDF descriptions.
+*   Visualize a URDF model in RViz2, a 3D visualizer for ROS 2.
+*   Grasp the importance of coordinate frames and their transformations in a robot model.
+
+## Prerequisites
+
+*   Basic understanding of 3D geometry and coordinate systems.
+*   Familiarity with XML syntax.
+*   A functional ROS 2 Humble environment with RViz2 installed.
+*   Conceptual understanding of robot kinematics (links, joints, degrees of freedom).
+
+## Key Concepts
+
+*   **URDF (Unified Robot Description Format):** An XML-based file format used in ROS to describe all aspects of a robot model.
+*   **Link:** Represents a rigid body part of the robot (e.g., torso, upper arm, forearm, hand).
+*   **Joint:** Connects two links, defining their kinematic relationship and degrees of freedom (e.g., revolute, prismatic, fixed).
+*   **Kinematic Chain:** The sequence of links and joints that describe the robot's movement.
+*   **Origin:** Defines the position and orientation of a child frame relative to its parent frame.
+*   **Visual:** Describes the geometric shape and appearance of a link for rendering.
+*   **Collision:** Describes the geometric shape of a link for collision detection.
+*   **Inertial:** Defines the mass and inertia properties of a link for physics simulation.
+*   **Xacro (XML Macros):** An XML macro language that allows for more modular, reusable, and readable URDF files by enabling variables, mathematical expressions, and file inclusions.
+*   **RViz2:** A 3D visualization tool for ROS 2, crucial for debugging and understanding robot models and sensor data.
+
+## Tools
+
+*   **ROS 2 Humble:** The robot operating system.
+*   **RViz2:** The 3D visualization tool.
+*   **`urdf_parser_py` (Python package):** For programmatic parsing of URDF files.
+*   **Code Editor:** Visual Studio Code (recommended) with XML/Xacro extensions.
+*   **CAD Software (Conceptual):** Mention the origin of robot geometry (e.g., SolidWorks, Fusion 360, Blender).
+
+## Chapter Sections
+
+### 1.3.1 Introduction to URDF: Why Describe a Robot?
+
+*   The necessity of a standardized robot description for simulation, visualization, and planning.
+*   Overview of the URDF XML structure.
+*   Basic concepts: Links and Joints.
+
+### 1.3.2 Defining Links: The Robot's Rigid Bodies
+
+*   **`<link>` element:** Basic structure.
+*   **`<visual>` element:** Mesh (STL, DAE), geometry (box, cylinder, sphere), material (color, texture).
+*   **`<collision>` element:** Simplified geometry for collision detection.
+*   **`<inertial>` element:** Mass, center of mass, and inertia tensor for physics simulation.
+
+### 1.3.3 Defining Joints: Connecting the Links
+
+*   **`<joint>` element:** Connecting `parent` and `child` links.
+*   **Joint Types:**
+    *   `revolute`: Rotating around an axis (e.g., elbow, knee).
+    *   `continuous`: Revolute with unlimited range (e.g., wheel).
+    *   `prismatic`: Sliding along an axis (e.g., linear actuator).
+    *   `fixed`: Rigid connection, no motion (e.g., base of a robot to a world frame).
+*   **`<origin>` element:** Specifying the relative position and orientation of the child link.
+*   **`<axis>` element:** Defining the axis of rotation/translation.
+*   **`<limit>` element:** Soft and hard limits for joint position, velocity, and effort.
+
+### 1.3.4 Xacro: Modular and Readable URDFs
+
+*   **The Problem with Raw URDF:** Repetitive code, difficult to modify.
+*   **Introduction to Xacro:** Variables, mathematical expressions, properties, macros, and includes.
+*   **Creating a Humanoid Leg Macro:** An example of encapsulating a repetitive structure.
+*   **Generating URDF from Xacro:** `ros2 run xacro xacro <your_robot.urdf.xacro> > <your_robot.urdf>`.
+
+### 1.3.5 Building a Simple Humanoid URDF Model
+
+*   Step-by-step construction of a simplified humanoid torso with two arms.
+*   Emphasis on establishing correct coordinate frames for each link and joint.
+*   Considerations for naming conventions and organization.
+
+### 1.3.6 Visualizing Your Humanoid in RViz2
+
+*   **Launching RViz2:** `ros2 run rviz2 rviz2`.
+*   **Adding the RobotModel Display:** Loading your URDF.
+*   **Configuring the Fixed Frame:** Setting the reference frame for visualization.
+*   **Joint State Publisher:** Using `joint_state_publisher_gui` to manipulate joints and observe the model.
+
+## Required Diagrams
+
+*   **Humanoid URDF Tree Structure:** A hierarchical diagram showing parent-child relationships of links and joints for a humanoid (e.g., `world -> base_link -> torso -> head`, `torso -> left_shoulder -> left_upper_arm`).
+*   **Link and Joint Coordinate Frames:** An illustration showing how `<origin>` and `<axis>` define relative transformations.
+*   **Xacro Inclusion Example:** A diagram showing how Xacro uses macros and includes to build a final URDF.
+
+## Hands-on Labs
+
+### Lab 1.3.1: Visualize the Full URDF Model in RViz
+
+**Objective:** Create a basic humanoid URDF (or Xacro) and visualize it in RViz2, then use `joint_state_publisher_gui` to articulate its joints.
+
+**Prerequisites:** A text editor, ROS 2 environment with RViz2 and `joint_state_publisher_gui` installed (`sudo apt install ros-humble-joint-state-publisher-gui`).
+
+**Instructions:**
+
+1.  **Create a new ROS 2 package for your robot description:**
+    ```bash
+    cd <your_ros2_ws>/src
+    ros2 pkg create --build-type ament_cmake my_humanoid_description --dependencies urdf xacro rviz2_ros_pkgs # rviz2_ros_pkgs for the display type
+    ```
+    (Note: `ament_cmake` is generally used for packages containing URDFs and launch files, even if the primary interaction is Python).
+2.  **Navigate to the package and create a `urdf` directory:**
+    ```bash
+    cd my_humanoid_description
+    mkdir urdf
+    cd urdf
+    ```
+3.  **Create a simple `humanoid.urdf.xacro` file:**
+    ```xml
+    <?xml version="1.0"?>
+    <robot name="simple_humanoid" xmlns:xacro="http://ros.org/xacro">
+
+        <xacro:property name="M_PI" value="3.1415926535897931" />
+
+        <!-- Base Link -->
+        <link name="base_link">
+            <visual>
+                <geometry>
+                    <box size="0.2 0.3 0.1"/>
+                </geometry>
+                <material name="blue">
+                    <color rgba="0 0 0.8 1"/>
+                </material>
+            </visual>
+            <collision>
+                <geometry>
+                    <box size="0.2 0.3 0.1"/>
+                </geometry>
+            </collision>
+            <inertial>
+                <origin xyz="0 0 0" rpy="0 0 0"/>
+                <mass value="5.0"/>
+                <inertia ixx="0.01" ixy="0" ixz="0" iyy="0.01" iyz="0" izz="0.01"/>
+            </inertial>
+        </link>
+
+        <!-- Torso Link -->
+        <link name="torso_link">
+            <visual>
+                <geometry>
+                    <box size="0.2 0.1 0.4"/>
+                </geometry>
+                <material name="red">
+                    <color rgba="0.8 0 0 1"/>
+                </material>
+            </visual>
+            <collision>
+                <geometry>
+                    <box size="0.2 0.1 0.4"/>
+                </geometry>
+            </collision>
+            <inertial>
+                <origin xyz="0 0 0" rpy="0 0 0"/>
+                <mass value="10.0"/>
+                <inertia ixx="0.01" ixy="0" ixz="0" iyy="0.01" iyz="0" izz="0.01"/>
+            </inertial>
+        </link>
+
+        <!-- Torso Joint (Fixed to base_link for simplicity, later can be revolute) -->
+        <joint name="torso_joint" type="fixed">
+            <parent link="base_link"/>
+            <child link="torso_link"/>
+            <origin xyz="0 0 0.25" rpy="0 0 0"/> <!-- Position torso above base -->
+        </joint>
+
+        <!-- Head Link -->
+        <link name="head_link">
+            <visual>
+                <geometry>
+                    <sphere radius="0.1"/>
+                </geometry>
+                <material name="green">
+                    <color rgba="0 0.8 0 1"/>
+                </material>
+            </visual>
+            <collision>
+                <geometry>
+                    <sphere radius="0.1"/>
+                </geometry>
+            </collision>
+            <inertial>
+                <origin xyz="0 0 0" rpy="0 0 0"/>
+                <mass value="2.0"/>
+                <inertia ixx="0.005" ixy="0" ixz="0" iyy="0.005" iyz="0" izz="0.005"/>
+            </inertial>
+        </link>
+
+        <!-- Head Joint (Revolute for nodding) -->
+        <joint name="head_yaw_joint" type="revolute">
+            <parent link="torso_link"/>
+            <child link="head_link"/>
+            <origin xyz="0 0 0.25" rpy="0 0 0"/>
+            <axis xyz="0 0 1"/> <!-- Yaw around Z-axis -->
+            <limit lower="-${M_PI/4}" upper="${M_PI/4}" effort="100" velocity="1.0"/>
+        </joint>
+
+        <!-- Simple Right Arm -->
+        <xacro:macro name="arm_segment" params="prefix parent_link_name origin_xyz">
+            <link name="${prefix}_shoulder_link">
+                <visual>
+                    <geometry>
+                        <sphere radius="0.05"/>
+                    </geometry>
+                    <material name="grey">
+                        <color rgba="0.5 0.5 0.5 1"/>
+                    </material>
+                </visual>
+                <collision>
+                    <geometry>
+                        <sphere radius="0.05"/>
+                    </geometry>
+                </collision>
+                <inertial>
+                    <origin xyz="0 0 0" rpy="0 0 0"/>
+                    <mass value="0.5"/>
+                    <inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/>
+                </inertial>
+            </link>
+
+            <joint name="${prefix}_shoulder_pitch_joint" type="revolute">
+                <parent link="${parent_link_name}"/>
+                <child link="${prefix}_shoulder_link"/>
+                <origin xyz="${origin_xyz}" rpy="0 0 0"/>
+                <axis xyz="0 1 0"/>
+                <limit lower="-${M_PI/2}" upper="${M_PI/2}" effort="100" velocity="1.0"/>
+            </joint>
+
+            <link name="${prefix}_upper_arm_link">
+                <visual>
+                    <geometry>
+                        <cylinder radius="0.03" length="0.2"/>
+                    </geometry>
+                    <material name="white">
+                        <color rgba="1 1 1 1"/>
+                    </material>
+                </visual>
+                <collision>
+                    <geometry>
+                        <cylinder radius="0.03" length="0.2"/>
+                    </geometry>
+                </collision>
+                <inertial>
+                    <origin xyz="0 0 0" rpy="0 0 0"/>
+                    <mass value="0.8"/>
+                    <inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/>
+                </inertial>
+            </link>
+
+            <joint name="${prefix}_upper_arm_joint" type="revolute">
+                <parent link="${prefix}_shoulder_link"/>
+                <child link="${prefix}_upper_arm_link"/>
+                <origin xyz="0 0 -0.1" rpy="0 0 0"/>
+                <axis xyz="0 1 0"/>
+                <limit lower="-${M_PI/2}" upper="${M_PI/2}" effort="100" velocity="1.0"/>
+            </joint>
+        </xacro:macro>
+
+        <xacro:arm_segment prefix="right" parent_link_name="torso_link" origin_xyz="0 -0.15 0.1"/>
+        <!-- <xacro:arm_segment prefix="left" parent_link_name="torso_link" origin_xyz="0 0.15 0.1"/> -->
+
+    </robot>
+    ```
+4.  **Generate the URDF from Xacro:**
+    ```bash
+    cd <your_ros2_ws>/src/my_humanoid_description/urdf
+    ros2 run xacro xacro humanoid.urdf.xacro > humanoid.urdf
+    ```
+5.  **Create a launch file to display the URDF in RViz2.**
+    Navigate to `my_humanoid_description` package and create a `launch` directory:
+    ```bash
+    cd <your_ros2_ws>/src/my_humanoid_description
+    mkdir launch
+    cd launch
+    ```
+    Create `display_humanoid.launch.py`:
+    ```python
+    import os
+    from ament_index_python.packages import get_package_share_directory
+    from launch import LaunchDescription
+    from launch.actions import DeclareLaunchArgument
+    from launch.substitutions import LaunchConfiguration
+    from launch_ros.actions import Node
+
+    def generate_launch_description():
+        # Get the path to the robot description package
+        robot_description_path = get_package_share_directory('my_humanoid_description')
+        urdf_file_path = os.path.join(robot_description_path, 'urdf', 'humanoid.urdf')
+
+        # Load the URDF file
+        with open(urdf_file_path, 'r') as infp:
+            robot_desc = infp.read()
+
+        # Define the robot state publisher node
+        robot_state_publisher_node = Node(
+            package='robot_state_publisher',
+            executable='robot_state_publisher',
+            name='robot_state_publisher',
+            output='screen',
+            parameters=[{'robot_description': robot_desc}]
+        )
+
+        # Define the joint state publisher GUI node
+        joint_state_publisher_gui_node = Node(
+            package='joint_state_publisher_gui',
+            executable='joint_state_publisher_gui',
+            name='joint_state_publisher_gui',
+            output='screen'
+        )
+
+        # Define the RViz2 node
+        rviz_config_dir = os.path.join(get_package_share_directory('my_humanoid_description'), 'rviz')
+        default_rviz_config_path = os.path.join(rviz_config_dir, 'humanoid_config.rviz')
+
+        # Create a dummy RViz config file (will be overwritten/modified by user)
+        # It's good practice to provide one even if minimal
+        if not os.path.exists(rviz_config_dir):
+            os.makedirs(rviz_config_dir)
+        if not os.path.exists(default_rviz_config_path):
+            # Minimal RViz config XML. Users will save their own from RViz GUI.
+            with open(default_rviz_config_path, 'w') as f:
+                f.write("""
+Views:
+  Current:
+    Class: rviz_default_plugins/Orbit
+    Distance: 2.0
+    Enable Stereo: false
+    Focal Point:
+      X: 0.0
+      Y: 0.0
+      Z: 0.0
+    Field of View: 0.7
+    Near Clip: 0.01
+    Pitch: 0.785
+    Target Frame: &lt;Fixed Frame&gt;
+    Yaw: 4.71
+Window Geometry:
+  Focal Point:
+    X: 0.0
+    Y: 0.0
+    Z: 0.0
+  Size: 1920 1080
+  Window State: ''
+  X: 0
+  Y: 0
+Global Options:
+  Background Color: 48 50 54
+  Fixed Frame: base_link # Ensure this matches your robot's base frame
+  Frame Rate: 30
+  Near Clip: 0.01
+  Default Light: true
+Panels:
+  - Class: rviz_default_plugins/Displays
+    Expanded:
+      - /Global Options1
+      - /RobotModel1
+    Name: Displays
+    Split: 0.5
+    Tree Height: 200
+  - Class: rviz_default_plugins/Views
+    Expanded:
+      - /Current View1
+    Name: Views
+    Split: 0.5
+    Tree Height: 200
+Toolbars:
+  tool_bar:
+    Builtin Tools:
+      - Class: rviz_default_plugins/MoveCamera
+        Hide Action Description: true
+        Hide Menu: true
+        Name: Camera
+      - Class: rviz_default_plugins/Select
+        Hide Action Description: true
+        Hide Menu: true
+        Name: Select
+      - Class: rviz_default_plugins/Interact
+        Hide Action Description: true
+        Hide Menu: true
+        Name: Interact
+      - Class: rviz_default_plugins/Viewpoint
+        Hide Action Description: true
+        Hide Menu: true
+        Name: Viewpoint
+      - Class: rviz_default_plugins/Focus
+        Hide Action Description: true
+        Hide Menu: true
+        Name: Focus
+      - Class: rviz_default_plugins/Measure
+        Hide Action Description: true
+        Hide Menu: true
+        Name: Measure
+      - Class: rviz_default_plugins/SetInitialPose
+        Hide Action Description: true
+        Hide Menu: true
+        Name: Set Initial Pose
+      - Class: rviz_default_plugins/SetGoalPose
+        Hide Action Description: true
+        Hide Menu: true
+        Name: Set Goal Pose
+    Name: Tools
+    Visible: true
+Displays:
+  - Class: rviz_default_plugins/RobotModel
+    Name: RobotModel
+    Enabled: true
+    Links:
+      Alpha: 1
+      Highlight Alpha: 0.9
+      Show Axes: false
+      Show Arrows: false
+      Show Link Current: false
+      Show Link Previous: false
+      Show Tree: false
+      Expand Tree: false
+      Robot Description: robot_description
+      TF Prefix: ""
+    Visual Enabled: true
+    Collision Enabled: false
+    Inertia Enabled: false
+Property Tree Widget:
+  Expanded:
+    - /Global Options1
+    - /RobotModel1
+  Split: 0.5
+  Tree Height: 200
+    """)
+
+        rviz_node = Node(
+            package='rviz2',
+            executable='rviz2',
+            name='rviz2',
+            output='screen',
+            arguments=['-d', default_rviz_config_path]
+        )
+
+        return LaunchDescription([
+            robot_state_publisher_node,
+            joint_state_publisher_gui_node,
+            rviz_node
+        ])
+    ```
+6.  **Add `install` rules for the URDF, Xacro, and launch files in `my_humanoid_description/CMakeLists.txt`:**
+    ```cmake
+    cmake_minimum_required(VERSION 3.8 FATAL_ERROR)
+    project(my_humanoid_description)
+
+    # Find ROS 2 packages
+    find_package(ament_cmake REQUIRED)
+    find_package(urdf REQUIRED)
+    find_package(xacro REQUIRED)
+    find_package(rviz2_ros_pkgs REQUIRED) # Added for launch file
+
+    # Install URDF and Xacro files
+    install(DIRECTORY urdf
+      DESTINATION share/${PROJECT_NAME}
+    )
+
+    # Install launch files
+    install(DIRECTORY launch
+      DESTINATION share/${PROJECT_NAME}
+    )
+
+    # Install RViz config files
+    install(DIRECTORY rviz
+      DESTINATION share/${PROJECT_NAME}
+    )
+
+    ament_package()
+    ```
+7.  **Build your package:**
+    ```bash
+    cd <your_ros2_ws>
+    colcon build --packages-select my_humanoid_description
+    ```
+8.  **Source your workspace:**
+    ```bash
+    source install/setup.bash
+    ```
+9.  **Launch the display nodes:**
+    ```bash
+    ros2 launch my_humanoid_description display_humanoid.launch.py
+    ```
+    An RViz2 window should open, displaying your simple humanoid model. A `joint_state_publisher_gui` window will also appear, allowing you to manipulate the `head_yaw_joint` and `right_shoulder_pitch_joint` sliders to see the robot move. You will need to click on the "Displays" panel in RViz, then expand "RobotModel" and ensure "Robot Description" is set to "robot_description" (which it should be by default due to the launch file). Also ensure the "Fixed Frame" in Global Options is set to "base_link".
+
+## Expected Output
+
+*   A well-formed `humanoid.urdf` file generated from `humanoid.urdf.xacro`.
+*   A 3D visualization of your simple humanoid robot in RViz2.
+*   Ability to articulate the defined joints of the humanoid model using the `joint_state_publisher_gui`.
+*   A clear understanding of how URDF defines the physical and kinematic properties of a robot.
+
+## Assessment Questions
+
+*   What are the two primary elements of a URDF file, and what role does each play in describing a robot?
+*   Explain the difference between `visual` and `collision` elements within a `<link>` tag. Why is it important to have both?
+*   When would you choose a `revolute` joint type over a `continuous` joint type?
+*   Describe the benefits of using Xacro instead of raw URDF for complex robot descriptions.
+
+## Real-world Applications
+
+*   **Humanoid Robot Design and Prototyping:** Rapidly iterating on robot mechanical designs and testing their kinematics before physical construction.
+*   **Motion Planning and Control:** Providing precise kinematic and dynamic models for algorithms that calculate inverse kinematics, trajectory generation, and collision avoidance.
+*   **Robot Simulation:** Integrating detailed robot models into physics simulators like Gazebo (covered in Module 2) for realistic behavior testing.
+*   **Robot Teleoperation and Visualization:** Creating intuitive 3D interfaces for controlling and monitoring humanoid robots remotely.
+
+## Edge Cases
+
+*   **Incorrect Coordinate Frames:** Misaligned or incorrectly defined `<origin>` tags can lead to a "tangled" robot model in RViz2, making it difficult to interpret.
+*   **Missing Inertial Properties:** Without proper `<inertial>` elements, physics simulations will not behave realistically.
+*   **URDF Validation Errors:** Typos or incorrect XML structure can prevent the URDF from loading, requiring careful debugging.
+*   **Complex Meshes:** Using overly detailed visual meshes (e.g., high-polygon STL files) can severely impact visualization and simulation performance.
+
+---
+
+### **Key Entities**
+
+*   **URDF (Unified Robot Description Format):** The standard XML format in ROS for describing a robot's physical characteristics, kinematics, and visual appearance.
+*   **Link:** A fundamental URDF element representing a rigid body of the robot, characterized by its visual, collision, and inertial properties.
+*   **Joint:** A URDF element that defines the kinematic connection between two links (parent and child), specifying the type of motion allowed (e.g., revolute, prismatic, fixed).
+*   **Xacro (XML Macros):** A powerful preprocessor for URDF files that allows for modularity, parameterization, and reusability through macros and variables, making complex robot descriptions more manageable.
+*   **RViz2:** A versatile 3D visualization tool in ROS 2 that displays robot models, sensor data, planning outputs, and more, essential for debugging and understanding robotic systems.
+*   **`robot_state_publisher`:** A ROS 2 node that reads the URDF (or Xacro) and the current joint states, then publishes the complete robot's state (all link transforms) as TF2 messages.
+*   **`joint_state_publisher_gui`:** A ROS 2 tool that allows manual manipulation of joint angles through a graphical slider interface, publishing `JointState` messages to visualize robot movement.
+
+---
+
+### **References**
+
+*   Open Robotics. (2022). *ROS 2 Documentation: URDF Overview*. (Placeholder citation)
+*   Rossum, B. (2012). *Learning ROS for Robotics Programming*. Packt Publishing. (Placeholder citation)
+*   Wollman, D. A. (2014). *ROS By Example Volume 1: Hydro*. CreateSpace Independent Publishing Platform. (Placeholder citation)
+*   Quigley, M., et al. (2009). ROS: an open-source Robot Operating System. *OSROSE. Citeseer*. (Placeholder citation)

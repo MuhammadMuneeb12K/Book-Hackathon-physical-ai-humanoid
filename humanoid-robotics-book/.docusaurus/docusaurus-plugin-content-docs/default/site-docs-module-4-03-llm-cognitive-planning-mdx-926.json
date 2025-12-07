@@ -1,0 +1,27 @@
+{
+  "id": "module-4/llm-cognitive-planning",
+  "title": "4.3 LLM-Based Cognitive Planning",
+  "description": "With the ability to accurately transcribe human voice commands into text, the next critical component of a Vision-Language-Action (VLA) system for humanoid robots is to interpret these commands and translate them into a coherent sequence of robot-executable actions. This chapter delves into the exciting realm of LLM-based cognitive planning, where Large Language Models (LLMs) are leveraged not just for understanding human language, but for complex symbolic reasoning, task decomposition, and generating high-level plans that guide a robot's behavior.",
+  "source": "@site/docs/module-4/03-llm-cognitive-planning.mdx",
+  "sourceDirName": "module-4",
+  "slug": "/module-4/llm-cognitive-planning",
+  "permalink": "/module-4/llm-cognitive-planning",
+  "draft": false,
+  "unlisted": false,
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 3,
+  "frontMatter": {
+    "id": "llm-cognitive-planning",
+    "title": "4.3 LLM-Based Cognitive Planning"
+  },
+  "sidebar": "defaultSidebar",
+  "previous": {
+    "title": "4.2 Voice Command Systems with Whisper",
+    "permalink": "/module-4/voice-command-whisper"
+  },
+  "next": {
+    "title": "4.4 Visual Object Grounding",
+    "permalink": "/module-4/visual-object-grounding"
+  }
+}

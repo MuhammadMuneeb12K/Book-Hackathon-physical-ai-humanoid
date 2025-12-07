@@ -1,0 +1,8 @@
+{
+  "label": "Module 4: Humanoid Robot Control",
+  "position": 4,
+  "link": {
+    "type": "generated-index",
+    "description": "Implementing control strategies for humanoid robots."
+  }
+}

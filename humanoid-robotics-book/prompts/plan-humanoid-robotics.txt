@@ -1,0 +1,195 @@
+/sp.plan
+
+Create a complete technical plan for the Physical AI & Humanoid Robotics Project based on the 4-module specifications and include documentation build & deployment (Docusaurus + GitHub Pages).
+
+Project Modules:
+1. The Robotic Nervous System (ROS 2)
+2. The Digital Twin (Gazebo & Unity)
+3. The AI-Robot Brain (NVIDIA Isaac)
+4. Vision-Language-Action (VLA) for Humanoid Robots
+
+Your output must include the sections below. Keep answers technical, actionable, and aligned with Spec-Kit Plus workflows and the Constitution (APA citations where research is referenced).
+
+1. ARCHITECTURE SKETCH
+   - System components and connections:
+     - Robotics runtime: ROS 2 nodes, topics, actions, TF2
+     - Simulation: Gazebo (physics), Isaac Sim (photorealism & synthetic data), Unity (high-fidelity HRI)
+     - Perception & AI: Isaac ROS GEMs, Nav2, VSLAM, CV models (YOLO/SAM), Whisper, LLM planner (Claude/OpenAI)
+     - Edge/Real hardware: Jetson Orin devices, RealSense cameras, IMUs, actuators (Unitree/other)
+     - Documentation & site: Docusaurus-driven docs repo → GitHub Pages hosting
+     - CI/CD: GitHub Actions pipelines to build docs, run lint/tests, and deploy to GitHub Pages
+   - Data / control flow diagram (text):
+     - Voice Input (mic) → Whisper (ASR) → text → LLM Planner → sequence of high-level actions → ROS 2 Action Server(s) → Control nodes → Simulation/Edge hardware → Sensors → Perception stack → Feedback to LLM/Planner
+     - Simulation loop: URDF → Gazebo/Isaac → sensor plugins → ROS topics → perception → planner → control
+   - Doc pipeline diagram (text):
+     - /specs (Spec-Kit Plus specs) → spec-driven generator (Claude Code + Spec-Kit Plus) → MDX / docs/ pages (Docusaurus) → local build & test → GitHub Actions → GitHub Pages site
+
+2. SECTION STRUCTURE (Documentation & Code)
+   - Top-level docs layout (Docusaurus):
+     - Home / Overview
+     - Getting Started (Tooling versions, Ubuntu 22.04, GPU tiers, credentials)
+     - Module 1 — ROS 2 (chapters & labs)
+     - Module 2 — Digital Twin (Gazebo & Unity)
+     - Module 3 — NVIDIA Isaac
+     - Module 4 — VLA (Voice → Action)
+     - Capstone — Integration Guide
+     - Hardware & Lab Setup
+     - CI / Deployment / Contributing
+     - Appendices (install guides, troubleshooting, glossary, references in APA)
+   - Cross-module dependency map:
+     - Perception services (Module 3) feed vision inputs used by Module 4 planning
+     - URDFs (Module 1) imported into Module 2/3
+     - Nav2 (Module 3) expects topics published by ROS controllers (Module 1)
+   - Documentation artifacts:
+     - Spec files under /sp.specs/isaac-ai-robot/
+     - Auto-generated MDX chapter per spec: /docs/module-<n>/chapter-xx.mdx
+     - Example repos: /examples/isaac, /examples/gazebo, /examples/vla
+   - Docusaurus specifics:
+     - Sidebars: auto-generated from /docs folder and `/sidebars.js`
+     - Versioning: use Docusaurus versioning if you plan releases (v0.1, v1.0)
+     - Search: built-in Algolia DocSearch (optional) or local search fallback
+     - Theming: minimal Tailwind-based site (consistent with project branding)
+     - Accessibility and mobile-friendly layout
+
+3. RESEARCH APPROACH
+   - Research-concurrent model:
+     - Per-chapter research: while authoring each chapter spec, fetch primary sources, libs docs, and recent papers. Record APA citations inline in spec metadata.
+     - Maintain a `references.bib` or `references.md` with APA entries per chapter.
+   - Research path & checkpoints:
+     - ROS 2: official ROS docs, relevant RFCs, recent ROS 2 Humble/Iron notes
+     - Gazebo/Ignition: physics accuracy papers, plugin docs
+     - Unity: HDRP + robotics rendering best practices
+     - Isaac Sim: NVIDIA documentation, sim-to-real papers
+     - VSLAM/Nav2: SLAM & navigation research from last 5 years
+     - Whisper/LLMs: ASR and planning literature
+   - Citation & provenance:
+     - All research claims must reference APA-style sources in chapter footer
+     - Track source URL + access date in the spec metadata (for reproducibility)
+
+4. QUALITY VALIDATION (Docs + System)
+   - Documentation validation:
+     - Build check: `yarn build` / `npm run build` without errors
+     - Link-check: run link-checker (broken-link-checker) in CI
+     - Linting: markdownlint, remark-lint, spellcheck (aspell/remark)
+     - Code-snippet validation: run small linters or unit tests for code blocks where feasible (e.g., Python snippets executed in CI via smoke tests)
+     - Plagiarism check: run an automated scan before final publish (required by Constitution)
+   - System validation:
+     - Unit tests: small ROS 2 node tests (rostest/gtest or pytest with rclpy)
+     - Integration tests: simulation smoke tests (spawn URDF, run Nav2 to known waypoint)
+     - Perception robustness: run model inference on sample frames with success thresholds (mAP or detection rate)
+     - Timing checks: check control loop latency under expected hardware conditions (< set ms threshold)
+     - End-to-end: run a scripted end-to-end scenario in Isaac Sim / Gazebo: voice command → plan → navigate → detect → manipulate (logs and pass/fail criteria)
+   - Acceptance metrics:
+     - Voice-to-plan accuracy > X% (define baseline)
+     - Nav2 path success rate > Y% under test scenarios
+     - Perception detection recall/precision thresholds
+     - Docs build + link-check: zero errors
+
+5. DECISIONS NEEDING DOCUMENTATION (Options, tradeoffs, recommended choice)
+   - Docs platform: Docusaurus vs MkDocs vs Hugo
+     - Tradeoffs: Docusaurus = React/MDX + versioning + plugins; MkDocs = simpler, faster builds
+     - Recommendation: **Docusaurus** for MDX, React components, and easy GitHub Pages integration
+   - Hosting: GitHub Pages vs Netlify vs Vercel
+     - Tradeoffs: GitHub Pages simple & free for repo docs; Netlify/Vercel offer faster CDN + preview deploys
+     - Recommendation: **GitHub Pages** (project requirement) with optional Netlify previews for PRs
+   - Documentation generation: manual MDX vs spec-driven generation
+     - Tradeoffs: Spec-driven saves author time and keeps traceability; manual offers fine-grained control
+     - Recommendation: **Spec-driven generation (Spec-Kit Plus + Claude Code) → MDX**, with human review
+   - CI strategy: single workflow vs multi-workflow
+     - Tradeoffs: Single workflow simpler; multi-workflow isolates doc build, tests, and deployment
+     - Recommendation: **Multi-workflow**: docs-build (lint+build), tests (unit/integration), deploy (on success)
+   - Simulation platform: Gazebo vs Isaac Sim vs Unity
+     - Tradeoffs: Gazebo = open, ROS-native; Isaac Sim = photoreal, Omniverse, requires RTX; Unity = visualization & XR
+     - Recommendation: **Hybrid** — Gazebo for ROS-native tests & Isaac Sim for photoreal perception and training; Unity optional for HRI visualizations
+   - LLM planner selection: OpenAI vs Claude vs local LLM
+     - Tradeoffs: Cloud LLMs = high quality but require API & cost; local LLMs = privacy & lower cost but can be weaker
+     - Recommendation: Use **cloud LLM (Claude/OpenAI)** during development with a pluggable abstraction for later swap to local models
+   - Deployment target: GitHub Pages branch vs GitHub Pages action from `gh-pages`
+     - Recommendation: Use GitHub Actions with `peaceiris/actions-gh-pages` for predictable deployments
+
+6. TESTING STRATEGY (Unit → Integration → E2E)
+   - Unit tests:
+     - Linting + code style
+     - ROS 2 nodes: small pytest/rclpy tests for logic functions
+     - Doc linting: markdownlint, remark tests
+   - Integration tests:
+     - Launch minimal multi-node stacks in CI with headless Gazebo or Isaac Sim (if GPU available) or lightweight mocks
+     - Perception: run inference on small sample dataset and check expected labels
+     - Nav2: run planner on static map in headless sim and ensure path generation
+   - E2E tests (local or staged):
+     - Headless sim scenario: script voice input → run Whisper locally → send text to LLM mock → produce plan → activate ROS action sequence → verify robot reached goal and manipulated object in sim
+     - If Isaac Sim GPU resources not available in CI, run E2E locally on workstation with documented steps
+   - Docs tests:
+     - Build + link-check + code-snippet smoke-run
+     - PR preview builds (GitHub Actions + Netlify or GitHub Pages preview)
+   - Test artifacts & reporting:
+     - Store logs, screenshots, and telemetry (control loop timings) as CI artifacts for debugging
+     - Fail-fast thresholds set in CI
+
+7. ORGANIZE BY PHASES (Research → Foundation → Analysis → Synthesis) with Docusaurus & GitHub Pages tasks
+   - Phase 1 — Research
+     - Gather primary sources, tool docs, and papers (append APA refs to spec metadata)
+     - Create /research/ notes in repo and record chosen options for decisions
+   - Phase 2 — Foundation
+     - Create ROS 2 skeleton repo, URDF samples, minimal Gazebo worlds
+     - Create Docusaurus site skeleton: `npx create-docusaurus@latest isaac-ai-robot classic`
+     - Add `tooling-versions.md`, `README.md`, and initial `/sp.specs` files
+     - Add GitHub Actions skeleton:
+       - `.github/workflows/docs-build.yml` (lint + build)
+       - `.github/workflows/tests.yml` (unit + integration)
+       - `.github/workflows/deploy.yml` (deploy to GitHub Pages)
+   - Phase 3 — Analysis
+     - Map integration points, identify bottlenecks (GPU needs, latency)
+     - Run targeted experiments (Nav2 configs, VSLAM parameters)
+     - Document best-practice configuration in `/docs/hardware` and `/docs/ci`
+   - Phase 4 — Synthesis
+     - Integrate LLM planner into ROS control flow
+     - Finalize capstone pipeline docs, labs, and automated tests
+     - Final docs build and deploy to `gh-pages` (GitHub Pages)
+     - Final acceptance tests & plagiarism check
+     - Release documentation version (tag + Docusaurus versioning) and publish
+
+8. DOCS BUILD & GITHUB PAGES DEPLOYMENT (Technical steps)
+   - Local dev:
+     - `yarn` / `npm install`
+     - `yarn start` (dev server)
+     - `yarn build` (production)
+   - GitHub Actions (example steps):
+     - `on: [push, pull_request]`
+     - Job: `lint-and-build-docs`
+       - Install node, yarn
+       - Run markdownlint, spellcheck
+       - Run `yarn build` and `yarn swizzle` checks
+       - Run link-checker
+     - Job: `test` (runs unit + integration)
+     - Job: `deploy` (runs on push to `main` or tag)
+       - Use `peaceiris/actions-gh-pages` to push `/build` to `gh-pages` branch
+       - Set `CNAME` or custom domain if used
+   - Preview deploys:
+     - Use Netlify/Vercel or GitHub Pages previews for PRs (optional)
+   - Versioning & releases:
+     - Use Docusaurus `version` command to create stable snapshots for each release
+
+9. ACCEPTANCE CRITERIA CHECKLIST (Docs + System)
+   - Docusaurus site builds with no errors; link-check zero broken links
+   - All 4 module specs present in `/sp.specs` and corresponding MDX pages generated
+   - CI pipelines run on PR and merge with green tests
+   - At least one end-to-end simulated capstone run documented and reproducible
+   - APA-style references included per chapter
+   - Plagiarism scan reports 0% unauthorized duplication
+
+10. DELIVERABLES & ARTIFACTS
+   - `/sp.specs/isaac-ai-robot/` (4 module spec files)
+   - Docusaurus site under `/docs/` with MDX chapters
+   - `/examples/` runnable code snippets and mini-repos
+   - `.github/workflows/*` CI for build, tests, deploy
+   - `tooling-versions.md`, `README.md`, `CONTRIBUTING.md`
+   - Test artifacts and CI reports (links to artifacts)
+   - Published GitHub Pages site URL
+
+11. NOTES & SAFETY
+   - Mark any instructions requiring RTX hardware and provide cloud alternatives (AWS/NVIDIA cloud)
+   - Include safety/operational warnings for real hardware (motion safety, emergency stop)
+   - Keep LLM API keys and secrets out of repo; use GitHub Secrets for CI
+
+END OF PLAN

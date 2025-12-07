@@ -1,0 +1,26 @@
+{
+  "id": "getting-started",
+  "title": "Getting Started - Setting Up Your Environment",
+  "description": "This section provides essential guidance for setting up your development environment, ensuring you have all the necessary tools and configurations to follow along with the book's practical exercises. A well-prepared environment is crucial for a smooth learning experience in the complex domain of humanoid robotics.",
+  "source": "@site/docs/getting-started.mdx",
+  "sourceDirName": ".",
+  "slug": "/getting-started",
+  "permalink": "/getting-started",
+  "draft": false,
+  "unlisted": false,
+  "tags": [],
+  "version": "current",
+  "frontMatter": {
+    "id": "getting-started",
+    "title": "Getting Started - Setting Up Your Environment"
+  },
+  "sidebar": "defaultSidebar",
+  "previous": {
+    "title": "5.1 Capstone - The Integrated Humanoid Robotics System",
+    "permalink": "/capstone/capstone-integration-guide"
+  },
+  "next": {
+    "title": "6.1 Hardware & Lab Setup - Beyond Simulation",
+    "permalink": "/hardware-lab-setup/"
+  }
+}

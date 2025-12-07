@@ -1,0 +1,188 @@
+{
+  "docusaurus-plugin-content-docs": {
+    "default": {
+      "path": "/",
+      "versions": [
+        {
+          "name": "current",
+          "label": "Next",
+          "isLast": true,
+          "path": "/",
+          "mainDocId": "index",
+          "docs": [
+            {
+              "id": "appendices/appendices",
+              "path": "/appendices/",
+              "sidebar": "defaultSidebar"
+            },
+            {
+              "id": "capstone/capstone-integration-guide",
+              "path": "/capstone/capstone-integration-guide",
+              "sidebar": "defaultSidebar"
+            },
+            {
+              "id": "getting-started",
+              "path": "/getting-started",
+              "sidebar": "defaultSidebar"
+            },
+            {
+              "id": "hardware-lab-setup/hardware-lab-setup",
+              "path": "/hardware-lab-setup/",
+              "sidebar": "defaultSidebar"
+            },
+            {
+              "id": "home/overview",
+              "path": "/home/overview",
+              "sidebar": "defaultSidebar"
+            },
+            {
+              "id": "index",
+              "path": "/",
+              "sidebar": "defaultSidebar"
+            },
+            {
+              "id": "misc/technical-plan",
+              "path": "/misc/technical-plan",
+              "sidebar": "defaultSidebar"
+            },
+            {
+              "id": "module-1/building-python-nodes",
+              "path": "/module-1/building-python-nodes",
+              "sidebar": "defaultSidebar"
+            },
+            {
+              "id": "module-1/launch-files-multi-node",
+              "path": "/module-1/launch-files-multi-node",
+              "sidebar": "defaultSidebar"
+            },
+            {
+              "id": "module-1/ros2-architecture",
+              "path": "/module-1/ros2-architecture",
+              "sidebar": "defaultSidebar"
+            },
+            {
+              "id": "module-1/tf2-frames-transformations",
+              "path": "/module-1/tf2-frames-transformations",
+              "sidebar": "defaultSidebar"
+            },
+            {
+              "id": "module-1/urdf-humanoid-robots",
+              "path": "/module-1/urdf-humanoid-robots",
+              "sidebar": "defaultSidebar"
+            },
+            {
+              "id": "module-2/building-gazebo-worlds",
+              "path": "/module-2/building-gazebo-worlds",
+              "sidebar": "defaultSidebar"
+            },
+            {
+              "id": "module-2/physics-simulation",
+              "path": "/module-2/physics-simulation",
+              "sidebar": "defaultSidebar"
+            },
+            {
+              "id": "module-2/sensor-simulation",
+              "path": "/module-2/sensor-simulation",
+              "sidebar": "defaultSidebar"
+            },
+            {
+              "id": "module-2/unity-for-robotics",
+              "path": "/module-2/unity-for-robotics",
+              "sidebar": "defaultSidebar"
+            },
+            {
+              "id": "module-2/what-is-digital-twin",
+              "path": "/module-2/what-is-digital-twin",
+              "sidebar": "defaultSidebar"
+            },
+            {
+              "id": "module-3/introduction-isaac-sim",
+              "path": "/module-3/introduction-isaac-sim",
+              "sidebar": "defaultSidebar"
+            },
+            {
+              "id": "module-3/navigation-nav2-humanoids",
+              "path": "/module-3/navigation-nav2-humanoids",
+              "sidebar": "defaultSidebar"
+            },
+            {
+              "id": "module-3/perception-isaac-ros-vslam",
+              "path": "/module-3/perception-isaac-ros-vslam",
+              "sidebar": "defaultSidebar"
+            },
+            {
+              "id": "module-3/synthetic-data-domain-randomization",
+              "path": "/module-3/synthetic-data-domain-randomization",
+              "sidebar": "defaultSidebar"
+            },
+            {
+              "id": "module-3/training-robot-policies",
+              "path": "/module-3/training-robot-policies",
+              "sidebar": "defaultSidebar"
+            },
+            {
+              "id": "module-4/full-vla-pipeline",
+              "path": "/module-4/full-vla-pipeline",
+              "sidebar": "defaultSidebar"
+            },
+            {
+              "id": "module-4/llm-cognitive-planning",
+              "path": "/module-4/llm-cognitive-planning",
+              "sidebar": "defaultSidebar"
+            },
+            {
+              "id": "module-4/visual-object-grounding",
+              "path": "/module-4/visual-object-grounding",
+              "sidebar": "defaultSidebar"
+            },
+            {
+              "id": "module-4/voice-command-whisper",
+              "path": "/module-4/voice-command-whisper",
+              "sidebar": "defaultSidebar"
+            },
+            {
+              "id": "module-4/what-is-vla",
+              "path": "/module-4/what-is-vla",
+              "sidebar": "defaultSidebar"
+            },
+            {
+              "id": "/category/module-1-the-robotic-nervous-system-ros-2",
+              "path": "/category/module-1-the-robotic-nervous-system-ros-2",
+              "sidebar": "defaultSidebar"
+            },
+            {
+              "id": "/category/module-2-humanoid-robot-kinematics",
+              "path": "/category/module-2-humanoid-robot-kinematics",
+              "sidebar": "defaultSidebar"
+            },
+            {
+              "id": "/category/module-3-humanoid-robot-dynamics",
+              "path": "/category/module-3-humanoid-robot-dynamics",
+              "sidebar": "defaultSidebar"
+            },
+            {
+              "id": "/category/module-4-humanoid-robot-control",
+              "path": "/category/module-4-humanoid-robot-control",
+              "sidebar": "defaultSidebar"
+            },
+            {
+              "id": "/category/miscellaneous",
+              "path": "/category/miscellaneous",
+              "sidebar": "defaultSidebar"
+            }
+          ],
+          "draftIds": [],
+          "sidebars": {
+            "defaultSidebar": {
+              "link": {
+                "path": "/category/module-1-the-robotic-nervous-system-ros-2",
+                "label": "Module 1: The Robotic Nervous System (ROS 2)"
+              }
+            }
+          }
+        }
+      ],
+      "breadcrumbs": true
+    }
+  }
+}

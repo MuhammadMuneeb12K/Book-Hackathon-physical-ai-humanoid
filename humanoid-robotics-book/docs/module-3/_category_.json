@@ -1,0 +1,8 @@
+{
+  "label": "Module 3: Humanoid Robot Dynamics",
+  "position": 3,
+  "link": {
+    "type": "generated-index",
+    "description": "Exploring the forces and motion of humanoid robots."
+  }
+}

@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="en" dir="ltr" class="docs-wrapper plugin-docs plugin-id-default docs-version-current docs-doc-page docs-doc-id-module-3/training-robot-policies" data-has-hydrated="false">
+<head>
+<meta charset="UTF-8">
+<meta name="generator" content="Docusaurus v3.9.2">
+<title data-rh="true">3.5 Training Robot Policies | Humanoid Robotics Book</title><meta data-rh="true" name="viewport" content="width=device-width,initial-scale=1"><meta data-rh="true" name="twitter:card" content="summary_large_image"><meta data-rh="true" property="og:url" content="https://example.com/module-3/training-robot-policies"><meta data-rh="true" property="og:locale" content="en"><meta data-rh="true" name="docusaurus_locale" content="en"><meta data-rh="true" name="docsearch:language" content="en"><meta data-rh="true" name="docusaurus_version" content="current"><meta data-rh="true" name="docusaurus_tag" content="docs-default-current"><meta data-rh="true" name="docsearch:version" content="current"><meta data-rh="true" name="docsearch:docusaurus_tag" content="docs-default-current"><meta data-rh="true" property="og:title" content="3.5 Training Robot Policies | Humanoid Robotics Book"><meta data-rh="true" name="description" content="We&#x27;ve explored how Isaac Sim provides photorealistic environments, how synthetic data and domain randomization bridge the sim-to-real gap, and how our humanoid can perceive and navigate its world. Now, we tackle the ultimate goal: enabling the robot to learn complex behaviors and make intelligent decisions. This chapter delves into the methodologies for training robotic policies, primarily through reinforcement learning (RL), leveraging the power of Isaac Sim for efficient and safe simulated training environments."><meta data-rh="true" property="og:description" content="We&#x27;ve explored how Isaac Sim provides photorealistic environments, how synthetic data and domain randomization bridge the sim-to-real gap, and how our humanoid can perceive and navigate its world. Now, we tackle the ultimate goal: enabling the robot to learn complex behaviors and make intelligent decisions. This chapter delves into the methodologies for training robotic policies, primarily through reinforcement learning (RL), leveraging the power of Isaac Sim for efficient and safe simulated training environments."><link data-rh="true" rel="icon" href="/img/favicon.ico"><link data-rh="true" rel="canonical" href="https://example.com/module-3/training-robot-policies"><link data-rh="true" rel="alternate" href="https://example.com/module-3/training-robot-policies" hreflang="en"><link data-rh="true" rel="alternate" href="https://example.com/module-3/training-robot-policies" hreflang="x-default"><script data-rh="true" type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Module 3: Humanoid Robot Dynamics","item":"https://example.com/category/module-3-humanoid-robot-dynamics"},{"@type":"ListItem","position":2,"name":"3.5 Training Robot Policies","item":"https://example.com/module-3/training-robot-policies"}]}</script><link rel="stylesheet" href="/assets/css/styles.43713d77.css">
+<script src="/assets/js/runtime~main.530bc908.js" defer="defer"></script>
+<script src="/assets/js/main.5ba9cfc2.js" defer="defer"></script>
+</head>
+<body class="navigation-with-keyboard">
+<svg style="display: none;"><defs>
+<symbol id="theme-svg-external-link" viewBox="0 0 24 24"><path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z"/></symbol>
+</defs></svg>
+<script>!function(){var t=function(){try{return new URLSearchParams(window.location.search).get("docusaurus-theme")}catch(t){}}()||function(){try{return window.localStorage.getItem("theme")}catch(t){}}();document.documentElement.setAttribute("data-theme",t||"light"),document.documentElement.setAttribute("data-theme-choice",t||"light")}(),function(){try{const c=new URLSearchParams(window.location.search).entries();for(var[t,e]of c)if(t.startsWith("docusaurus-data-")){var a=t.replace("docusaurus-data-","data-");document.documentElement.setAttribute(a,e)}}catch(t){}}()</script><div id="__docusaurus"><div role="region" aria-label="Skip to main content"><a class="skipToContent_fXgn" href="#__docusaurus_skipToContent_fallback">Skip to main content</a></div><nav aria-label="Main" class="theme-layout-navbar navbar navbar--fixed-top"><div class="navbar__inner"><div class="theme-layout-navbar-left navbar__items"><a class="navbar__brand" href="/"></a></div><div class="theme-layout-navbar-right navbar__items navbar__items--right"><div class="toggle_vylO colorModeToggle_DEke"><button class="clean-btn toggleButton_gllP toggleButtonDisabled_aARS" type="button" disabled="" title="system mode" aria-label="Switch between dark and light mode (currently system mode)"><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP lightToggleIcon_pyhR"><path fill="currentColor" d="M12,9c1.65,0,3,1.35,3,3s-1.35,3-3,3s-3-1.35-3-3S10.35,9,12,9 M12,7c-2.76,0-5,2.24-5,5s2.24,5,5,5s5-2.24,5-5 S14.76,7,12,7L12,7z M2,13l2,0c0.55,0,1-0.45,1-1s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S1.45,13,2,13z M20,13l2,0c0.55,0,1-0.45,1-1 s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S19.45,13,20,13z M11,2v2c0,0.55,0.45,1,1,1s1-0.45,1-1V2c0-0.55-0.45-1-1-1S11,1.45,11,2z M11,20v2c0,0.55,0.45,1,1,1s1-0.45,1-1v-2c0-0.55-0.45-1-1-1C11.45,19,11,19.45,11,20z M5.99,4.58c-0.39-0.39-1.03-0.39-1.41,0 c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0s0.39-1.03,0-1.41L5.99,4.58z M18.36,16.95 c-0.39-0.39-1.03-0.39-1.41,0c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0c0.39-0.39,0.39-1.03,0-1.41 L18.36,16.95z M19.42,5.99c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06c-0.39,0.39-0.39,1.03,0,1.41 s1.03,0.39,1.41,0L19.42,5.99z M7.05,18.36c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06 c-0.39,0.39-0.39,1.03,0,1.41s1.03,0.39,1.41,0L7.05,18.36z"></path></svg><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP darkToggleIcon_wfgR"><path fill="currentColor" d="M9.37,5.51C9.19,6.15,9.1,6.82,9.1,7.5c0,4.08,3.32,7.4,7.4,7.4c0.68,0,1.35-0.09,1.99-0.27C17.45,17.19,14.93,19,12,19 c-3.86,0-7-3.14-7-7C5,9.07,6.81,6.55,9.37,5.51z M12,3c-4.97,0-9,4.03-9,9s4.03,9,9,9s9-4.03,9-9c0-0.46-0.04-0.92-0.1-1.36 c-0.98,1.37-2.58,2.26-4.4,2.26c-2.98,0-5.4-2.42-5.4-5.4c0-1.81,0.89-3.42,2.26-4.4C12.92,3.04,12.46,3,12,3L12,3z"></path></svg><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP systemToggleIcon_QzmC"><path fill="currentColor" d="m12 21c4.971 0 9-4.029 9-9s-4.029-9-9-9-9 4.029-9 9 4.029 9 9 9zm4.95-13.95c1.313 1.313 2.05 3.093 2.05 4.95s-0.738 3.637-2.05 4.95c-1.313 1.313-3.093 2.05-4.95 2.05v-14c1.857 0 3.637 0.737 4.95 2.05z"></path></svg></button></div><div class="navbarSearchContainer_Bca1"></div></div></div><div role="presentation" class="navbar-sidebar__backdrop"></div></nav><div id="__docusaurus_skipToContent_fallback" class="theme-layout-main main-wrapper mainWrapper_z2l0"><div class="docsWrapper_hBAB"><button aria-label="Scroll back to top" class="clean-btn theme-back-to-top-button backToTopButton_sjWU" type="button"></button><div class="docRoot_UBD9"><aside class="theme-doc-sidebar-container docSidebarContainer_YfHR"><div class="sidebarViewport_aRkj"><div class="sidebar_njMd"><nav aria-label="Docs sidebar" class="menu thin-scrollbar menu_SIkG"><ul class="theme-doc-sidebar-menu menu__list"><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist" href="/category/module-1-the-robotic-nervous-system-ros-2"><span title="Module 1: The Robotic Nervous System (ROS 2)" class="categoryLinkLabel_W154">Module 1: The Robotic Nervous System (ROS 2)</span></a><button aria-label="Expand sidebar category &#x27;Module 1: The Robotic Nervous System (ROS 2)&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist" href="/category/module-2-humanoid-robot-kinematics"><span title="Module 2: Humanoid Robot Kinematics" class="categoryLinkLabel_W154">Module 2: Humanoid Robot Kinematics</span></a><button aria-label="Expand sidebar category &#x27;Module 2: Humanoid Robot Kinematics&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--active" href="/category/module-3-humanoid-robot-dynamics"><span title="Module 3: Humanoid Robot Dynamics" class="categoryLinkLabel_W154">Module 3: Humanoid Robot Dynamics</span></a><button aria-label="Collapse sidebar category &#x27;Module 3: Humanoid Robot Dynamics&#x27;" aria-expanded="true" type="button" class="clean-btn menu__caret"></button></div><ul class="menu__list"><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/module-3/introduction-isaac-sim"><span title="3.1 Introduction to NVIDIA Isaac Sim" class="linkLabel_WmDU">3.1 Introduction to NVIDIA Isaac Sim</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/module-3/synthetic-data-domain-randomization"><span title="3.2 Synthetic Data &amp; Domain Randomization" class="linkLabel_WmDU">3.2 Synthetic Data &amp; Domain Randomization</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/module-3/perception-isaac-ros-vslam"><span title="3.3 Perception with Isaac ROS (VSLAM)" class="linkLabel_WmDU">3.3 Perception with Isaac ROS (VSLAM)</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/module-3/navigation-nav2-humanoids"><span title="3.4 Navigation with Nav2 for Humanoids" class="linkLabel_WmDU">3.4 Navigation with Nav2 for Humanoids</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link menu__link--active" aria-current="page" tabindex="0" href="/module-3/training-robot-policies"><span title="3.5 Training Robot Policies" class="linkLabel_WmDU">3.5 Training Robot Policies</span></a></li></ul></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist" href="/category/module-4-humanoid-robot-control"><span title="Module 4: Humanoid Robot Control" class="categoryLinkLabel_W154">Module 4: Humanoid Robot Control</span></a><button aria-label="Expand sidebar category &#x27;Module 4: Humanoid Robot Control&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist" href="/category/miscellaneous"><span title="Miscellaneous" class="categoryLinkLabel_W154">Miscellaneous</span></a><button aria-label="Expand sidebar category &#x27;Miscellaneous&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/appendices/"><span title="7.1 Appendices - Resources and Further Reading" class="linkLabel_WmDU">7.1 Appendices - Resources and Further Reading</span></a></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/capstone/capstone-integration-guide"><span title="capstone" class="categoryLinkLabel_W154">capstone</span></a></div></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/getting-started"><span title="Getting Started - Setting Up Your Environment" class="linkLabel_WmDU">Getting Started - Setting Up Your Environment</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/hardware-lab-setup/"><span title="6.1 Hardware &amp; Lab Setup - Beyond Simulation" class="linkLabel_WmDU">6.1 Hardware &amp; Lab Setup - Beyond Simulation</span></a></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/home/overview"><span title="home" class="categoryLinkLabel_W154">home</span></a></div></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/"><span title="Welcome to the Humanoid Robotics Book" class="linkLabel_WmDU">Welcome to the Humanoid Robotics Book</span></a></li></ul></nav></div></div></aside><main class="docMainContainer_TBSr"><div class="container padding-top--md padding-bottom--lg"><div class="row"><div class="col docItemCol_VOVn"><div class="docItemContainer_Djhp"><article><nav class="theme-doc-breadcrumbs breadcrumbsContainer_Z_bl" aria-label="Breadcrumbs"><ul class="breadcrumbs"><li class="breadcrumbs__item"><a aria-label="Home page" class="breadcrumbs__link" href="/"><svg viewBox="0 0 24 24" class="breadcrumbHomeIcon_YNFT"><path d="M10 19v-5h4v5c0 .55.45 1 1 1h3c.55 0 1-.45 1-1v-7h1.7c.46 0 .68-.57.33-.87L12.67 3.6c-.38-.34-.96-.34-1.34 0l-8.36 7.53c-.34.3-.13.87.33.87H5v7c0 .55.45 1 1 1h3c.55 0 1-.45 1-1z" fill="currentColor"></path></svg></a></li><li class="breadcrumbs__item"><a class="breadcrumbs__link" href="/category/module-3-humanoid-robot-dynamics"><span>Module 3: Humanoid Robot Dynamics</span></a></li><li class="breadcrumbs__item breadcrumbs__item--active"><span class="breadcrumbs__link">3.5 Training Robot Policies</span></li></ul></nav><div class="tocCollapsible_ETCw theme-doc-toc-mobile tocMobile_ITEo"><button type="button" class="clean-btn tocCollapsibleButton_TO0P">On this page</button></div><div class="theme-doc-markdown markdown"><header><h1>3.5 Training Robot Policies</h1></header><p>We&#x27;ve explored how Isaac Sim provides photorealistic environments, how synthetic data and domain randomization bridge the sim-to-real gap, and how our humanoid can perceive and navigate its world. Now, we tackle the ultimate goal: enabling the robot to learn complex behaviors and make intelligent decisions. This chapter delves into the methodologies for training robotic policies, primarily through reinforcement learning (RL), leveraging the power of Isaac Sim for efficient and safe simulated training environments.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="goal">Goal<a href="#goal" class="hash-link" aria-label="Direct link to Goal" title="Direct link to Goal" translate="no">​</a></h2>
+<p>The goal of this chapter is to teach students how to train robotic policies inside simulation using synthetic data and domain randomization, accelerating the development of robust AI for humanoid robots to perform complex tasks efficiently and safely.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="learning-objectives">Learning Objectives<a href="#learning-objectives" class="hash-link" aria-label="Direct link to Learning Objectives" title="Direct link to Learning Objectives" translate="no">​</a></h2>
+<ul>
+<li class="">Understand the fundamental concepts of reinforcement learning (RL) in the context of robotics.</li>
+<li class="">Identify the key components of an RL problem: agent, environment, state, action, reward.</li>
+<li class="">Grasp how Isaac Sim serves as an effective, high-performance training ground for RL agents.</li>
+<li class="">Learn to define observation spaces, action spaces, and reward functions for humanoid robot tasks.</li>
+<li class="">Implement a basic reinforcement learning pipeline for a simple humanoid behavior (e.g., standing, walking).</li>
+<li class="">Understand the role of domain randomization in making trained policies transferable to the real world.</li>
+<li class="">Explore methods for evaluating and deploying trained policies.</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="prerequisites">Prerequisites<a href="#prerequisites" class="hash-link" aria-label="Direct link to Prerequisites" title="Direct link to Prerequisites" translate="no">​</a></h2>
+<ul>
+<li class="">Familiarity with NVIDIA Isaac Sim (from previous chapters).</li>
+<li class="">Understanding of synthetic data and domain randomization.</li>
+<li class="">Basic knowledge of machine learning and deep learning concepts.</li>
+<li class="">Python programming proficiency.</li>
+<li class="">Conceptual understanding of control systems and robot dynamics.</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="key-concepts">Key Concepts<a href="#key-concepts" class="hash-link" aria-label="Direct link to Key Concepts" title="Direct link to Key Concepts" translate="no">​</a></h2>
+<ul>
+<li class=""><strong>Robotic Policy:</strong> A function or neural network that maps observed states of the robot and environment to actions the robot should take.</li>
+<li class=""><strong>Reinforcement Learning (RL):</strong> A machine learning paradigm where an agent learns to make optimal decisions by interacting with an environment and receiving reward or penalty signals.</li>
+<li class=""><strong>Agent:</strong> The learner and decision-maker in an RL system (e.g., the humanoid robot&#x27;s control algorithm).</li>
+<li class=""><strong>Environment:</strong> The simulated or real world with which the agent interacts (e.g., Isaac Sim).</li>
+<li class=""><strong>State:</strong> A complete description of the environment at a given time (e.g., joint angles, velocities, sensor readings, object positions).</li>
+<li class=""><strong>Action:</strong> A command or decision made by the agent that influences the environment (e.g., joint torques, target velocities).</li>
+<li class=""><strong>Reward Function:</strong> A scalar value that quantifies the desirability of the agent&#x27;s behavior at a given state; guides the learning process.</li>
+<li class=""><strong>Observation Space:</strong> The set of all possible observations the agent can perceive from the environment.</li>
+<li class=""><strong>Action Space:</strong> The set of all possible actions the agent can take.</li>
+<li class=""><strong>Episode:</strong> A single trial of interaction between the agent and environment, starting from an initial state and ending in a terminal state or after a fixed number of steps.</li>
+<li class=""><strong>Sim-to-Real Transfer:</strong> The process of deploying a policy trained in simulation to a real robot.</li>
+<li class=""><strong>Curriculum Learning:</strong> Gradually increasing the complexity of the task during training to facilitate learning.</li>
+<li class=""><strong>GPU-accelerated RL:</strong> Leveraging GPUs to run many simulations in parallel, significantly speeding up training.</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="tools">Tools<a href="#tools" class="hash-link" aria-label="Direct link to Tools" title="Direct link to Tools" translate="no">​</a></h2>
+<ul>
+<li class=""><strong>NVIDIA Isaac Sim:</strong> The high-fidelity, GPU-accelerated simulation environment.</li>
+<li class=""><strong>Omni.isaac.orbit:</strong> A framework for robot learning in Isaac Sim.</li>
+<li class=""><strong><code>rl_games</code>:</strong> A high-performance RL library often used with Isaac Sim.</li>
+<li class=""><strong>Python:</strong> For scripting RL pipelines.</li>
+<li class=""><strong>TensorFlow/PyTorch:</strong> Underlying deep learning frameworks for policy networks.</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="chapter-sections">Chapter Sections<a href="#chapter-sections" class="hash-link" aria-label="Direct link to Chapter Sections" title="Direct link to Chapter Sections" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="351-introduction-to-reinforcement-learning-for-robotics">3.5.1 Introduction to Reinforcement Learning for Robotics<a href="#351-introduction-to-reinforcement-learning-for-robotics" class="hash-link" aria-label="Direct link to 3.5.1 Introduction to Reinforcement Learning for Robotics" title="Direct link to 3.5.1 Introduction to Reinforcement Learning for Robotics" translate="no">​</a></h3>
+<ul>
+<li class="">The appeal of RL: learning complex, adaptive behaviors from experience.</li>
+<li class="">Difference from supervised and unsupervised learning.</li>
+<li class="">Challenges of applying RL to real robots (safety, data efficiency, sim-to-real gap).</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="352-components-of-an-rl-problem-in-isaac-sim">3.5.2 Components of an RL Problem in Isaac Sim<a href="#352-components-of-an-rl-problem-in-isaac-sim" class="hash-link" aria-label="Direct link to 3.5.2 Components of an RL Problem in Isaac Sim" title="Direct link to 3.5.2 Components of an RL Problem in Isaac Sim" translate="no">​</a></h3>
+<ul>
+<li class=""><strong>Defining the Agent:</strong> The humanoid robot.</li>
+<li class=""><strong>Modeling the Environment:</strong> Isaac Sim as the RL environment.</li>
+<li class=""><strong>State Space:</strong> What observations does the humanoid perceive (joint positions/velocities, IMU, end-effector poses, object relative positions)?</li>
+<li class=""><strong>Action Space:</strong> What control commands can the humanoid execute (joint efforts, target positions/velocities, base velocities)?</li>
+<li class=""><strong>Reward Function Design:</strong> Crucial for effective learning.<!-- -->
+<ul>
+<li class="">Shaping rewards: penalizing falls, rewarding forward progress, reaching targets.</li>
+<li class="">Sparse vs. dense rewards.</li>
+</ul>
+</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="353-setting-up-an-rl-training-environment-in-isaac-sim">3.5.3 Setting Up an RL Training Environment in Isaac Sim<a href="#353-setting-up-an-rl-training-environment-in-isaac-sim" class="hash-link" aria-label="Direct link to 3.5.3 Setting Up an RL Training Environment in Isaac Sim" title="Direct link to 3.5.3 Setting Up an RL Training Environment in Isaac Sim" translate="no">​</a></h3>
+<ul>
+<li class=""><strong>Creating a Multi-environment Setup:</strong> Running many instances of the same robot and environment in parallel on the GPU for faster data collection (<code>omni.isaac.gym.vec_env</code>).</li>
+<li class=""><strong>Interfacing with the Simulator:</strong> Extracting observations and applying actions via Isaac Sim&#x27;s Python API.</li>
+<li class=""><strong>Implementing Domain Randomization:</strong> Varying physical properties (friction, mass, joint damping) and visual properties (textures, lighting) to improve generalization.</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="354-training-a-humanoid-walking-policy">3.5.4 Training a Humanoid Walking Policy<a href="#354-training-a-humanoid-walking-policy" class="hash-link" aria-label="Direct link to 3.5.4 Training a Humanoid Walking Policy" title="Direct link to 3.5.4 Training a Humanoid Walking Policy" translate="no">​</a></h3>
+<ul>
+<li class=""><strong>Task Definition:</strong> Goal (e.g., walk forward), constraints (e.g., don&#x27;t fall).</li>
+<li class=""><strong>Observation &amp; Action Space Design:</strong> Mapping humanoid state to observations, and control inputs to actions.</li>
+<li class=""><strong>Reward Function for Walking:</strong> Components like velocity reward, height reward, joint limit penalties, power consumption penalties.</li>
+<li class=""><strong>RL Algorithm Selection:</strong> Overview of common algorithms (PPO, SAC) and why they are suited for robotics.</li>
+<li class=""><strong>Training Loop:</strong> Iteratively collecting experience, updating policy, and evaluating performance.</li>
+<li class=""><strong>Curriculum Learning:</strong> Gradually increasing terrain complexity or walking speed.</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="355-evaluating-and-deploying-trained-policies">3.5.5 Evaluating and Deploying Trained Policies<a href="#355-evaluating-and-deploying-trained-policies" class="hash-link" aria-label="Direct link to 3.5.5 Evaluating and Deploying Trained Policies" title="Direct link to 3.5.5 Evaluating and Deploying Trained Policies" translate="no">​</a></h3>
+<ul>
+<li class=""><strong>Evaluation Metrics:</strong> Success rate, speed, energy efficiency, robustness to disturbances.</li>
+<li class=""><strong>Sim-to-Real Deployment:</strong> Strategies for transferring policies.<!-- -->
+<ul>
+<li class="">Domain Randomization: as a primary bridge.</li>
+<li class="">Domain Adaptation: methods to fine-tune policies on real data.</li>
+<li class="">System Identification: accurately modeling robot dynamics.</li>
+</ul>
+</li>
+<li class=""><strong>Real-time Inference:</strong> Running the trained neural network policy on the actual humanoid robot.</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="required-diagrams">Required Diagrams<a href="#required-diagrams" class="hash-link" aria-label="Direct link to Required Diagrams" title="Direct link to Required Diagrams" translate="no">​</a></h2>
+<ul>
+<li class=""><strong>Reinforcement Learning Loop:</strong> A diagram illustrating the interaction between the agent, environment, state, action, and reward.</li>
+<li class=""><strong>Humanoid Walking Policy Observation/Action/Reward:</strong> A breakdown of typical inputs, outputs, and reward components for a bipedal gait.</li>
+<li class=""><strong>GPU-accelerated RL in Isaac Sim:</strong> Illustrating multiple parallel environments running on the GPU.</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="hands-on-labs">Hands-on Labs<a href="#hands-on-labs" class="hash-link" aria-label="Direct link to Hands-on Labs" title="Direct link to Hands-on Labs" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="lab-351-train-a-humanoid-walking-policy-in-isaac-sim">Lab 3.5.1: Train a Humanoid Walking Policy in Isaac Sim<a href="#lab-351-train-a-humanoid-walking-policy-in-isaac-sim" class="hash-link" aria-label="Direct link to Lab 3.5.1: Train a Humanoid Walking Policy in Isaac Sim" title="Direct link to Lab 3.5.1: Train a Humanoid Walking Policy in Isaac Sim" translate="no">​</a></h3>
+<p><strong>Objective:</strong> Implement a basic reinforcement learning pipeline in Isaac Sim to train a simple humanoid walking policy, demonstrating the use of observation/action spaces and a reward function.</p>
+<p><strong>Prerequisites:</strong> Completed Lab 3.1.1 (Isaac Sim basic setup). Basic understanding of RL concepts. This lab will require a more substantial Python script and configuration, potentially leveraging frameworks like <code>omni.isaac.orbit</code> or directly using <code>rl_games</code> as provided by Isaac Sim examples. We&#x27;ll simplify for demonstration.</p>
+<p><strong>Instructions (Conceptual Outline, specific code will depend on Isaac Sim&#x27;s ever-evolving APIs and example structure):</strong></p>
+<ol>
+<li class=""><strong>Start Isaac Sim and load a suitable humanoid model.</strong> (e.g., one from <code>Isaac -&gt; Robots -&gt; Humanoids</code> that has an articulation controller).</li>
+<li class=""><strong>Access Isaac Sim&#x27;s RL Examples:</strong> Isaac Sim often comes with pre-built RL examples (e.g., for <code>ANYmal</code>, <code>Franka</code>, or even simple bipedal robots). Navigate to these examples within Isaac Sim&#x27;s Extension menu or via Python scripts.<!-- -->
+<ul>
+<li class=""><strong>Find <code>omni.isaac.orbit</code> Examples:</strong> If <code>omni.isaac.orbit</code> is installed (often included), look for its examples, which usually include bipedal/humanoid locomotion tasks.</li>
+</ul>
+</li>
+<li class=""><strong>Adapt an Existing RL Task (e.g., for a bipedal walker):</strong>
+<ul>
+<li class=""><strong>Define Environment:</strong> The <code>VecEnv</code> in Isaac Gym/Sim orchestrates parallel environments.</li>
+<li class=""><strong>Define Observation Space:</strong>
+<ul>
+<li class="">Joint positions and velocities.</li>
+<li class="">IMU readings (linear acceleration, angular velocity).</li>
+<li class="">Base orientation (roll, pitch, yaw) and velocity.</li>
+<li class="">Contact forces (if applicable).</li>
+</ul>
+</li>
+<li class=""><strong>Define Action Space:</strong>
+<ul>
+<li class="">Desired joint positions (position control).</li>
+<li class="">Desired joint efforts/torques (torque control).</li>
+</ul>
+</li>
+<li class=""><strong>Design Reward Function:</strong>
+<ul>
+<li class=""><strong>Positive Reward:</strong> For moving forward (e.g., <code>robot_x_velocity_reward</code>).</li>
+<li class=""><strong>Negative Reward (Penalties):</strong>
+<ul>
+<li class="">For falling (<code>if base_height &lt; min_height</code>).</li>
+<li class="">For high joint effort (<code>power_consumption_penalty</code>).</li>
+<li class="">For unstable torso pitch/roll (<code>base_orientation_penalty</code>).</li>
+<li class="">For joint limits violation.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class=""><strong>Implement Domain Randomization:</strong>
+<ul>
+<li class="">Randomize initial joint states.</li>
+<li class="">Randomize physical properties (mass of links, friction of feet, joint damping).</li>
+<li class="">Randomize external forces applied to the robot.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class=""><strong>Set Up the RL Trainer:</strong>
+<ul>
+<li class="">Choose an RL algorithm (e.g., PPO - Proximal Policy Optimization).</li>
+<li class="">Configure hyperparameters (learning rate, batch size, number of episodes).</li>
+</ul>
+</li>
+<li class=""><strong>Run the Training Script:</strong> Execute the Python script that orchestrates the RL training. This will involve:<!-- -->
+<ul>
+<li class="">Resetting environments.</li>
+<li class="">Collecting observations.</li>
+<li class="">Passing observations to the policy network to get actions.</li>
+<li class="">Applying actions to the simulation.</li>
+<li class="">Calculating rewards.</li>
+<li class="">Updating the policy network based on collected experience.</li>
+</ul>
+</li>
+<li class=""><strong>Monitor Training Progress:</strong> Observe reward curves, episode lengths, and the robot&#x27;s behavior in the visualizer. You&#x27;ll likely see the robot flailing initially, gradually learning to stand, and then attempting to walk.</li>
+<li class=""><strong>Save and Evaluate Policy:</strong> After training converges, save the policy. Load the trained policy into a single environment instance to observe its performance.</li>
+</ol>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="expected-output">Expected Output<a href="#expected-output" class="hash-link" aria-label="Direct link to Expected Output" title="Direct link to Expected Output" translate="no">​</a></h2>
+<ul>
+<li class="">A running Isaac Sim environment where a humanoid robot is being trained using an RL algorithm.</li>
+<li class="">Observation of the humanoid agent gradually learning a walking-like behavior through trial and error.</li>
+<li class="">A trained robotic policy (neural network weights) capable of controlling the humanoid for the specified task.</li>
+<li class="">An understanding of the practical challenges and successes in applying RL to humanoid locomotion.</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="assessment-questions">Assessment Questions<a href="#assessment-questions" class="hash-link" aria-label="Direct link to Assessment Questions" title="Direct link to Assessment Questions" translate="no">​</a></h2>
+<ul>
+<li class="">Define what a &quot;robotic policy&quot; is in the context of reinforcement learning.</li>
+<li class="">What are the four core components of any reinforcement learning problem, and how do they map to training a humanoid robot in Isaac Sim?</li>
+<li class="">Why is the design of the reward function so critical for successful RL training in robotics? Provide an example of a good and bad reward for a &quot;stand up&quot; task.</li>
+<li class="">How does GPU acceleration in Isaac Sim significantly speed up the process of training robot policies compared to CPU-based simulators?</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="real-world-applications">Real-world Applications<a href="#real-world-applications" class="hash-link" aria-label="Direct link to Real-world Applications" title="Direct link to Real-world Applications" translate="no">​</a></h2>
+<ul>
+<li class=""><strong>Humanoid Locomotion:</strong> Training dynamic walking gaits for bipedal robots across varied terrains and under external perturbations, beyond what traditional control methods can achieve.</li>
+<li class=""><strong>Complex Manipulation:</strong> Teaching humanoid robots to grasp and manipulate novel objects in cluttered environments, adapting to uncertainties.</li>
+<li class=""><strong>Human-Robot Collaboration:</strong> Developing policies that allow humanoids to anticipate human actions and respond cooperatively and safely.</li>
+<li class=""><strong>Balance and Recovery:</strong> Training robots to maintain balance when pushed, recover from falls, or traverse slippery surfaces.</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="edge-cases">Edge Cases<a href="#edge-cases" class="hash-link" aria-label="Direct link to Edge Cases" title="Direct link to Edge Cases" translate="no">​</a></h2>
+<ul>
+<li class=""><strong>Reward Hacking:</strong> The agent finds unexpected ways to maximize reward without achieving the desired task objective.</li>
+<li class=""><strong>Local Optima:</strong> The RL algorithm gets stuck in a sub-optimal policy, failing to discover a more efficient or robust solution.</li>
+<li class=""><strong>Curriculum Design Challenges:</strong> Poorly designed curricula can either be too hard (agent never learns) or too easy (agent doesn&#x27;t generalize).</li>
+<li class=""><strong>Computational Expense:</strong> Even with GPU acceleration, training complex humanoid policies can take hours or days on powerful hardware.</li>
+</ul>
+<hr>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="key-entities"><strong>Key Entities</strong><a href="#key-entities" class="hash-link" aria-label="Direct link to key-entities" title="Direct link to key-entities" translate="no">​</a></h3>
+<ul>
+<li class=""><strong>Robotic Policy:</strong> A mapping from observable states of the robot and environment to actions the robot should take, typically represented by a neural network in modern RL.</li>
+<li class=""><strong>Reinforcement Learning (RL):</strong> A machine learning paradigm where an agent learns to perform a task by maximizing a numerical reward signal through trial-and-error interactions with its environment.</li>
+<li class=""><strong>Agent:</strong> The decision-making entity (e.g., the humanoid robot&#x27;s control system) that learns and executes a policy in an RL setup.</li>
+<li class=""><strong>Environment:</strong> The setting in which the RL agent operates, providing states and rewards in response to the agent&#x27;s actions (e.g., Isaac Sim with its physics and sensory models).</li>
+<li class=""><strong>Reward Function:</strong> A critical component of RL that defines the goal of the task by assigning scalar values to different states and actions, guiding the agent&#x27;s learning process.</li>
+<li class=""><strong>Observation Space:</strong> The set of all possible numerical inputs that the agent receives from the environment to inform its decisions.</li>
+<li class=""><strong>Action Space:</strong> The set of all possible numerical commands or control inputs that the agent can send to the robot&#x27;s actuators.</li>
+<li class=""><strong>Sim-to-Real Transfer:</strong> The challenge and process of effectively transferring a learned policy from a simulated training environment to a physical robotic system.</li>
+<li class=""><strong>GPU-accelerated RL:</strong> The technique of running multiple instances of an RL environment in parallel on a Graphics Processing Unit to dramatically speed up the data collection and policy optimization process.</li>
+</ul>
+<hr>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="references"><strong>References</strong><a href="#references" class="hash-link" aria-label="Direct link to references" title="Direct link to references" translate="no">​</a></h3>
+<ul>
+<li class="">Sutton, R. S., &amp; Barto, A. G. (2018). <em>Reinforcement Learning: An Introduction</em> (2nd ed.). MIT Press. (Placeholder citation)</li>
+<li class="">OpenAI. (2018). <em>Proximal Policy Optimization Algorithms</em>. (Placeholder citation)</li>
+<li class="">Akbarimajd, A., et al. (2020). Isaac Gym: High Performance GPU-based Physics Simulation for Robot Learning. <em>arXiv preprint arXiv:2009.11728</em>. (Placeholder citation)</li>
+<li class="">Vecerik, M., et al. (2017). Successor features for transfer in reinforcement learning. <em>Advances in Neural Information Processing Systems, 30</em>. (Placeholder citation)</li>
+</ul></div></article><nav class="docusaurus-mt-lg pagination-nav" aria-label="Docs pages"><a class="pagination-nav__link pagination-nav__link--prev" href="/module-3/navigation-nav2-humanoids"><div class="pagination-nav__sublabel">Previous</div><div class="pagination-nav__label">3.4 Navigation with Nav2 for Humanoids</div></a><a class="pagination-nav__link pagination-nav__link--next" href="/category/module-4-humanoid-robot-control"><div class="pagination-nav__sublabel">Next</div><div class="pagination-nav__label">Module 4: Humanoid Robot Control</div></a></nav></div></div><div class="col col--3"><div class="tableOfContents_bqdL thin-scrollbar theme-doc-toc-desktop"><ul class="table-of-contents table-of-contents__left-border"><li><a href="#goal" class="table-of-contents__link toc-highlight">Goal</a></li><li><a href="#learning-objectives" class="table-of-contents__link toc-highlight">Learning Objectives</a></li><li><a href="#prerequisites" class="table-of-contents__link toc-highlight">Prerequisites</a></li><li><a href="#key-concepts" class="table-of-contents__link toc-highlight">Key Concepts</a></li><li><a href="#tools" class="table-of-contents__link toc-highlight">Tools</a></li><li><a href="#chapter-sections" class="table-of-contents__link toc-highlight">Chapter Sections</a><ul><li><a href="#351-introduction-to-reinforcement-learning-for-robotics" class="table-of-contents__link toc-highlight">3.5.1 Introduction to Reinforcement Learning for Robotics</a></li><li><a href="#352-components-of-an-rl-problem-in-isaac-sim" class="table-of-contents__link toc-highlight">3.5.2 Components of an RL Problem in Isaac Sim</a></li><li><a href="#353-setting-up-an-rl-training-environment-in-isaac-sim" class="table-of-contents__link toc-highlight">3.5.3 Setting Up an RL Training Environment in Isaac Sim</a></li><li><a href="#354-training-a-humanoid-walking-policy" class="table-of-contents__link toc-highlight">3.5.4 Training a Humanoid Walking Policy</a></li><li><a href="#355-evaluating-and-deploying-trained-policies" class="table-of-contents__link toc-highlight">3.5.5 Evaluating and Deploying Trained Policies</a></li></ul></li><li><a href="#required-diagrams" class="table-of-contents__link toc-highlight">Required Diagrams</a></li><li><a href="#hands-on-labs" class="table-of-contents__link toc-highlight">Hands-on Labs</a><ul><li><a href="#lab-351-train-a-humanoid-walking-policy-in-isaac-sim" class="table-of-contents__link toc-highlight">Lab 3.5.1: Train a Humanoid Walking Policy in Isaac Sim</a></li></ul></li><li><a href="#expected-output" class="table-of-contents__link toc-highlight">Expected Output</a></li><li><a href="#assessment-questions" class="table-of-contents__link toc-highlight">Assessment Questions</a></li><li><a href="#real-world-applications" class="table-of-contents__link toc-highlight">Real-world Applications</a></li><li><a href="#edge-cases" class="table-of-contents__link toc-highlight">Edge Cases</a><ul><li><a href="#key-entities" class="table-of-contents__link toc-highlight"><strong>Key Entities</strong></a></li><li><a href="#references" class="table-of-contents__link toc-highlight"><strong>References</strong></a></li></ul></li></ul></div></div></div></div></main></div></div></div></div>
+</body>
+</html>

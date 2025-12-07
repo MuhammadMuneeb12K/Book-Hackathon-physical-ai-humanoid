@@ -1,0 +1,27 @@
+{
+  "id": "module-4/visual-object-grounding",
+  "title": "4.4 Visual Object Grounding",
+  "description": "For a humanoid robot, receiving a natural language command and generating a high-level plan (as we saw in the previous chapter) is only half the battle. The robot must then connect the abstract concepts in the plan—like \"red apple\" or \"table\"—to concrete entities in its physical world. This crucial step is known as Visual Object Grounding. This chapter explores how computer vision techniques are applied to identify, localize, and semantically link objects mentioned in verbal commands to their visual representations in the robot's sensor data, enabling the robot to physically interact with its environment meaningfully.",
+  "source": "@site/docs/module-4/04-visual-object-grounding.mdx",
+  "sourceDirName": "module-4",
+  "slug": "/module-4/visual-object-grounding",
+  "permalink": "/module-4/visual-object-grounding",
+  "draft": false,
+  "unlisted": false,
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 4,
+  "frontMatter": {
+    "id": "visual-object-grounding",
+    "title": "4.4 Visual Object Grounding"
+  },
+  "sidebar": "defaultSidebar",
+  "previous": {
+    "title": "4.3 LLM-Based Cognitive Planning",
+    "permalink": "/module-4/llm-cognitive-planning"
+  },
+  "next": {
+    "title": "4.5 Full Voice-to-Action Integration Pipeline",
+    "permalink": "/module-4/full-vla-pipeline"
+  }
+}

@@ -1,0 +1,83 @@
+{
+  "mcpServers": {
+    "test": {
+      "command": "echo",
+      "args": [
+        "test"
+      ]
+    },
+    "context7": {
+      "command": "npx",
+      "args": [
+        "@upstash/context7-mcp"
+      ]
+    },
+    "npm-install": {
+      "command": "npm",
+      "args": [
+        "install"
+      ]
+    },
+    "docusaurus-build": {
+      "command": "npx",
+      "args": [
+        "docusaurus",
+        "build"
+      ]
+    },
+    "docusaurus-dev": {
+      "command": "npx",
+      "args": [
+        "docusaurus",
+        "start"
+      ]
+    },
+    "github-pull": {
+      "command": "git",
+      "args": [
+        "pull",
+        "origin",
+        "main"
+      ]
+    },
+    "github-commit": {
+      "command": "git",
+      "args": [
+        "add",
+        "."
+      ]
+    },
+    "github-push": {
+      "command": "git",
+      "args": [
+        "commit",
+        "-m",
+        "Update docs via Gemini MCP"
+      ]
+    },
+    "github-pages-deploy": {
+      "command": "npx",
+      "args": [
+        "gh-pages",
+        "-d",
+        "build"
+      ]
+    },
+    "github-mcp": {
+      "command": "node",
+      "args": [
+        "C:\\Users\\HP\\AppData\\Roaming\\npm\\node_modules\\@modelcontextprotocol\\server-github\\dist\\index.js"
+      ],
+      "env": {
+        "GITHUB_TOKEN": "YOUR_GITHUB_TOKEN"
+      }
+    },
+    "deploy-ghpages": {
+      "command": "npx",
+      "args": [
+        "gh-pages",
+        "build"
+      ]
+    }
+  }
+}

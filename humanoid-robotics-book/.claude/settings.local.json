@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git fetch:*)",
+      "Bash(ls:*)",
+      "Bash(powershell -Command:*)",
+      "Bash(.specify/scripts/bash/create-phr.sh:*)",
+      "Bash(powershell.exe:*)",
+      "WebSearch",
+      "Bash(ros2 pkg create:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

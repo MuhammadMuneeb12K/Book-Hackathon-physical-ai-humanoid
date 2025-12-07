@@ -1,0 +1,27 @@
+{
+  "id": "module-3/navigation-nav2-humanoids",
+  "title": "3.4 Navigation with Nav2 for Humanoids",
+  "description": "Having equipped our humanoid robot with the ability to perceive its environment and localize itself through VSLAM, the next logical step is to enable it to move autonomously. This chapter focuses on navigation, specifically using Nav2 – the powerful ROS 2 navigation stack – tailored for humanoid robots. Nav2 provides a robust framework for global and local path planning, obstacle avoidance, and executive control, allowing simulated humanoid robots to navigate complex environments intelligently and safely.",
+  "source": "@site/docs/module-3/04-navigation-nav2-humanoids.mdx",
+  "sourceDirName": "module-3",
+  "slug": "/module-3/navigation-nav2-humanoids",
+  "permalink": "/module-3/navigation-nav2-humanoids",
+  "draft": false,
+  "unlisted": false,
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 4,
+  "frontMatter": {
+    "id": "navigation-nav2-humanoids",
+    "title": "3.4 Navigation with Nav2 for Humanoids"
+  },
+  "sidebar": "defaultSidebar",
+  "previous": {
+    "title": "3.3 Perception with Isaac ROS (VSLAM)",
+    "permalink": "/module-3/perception-isaac-ros-vslam"
+  },
+  "next": {
+    "title": "3.5 Training Robot Policies",
+    "permalink": "/module-3/training-robot-policies"
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "id": "module-4/what-is-vla",
+  "title": "4.1 What Is Vision-Language-Action (VLA)?",
+  "description": "Welcome to Module 4: Vision-Language-Action (VLA). As we advance towards truly intelligent humanoid robots, merely sensing and moving is no longer sufficient. The next frontier involves seamless, intuitive interaction with humans and complex environments. This chapter introduces Vision-Language-Action (VLA) systems, a revolutionary paradigm that seeks to bridge the gap between human-like communication and robotic autonomy. VLA systems enable robots to understand natural language commands, interpret visual information from their surroundings, and translate these insights into intelligent physical actions, opening up new possibilities for human-robot collaboration and service.",
+  "source": "@site/docs/module-4/01-what-is-vla.mdx",
+  "sourceDirName": "module-4",
+  "slug": "/module-4/what-is-vla",
+  "permalink": "/module-4/what-is-vla",
+  "draft": false,
+  "unlisted": false,
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 1,
+  "frontMatter": {
+    "id": "what-is-vla",
+    "title": "4.1 What Is Vision-Language-Action (VLA)?"
+  },
+  "sidebar": "defaultSidebar",
+  "previous": {
+    "title": "Module 4: Humanoid Robot Control",
+    "permalink": "/category/module-4-humanoid-robot-control"
+  },
+  "next": {
+    "title": "4.2 Voice Command Systems with Whisper",
+    "permalink": "/module-4/voice-command-whisper"
+  }
+}

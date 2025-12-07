@@ -1,0 +1,27 @@
+{
+  "id": "module-3/introduction-isaac-sim",
+  "title": "3.1 Introduction to NVIDIA Isaac Sim",
+  "description": "Welcome to Module 3: The AI-Robot Brain (NVIDIA Isaac). Having explored general-purpose simulation with Gazebo and high-fidelity visualization with Unity, we now turn our attention to NVIDIA Isaac Sim – a powerful, GPU-accelerated robotics simulation platform built on NVIDIA Omniverse. Isaac Sim is specifically designed to accelerate the development, testing, and deployment of AI-powered robots, offering photorealistic rendering, advanced sensor simulation, and robust synthetic data generation capabilities crucial for training deep learning models for humanoid robots.",
+  "source": "@site/docs/module-3/01-introduction-isaac-sim.mdx",
+  "sourceDirName": "module-3",
+  "slug": "/module-3/introduction-isaac-sim",
+  "permalink": "/module-3/introduction-isaac-sim",
+  "draft": false,
+  "unlisted": false,
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 1,
+  "frontMatter": {
+    "id": "introduction-isaac-sim",
+    "title": "3.1 Introduction to NVIDIA Isaac Sim"
+  },
+  "sidebar": "defaultSidebar",
+  "previous": {
+    "title": "Module 3: Humanoid Robot Dynamics",
+    "permalink": "/category/module-3-humanoid-robot-dynamics"
+  },
+  "next": {
+    "title": "3.2 Synthetic Data & Domain Randomization",
+    "permalink": "/module-3/synthetic-data-domain-randomization"
+  }
+}

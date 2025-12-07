@@ -1,0 +1,27 @@
+{
+  "id": "module-3/training-robot-policies",
+  "title": "3.5 Training Robot Policies",
+  "description": "We've explored how Isaac Sim provides photorealistic environments, how synthetic data and domain randomization bridge the sim-to-real gap, and how our humanoid can perceive and navigate its world. Now, we tackle the ultimate goal: enabling the robot to learn complex behaviors and make intelligent decisions. This chapter delves into the methodologies for training robotic policies, primarily through reinforcement learning (RL), leveraging the power of Isaac Sim for efficient and safe simulated training environments.",
+  "source": "@site/docs/module-3/05-training-robot-policies.mdx",
+  "sourceDirName": "module-3",
+  "slug": "/module-3/training-robot-policies",
+  "permalink": "/module-3/training-robot-policies",
+  "draft": false,
+  "unlisted": false,
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 5,
+  "frontMatter": {
+    "id": "training-robot-policies",
+    "title": "3.5 Training Robot Policies"
+  },
+  "sidebar": "defaultSidebar",
+  "previous": {
+    "title": "3.4 Navigation with Nav2 for Humanoids",
+    "permalink": "/module-3/navigation-nav2-humanoids"
+  },
+  "next": {
+    "title": "Module 4: Humanoid Robot Control",
+    "permalink": "/category/module-4-humanoid-robot-control"
+  }
+}

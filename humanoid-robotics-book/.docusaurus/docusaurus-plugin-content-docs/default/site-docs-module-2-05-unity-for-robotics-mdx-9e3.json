@@ -1,0 +1,27 @@
+{
+  "id": "module-2/unity-for-robotics",
+  "title": "2.5 Unity for High-Fidelity Robotics",
+  "description": "While Gazebo excels in physics-accurate simulation, especially for ROS 2 integrated robots, there are scenarios where visual fidelity, complex scene interactions, and advanced Human-Robot Interaction (HRI) prototyping are paramount. This is where Unity, a leading real-time 3D development platform, offers distinct advantages. This chapter explores how Unity can be leveraged to create high-fidelity HRI scenes and visually rich environments for humanoid robotics, often complementing Gazebo or Isaac Sim for specific use cases.",
+  "source": "@site/docs/module-2/05-unity-for-robotics.mdx",
+  "sourceDirName": "module-2",
+  "slug": "/module-2/unity-for-robotics",
+  "permalink": "/module-2/unity-for-robotics",
+  "draft": false,
+  "unlisted": false,
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 5,
+  "frontMatter": {
+    "id": "unity-for-robotics",
+    "title": "2.5 Unity for High-Fidelity Robotics"
+  },
+  "sidebar": "defaultSidebar",
+  "previous": {
+    "title": "2.4 Sensor Simulation (LiDAR, Depth, IMU)",
+    "permalink": "/module-2/sensor-simulation"
+  },
+  "next": {
+    "title": "Module 3: Humanoid Robot Dynamics",
+    "permalink": "/category/module-3-humanoid-robot-dynamics"
+  }
+}

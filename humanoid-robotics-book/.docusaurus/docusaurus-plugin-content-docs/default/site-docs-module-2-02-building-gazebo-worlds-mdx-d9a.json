@@ -1,0 +1,27 @@
+{
+  "id": "module-2/building-gazebo-worlds",
+  "title": "2.2 Building Gazebo Worlds",
+  "description": "Having understood the theoretical underpinnings of digital twins, we now transition to practical implementation using Gazebo, a widely adopted and powerful 3D robot simulator. Gazebo provides a robust physics engine and rich graphical environment, making it an ideal platform for creating physics-accurate simulation worlds where humanoid robots can be tested and developed safely and efficiently. This chapter will guide you through the process of constructing custom Gazebo worlds, laying the foundation for realistic robot simulations.",
+  "source": "@site/docs/module-2/02-building-gazebo-worlds.mdx",
+  "sourceDirName": "module-2",
+  "slug": "/module-2/building-gazebo-worlds",
+  "permalink": "/module-2/building-gazebo-worlds",
+  "draft": false,
+  "unlisted": false,
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 2,
+  "frontMatter": {
+    "id": "building-gazebo-worlds",
+    "title": "2.2 Building Gazebo Worlds"
+  },
+  "sidebar": "defaultSidebar",
+  "previous": {
+    "title": "2.1 What Is a Digital Twin?",
+    "permalink": "/module-2/what-is-digital-twin"
+  },
+  "next": {
+    "title": "2.3 Physics Simulation (Gravity, Rigid Bodies, Collisions)",
+    "permalink": "/module-2/physics-simulation"
+  }
+}

@@ -1,0 +1,502 @@
+---
+id: full-vla-pipeline
+title: 4.5 Full Voice-to-Action Integration Pipeline
+---
+Throughout Module 4, we have built the individual components of a Vision-Language-Action (VLA) system: transcribing voice commands with Whisper, planning robot actions with LLMs, and visually grounding objects with computer vision. This final chapter of the module brings all these pieces together to construct a complete, end-to-end VLA pipeline. Our goal is to demonstrate how a humanoid robot can interpret a spoken instruction, generate an intelligent plan, perceive the necessary objects, and execute a multi-step task autonomously, showcasing the true power of embodied AI.
+
+## Goal
+
+The goal of this chapter is to educate students on building a complete VLA pipeline (Voice → Plan → Perception → Action), integrating voice commands, LLM planning, computer vision, and ROS 2 Actions to enable autonomous task completion by humanoid robots.
+
+## Learning Objectives
+
+*   Understand how to integrate all VLA components (ASR, LLM Planner, Object Grounding, Action Execution) into a single, cohesive ROS 2 system.
+*   Implement a central VLA orchestrator node that manages the flow of information and control between components.
+*   Utilize ROS 2 Actions for robust and long-running task execution.
+*   Develop error handling and feedback mechanisms for the VLA pipeline.
+*   Demonstrate a multi-step task completion by a simulated humanoid robot based on a spoken command.
+*   Critically evaluate the performance and limitations of the integrated VLA system.
+
+## Prerequisites
+
+*   A functional ROS 2 environment.
+*   Completion of all previous chapters in Module 4 (Whisper ASR, LLM Planning, Object Grounding).
+*   A simulated humanoid robot in Isaac Sim/Gazebo capable of basic navigation and manipulation (from Modules 1, 2, and 3).
+*   Familiarity with ROS 2 Actions and their implementation (conceptual or basic).
+
+## Key Concepts
+
+*   **VLA Pipeline:** The sequential and interconnected series of modules that transform a human's natural language command into physical robot actions.
+*   **Orchestrator Node:** A central ROS 2 node responsible for coordinating the activities of different VLA components, subscribing to outputs, and publishing inputs.
+*   **ROS 2 Actions:** A communication pattern in ROS 2 designed for long-running, goal-oriented tasks with periodic feedback and the ability to be cancelled. Ideal for executing complex VLA plans.
+*   **Action Server:** A ROS 2 node that provides an action interface, executing goals and providing feedback.
+*   **Action Client:** A ROS 2 node that sends goals to an action server and processes feedback/results.
+*   **Task Decomposition:** The breakdown of a high-level command into a series of smaller, actionable steps by the LLM planner.
+*   **State Machine (Conceptual):** A way to manage the different stages of a complex task (e.g., listening, planning, navigating, searching, grasping, placing).
+*   **Feedback Mechanism:** Providing the human or the LLM with updates on the robot's progress or encountered errors.
+
+## Tools
+
+*   **ROS 2 Humble:** The integration framework.
+*   **Whisper ASR Node:** From Lab 4.2.1 (`whisper_ros_asr`).
+*   **LLM Robot Planner Node:** From Lab 4.3.1 (`llm_robot_planner`).
+*   **Object Detector 3D Node:** From Lab 4.4.1 (`object_detector_3d`).
+*   **Custom ROS 2 Action Server:** For robot navigation and manipulation primitives.
+*   **Isaac Sim/Gazebo:** The simulation environment.
+*   **RViz2:** For visualization.
+
+## Chapter Sections
+
+### 4.5.1 The Integrated VLA Architecture
+
+*   **Review of Components:** Whisper (Voice), LLM (Plan), YOLO/SAM (Vision), ROS 2 Actions (Action).
+*   **Data Flow:** Tracing a command from speech to robot movement.
+*   **Central Orchestration:** The role of a VLA manager node.
+
+### 4.5.2 Designing the VLA Orchestrator Node
+
+*   **Input Subscriptions:** Listening to `/speech_to_text` (from Whisper) and `/object_3d_location` (from detector).
+*   **LLM Plan Dispatch:** Sending transcribed commands to the LLM planner node (e.g., via a service call or direct function call if integrated).
+*   **Action Client Implementation:** Connecting to various ROS 2 Action Servers for navigation, grasping, and other manipulation tasks.
+*   **State Management:** Keeping track of the current task, sub-task, and robot state.
+
+### 4.5.3 Implementing Robot Action Servers (Navigation, Grasping, Placing)
+
+*   **Navigation Action Server:** Accepts a target pose/location and uses Nav2 to guide the robot.
+*   **Grasping Action Server:** Takes an object's 3D location and executes a grasping primitive.
+*   **Placing Action Server:** Takes a target location and releases a held object.
+*   **Feedback and Result Handling:** Providing intermediate status and final outcome for each action.
+
+### 4.5.4 Multi-Step Task Execution and Error Handling
+
+*   **Executing the LLM-Generated Plan:** Iterating through action primitives.
+*   **Integrating Visual Grounding:** Using the object detector to verify/find objects before grasping.
+*   **Handling Action Failures:** Strategies for retries, replanning (involving the LLM again), or reporting failure.
+*   **Reporting Status:** Communicating progress and errors back to the human user.
+
+### 4.5.5 Demonstration: Robot Picks Up an Object Based on Voice Command
+
+*   A practical example combining all modules.
+*   "Robot, please pick up the red block from the table and place it on the shelf."
+*   Tracing the command through each VLA stage.
+
+## Required Diagrams
+
+*   **Full Voice → LLM → Plan → Action Pipeline:** A detailed diagram showing all nodes, topics, actions, and data flow from microphone to robot actuators, highlighting the orchestrator.
+*   **ROS 2 Action Server Execution Graph:** Illustrating how the VLA orchestrator acts as an action client to specialized action servers (navigation, manipulation).
+
+## Hands-on Labs
+
+### Lab 4.5.1: Execute VLA Pipeline: Robot Picks Up an Object
+
+**Objective:** Integrate all previously developed components to enable a simulated humanoid robot to respond to a spoken instruction, autonomously identify and pick up an object, and optionally place it.
+
+**Prerequisites:** All previous labs in Module 4 completed and their nodes functional. A simulated humanoid robot in Isaac Sim/Gazebo that can respond to basic navigation commands (e.g., `/cmd_vel`) and has a simulated gripper (even a simple one) that can be controlled by a ROS 2 Action Server for grasping. For this lab, we'll implement *mock* action servers to focus on the VLA orchestration.
+
+**Instructions:**
+
+1.  **Ensure all individual VLA components are built and runnable:**
+    *   Whisper ASR Node (`whisper_ros_asr`)
+    *   LLM Robot Planner Node (`llm_robot_planner`)
+    *   Object Detector 3D Node (`object_detector_3d`)
+2.  **Create Mock ROS 2 Action Servers for Navigation and Grasping:**
+    *   **Navigation Action Server Mock:**
+        ```python
+        # <your_ros2_ws>/src/robot_actions/robot_actions/navigate_action_server.py
+        import rclpy
+        from rclpy.action import ActionServer
+        from rclpy.node import Node
+        from example_interfaces.action import NavigateToPose # Assuming a custom action, or use std_msgs for simplicity
+
+        # If no custom action, define a simple structure or use an existing one like nav2_msgs/action/NavigateToPose
+
+        # For this example, let's just use a simple String as goal for demonstration
+        from std_msgs.action import String as StringAction # A trick to use string as action
+
+        class NavigateActionServer(Node):
+
+            def __init__(self):
+                super().__init__('navigate_action_server')
+                self._action_server = ActionServer(
+                    self,
+                    StringAction, # Replace with actual NavigateToPose action
+                    'navigate_to_location',
+                    self.execute_callback)
+                self.get_logger().info('Navigate Action Server started.')
+
+            def execute_callback(self, goal_handle):
+                self.get_logger().info(f'Executing navigation goal: "{goal_handle.request.data}"')
+                feedback_msg = StringAction.Feedback()
+                feedback_msg.sequence = ["Moving to " + goal_handle.request.data + "...", "Almost there!"] # Example feedback
+
+                for i in range(2):
+                    goal_handle.publish_feedback(feedback_msg)
+                    self.get_logger().info(f'Feedback: {feedback_msg.sequence[-1]}')
+                    rclpy.spin_once(self, timeout_sec=1) # Simulate work
+                
+                goal_handle.succeed()
+                result = StringAction.Result()
+                result.sequence = ["Navigation to " + goal_handle.request.data + " complete."]
+                self.get_logger().info(f'Result: {result.sequence[-1]}')
+                return result
+
+        def main(args=None):
+            rclpy.init(args=args)
+            navigate_action_server = NavigateActionServer()
+            rclpy.spin(navigate_action_server)
+            navigate_action_server.destroy_node()
+            rclpy.shutdown()
+
+        if __name__ == '__main__':
+            main()
+        ```
+    *   **Grasp Action Server Mock:**
+        ```python
+        # <your_ros2_ws>/src/robot_actions/robot_actions/grasp_action_server.py
+        import rclpy
+        from rclpy.action import ActionServer
+        from rclpy.node import Node
+        from std_msgs.action import String as StringAction
+
+        class GraspActionServer(Node):
+
+            def __init__(self):
+                super().__init__('grasp_action_server')
+                self._action_server = ActionServer(
+                    self,
+                    StringAction,
+                    'grasp_object_action',
+                    self.execute_callback)
+                self.get_logger().info('Grasp Action Server started.')
+
+            def execute_callback(self, goal_handle):
+                object_name = goal_handle.request.data
+                self.get_logger().info(f'Executing grasp goal for: "{object_name}"')
+                feedback_msg = StringAction.Feedback()
+                feedback_msg.sequence = ["Approaching object...", "Closing gripper..."] # Example feedback
+
+                for i in range(2):
+                    goal_handle.publish_feedback(feedback_msg)
+                    self.get_logger().info(f'Feedback: {feedback_msg.sequence[-1]}')
+                    rclpy.spin_once(self, timeout_sec=1) # Simulate work
+
+                # Simulate success
+                goal_handle.succeed()
+                result = StringAction.Result()
+                result.sequence = [f"Grasped {object_name} successfully."]
+                self.get_logger().info(f'Result: {result.sequence[-1]}')
+                return result
+
+        def main(args=None):
+            rclpy.init(args=args)
+            grasp_action_server = GraspActionServer()
+            rclpy.spin(grasp_action_server)
+            grasp_action_server.destroy_node()
+            rclpy.shutdown()
+
+        if __name__ == '__main__':
+            main()
+        ```
+    *   Create a new package `robot_actions` and add these nodes, update `setup.py` for entry points. Build and source.
+3.  **Create the VLA Orchestrator Node:**
+    This node will be the brain, subscribing to `/speech_to_text`, calling the LLM Planner (if separated), processing its JSON output, then acting as an Action Client to the Navigation and Grasping Action Servers.
+
+    ```python
+    # <your_ros2_ws>/src/vla_orchestrator/vla_orchestrator/orchestrator_node.py
+    import rclpy
+    from rclpy.node import Node
+    from std_msgs.msg import String
+    from rclpy.action import ActionClient
+    from std_msgs.action import String as StringAction # Use StringAction for mocks
+
+    import json
+    import time
+
+    class VLAOrchestrator(Node):
+
+        def __init__(self):
+            super().__init__('vla_orchestrator')
+            self.speech_sub = self.create_subscription(
+                String,
+                '/speech_to_text',
+                self.speech_command_callback,
+                10
+            )
+            self.plan_sub = self.create_subscription(
+                String,
+                '/robot_action_plan', # Subscribes to the LLM Planner's output
+                self.llm_plan_callback,
+                10
+            )
+            self.object_location_sub = self.create_subscription(
+                PointStamped, # From object detector
+                '/object_3d_location',
+                self.object_location_callback,
+                10
+            )
+
+            # Action Clients for robot primitives
+            self._navigate_action_client = ActionClient(self, StringAction, 'navigate_to_location')
+            self._grasp_action_client = ActionClient(self, StringAction, 'grasp_object_action')
+            self._deliver_action_client = ActionClient(self, StringAction, 'deliver_object_to_person_action') # If implemented
+
+            self.current_plan = []
+            self.current_plan_step_index = 0
+            self.last_object_location = None # Store latest detected object location
+
+            self.get_logger().info('VLA Orchestrator Node initialized.')
+
+        def speech_command_callback(self, msg: String):
+            self.get_logger().info(f'Orchestrator received speech command: "{msg.data}"')
+            # Here, you would typically pass this command to the LLM_Robot_Planner node (e.g., via a service or another topic)
+            # For this lab, assume LLM_Robot_Planner directly subscribes to /speech_to_text and publishes to /robot_action_plan
+
+        def llm_plan_callback(self, msg: String):
+            self.get_logger().info(f'Orchestrator received LLM plan:\n{msg.data}')
+            try:
+                self.current_plan = json.loads(msg.data)
+                self.current_plan_step_index = 0
+                self.execute_next_plan_step()
+            except json.JSONDecodeError as e:
+                self.get_logger().error(f"Failed to parse LLM plan JSON: {e}")
+
+        def object_location_callback(self, msg: PointStamped):
+            self.last_object_location = msg
+            # You might use this to update internal state for 'grasp' actions etc.
+
+        def execute_next_plan_step(self):
+            if self.current_plan_step_index >= len(self.current_plan):
+                self.get_logger().info("VLA pipeline: All plan steps executed!")
+                self.current_plan = []
+                self.current_plan_step_index = 0
+                return
+
+            step = self.current_plan[self.current_plan_step_index]
+            action_name = step.get("name")
+            params = step.get("parameters", {})
+            
+            self.get_logger().info(f"Executing plan step {self.current_plan_step_index + 1}: {action_name} with {params}")
+
+            # Match action_name to appropriate action client
+            if action_name == "navigate_to":
+                if not self._navigate_action_client.wait_for_server(timeout_sec=5.0):
+                    self.get_logger().error("Navigate action server not available.")
+                    return
+                goal_msg = StringAction.Goal()
+                goal_msg.data = params.get("location", "unknown_location")
+                self.get_logger().info(f"Sending navigate_to goal: {goal_msg.data}")
+                self._send_goal(self._navigate_action_client, goal_msg, self._navigate_goal_response_callback, self._navigate_feedback_callback)
+            
+            elif action_name == "grasp_object":
+                if not self._grasp_action_client.wait_for_server(timeout_sec=5.0):
+                    self.get_logger().error("Grasp action server not available.")
+                    return
+                object_name = params.get("object_name", "unknown_object")
+                self.get_logger().info(f"Sending grasp_object goal: {object_name}")
+                
+                # Here, in a real system, you'd use self.last_object_location to refine the grasp,
+                # possibly re-triggering detection if needed. For this mock, we just use the name.
+                goal_msg = StringAction.Goal()
+                goal_msg.data = object_name
+                self._send_goal(self._grasp_action_client, goal_msg, self._grasp_goal_response_callback, self._grasp_feedback_callback)
+
+            elif action_name == "place_object":
+                # Implement place_object logic, similar to grasp
+                self.get_logger().info(f"Simulating place_object at {params.get('location', 'unknown_location')}")
+                self._advance_plan_step() # Immediately advance for mock
+            
+            elif action_name == "deliver_object_to_person":
+                if not self._deliver_action_client.wait_for_server(timeout_sec=5.0):
+                    self.get_logger().error("Deliver action server not available.")
+                    return
+                person_location = params.get("person_location", "unknown_person_location")
+                self.get_logger().info(f"Sending deliver_object_to_person goal: {person_location}")
+                goal_msg = StringAction.Goal()
+                goal_msg.data = person_location
+                self._send_goal(self._deliver_action_client, goal_msg, self._deliver_goal_response_callback, self._deliver_feedback_callback)
+
+            elif action_name == "report_status":
+                self.get_logger().info(f"Robot status: {params.get('message', 'No message')}")
+                self._advance_plan_step() # Immediately advance for report_status
+
+            else:
+                self.get_logger().warn(f"Unknown action: {action_name}. Skipping step.")
+                self._advance_plan_step()
+
+        def _send_goal(self, client, goal_msg, response_callback, feedback_callback):
+            self.get_logger().info(f'Waiting for {client.action_name} action server...')
+            client.wait_for_server()
+            self.get_logger().info(f'Sending goal to {client.action_name} action server...')
+            self._send_goal_future = client.send_goal_async(goal_msg, feedback_callback=feedback_callback)
+            self._send_goal_future.add_done_callback(response_callback)
+
+        def _navigate_goal_response_callback(self, future):
+            goal_handle = future.result()
+            if not goal_handle.accepted:
+                self.get_logger().error('Navigation goal rejected :(')
+                # Handle error / replan
+                self.current_plan_step_index = len(self.current_plan) # Stop plan
+                return
+            self.get_logger().info('Navigation goal accepted :)')
+            self._get_result_future = goal_handle.get_result_async()
+            self._get_result_future.add_done_callback(self._navigate_get_result_callback)
+
+        def _navigate_get_result_callback(self, future):
+            result = future.result().result
+            status = future.result().status
+            if status == ActionClient.GoalStatus.SUCCEEDED:
+                self.get_logger().info(f'Navigation goal succeeded: {result.sequence[-1]}')
+            else:
+                self.get_logger().error(f'Navigation goal failed with status: {status}')
+                # Handle error / replan
+            self._advance_plan_step()
+
+        def _navigate_feedback_callback(self, feedback_msg):
+            self.get_logger().info(f'Navigation feedback: {feedback_msg.feedback.sequence[-1]}')
+
+        def _grasp_goal_response_callback(self, future):
+            goal_handle = future.result()
+            if not goal_handle.accepted:
+                self.get_logger().error('Grasp goal rejected :(')
+                # Handle error / replan
+                self.current_plan_step_index = len(self.current_plan) # Stop plan
+                return
+            self.get_logger().info('Grasp goal accepted :)')
+            self._get_result_future = goal_handle.get_result_async()
+            self._get_result_future.add_done_callback(self._grasp_get_result_callback)
+
+        def _grasp_get_result_callback(self, future):
+            result = future.result().result
+            status = future.result().status
+            if status == ActionClient.GoalStatus.SUCCEEDED:
+                self.get_logger().info(f'Grasp goal succeeded: {result.sequence[-1]}')
+            else:
+                self.get_logger().error(f'Grasp goal failed with status: {status}')
+                # Handle error / replan
+            self._advance_plan_step()
+
+        def _grasp_feedback_callback(self, feedback_msg):
+            self.get_logger().info(f'Grasp feedback: {feedback_msg.feedback.sequence[-1]}')
+        
+        def _deliver_goal_response_callback(self, future):
+            goal_handle = future.result()
+            if not goal_handle.accepted:
+                self.get_logger().error('Deliver goal rejected :(')
+                self.current_plan_step_index = len(self.current_plan)
+                return
+            self.get_logger().info('Deliver goal accepted :)')
+            self._get_result_future = goal_handle.get_result_async()
+            self._get_result_future.add_done_callback(self._deliver_get_result_callback)
+
+        def _deliver_get_result_callback(self, future):
+            result = future.result().result
+            status = future.result().status
+            if status == ActionClient.GoalStatus.SUCCEEDED:
+                self.get_logger().info(f'Deliver goal succeeded: {result.sequence[-1]}')
+            else:
+                self.get_logger().error(f'Deliver goal failed with status: {status}')
+            self._advance_plan_step()
+
+        def _deliver_feedback_callback(self, feedback_msg):
+            self.get_logger().info(f'Deliver feedback: {feedback_msg.feedback.sequence[-1]}')
+
+
+        def _advance_plan_step(self):
+            self.current_plan_step_index += 1
+            rclpy.timer.Timer(self, 0.1, self.execute_next_plan_step).once() # Schedule next step
+
+    def main(args=None):
+        rclpy.init(args=args)
+        vla_orchestrator = VLAOrchestrator()
+        rclpy.spin(vla_orchestrator)
+        vla_orchestrator.destroy_node()
+        rclpy.shutdown()
+
+    if __name__ == '__main__':
+        main()
+    ```
+4.  **Create a new package `vla_orchestrator` and add this node, update `setup.py` for entry points.** Build and source.
+5.  **Launch All Components:**
+    *   **Terminal 1: Isaac Sim/Gazebo** (with humanoid, RGB-D camera publishing, etc.)
+        ```bash
+        ros2 launch my_humanoid_description display_humanoid.launch.py
+        ```
+    *   **Terminal 2: Whisper ASR Node**
+        ```bash
+        ros2 run whisper_ros_asr whisper_node
+        ```
+    *   **Terminal 3: LLM Robot Planner Node** (ensure `OPENAI_API_KEY` is set)
+        ```bash
+        ros2 run llm_robot_planner llm_planner
+        ```
+    *   **Terminal 4: Object Detector 3D Node**
+        ```bash
+        ros2 run object_detector_3d detector_node
+        ```
+    *   **Terminal 5: Mock Robot Action Servers**
+        ```bash
+        ros2 run robot_actions navigate_action_server
+        ros2 run robot_actions grasp_action_server
+        # ros2 run robot_actions deliver_action_server # If implemented
+        ```
+    *   **Terminal 6: VLA Orchestrator Node**
+        ```bash
+        ros2 run vla_orchestrator orchestrator_node
+        ```
+6.  **Speak a multi-step command into your microphone.**
+    Example: "Robot, please navigate to the kitchen, then pick up the red apple, and finally deliver it to the living room."
+    *Observe the logs from all terminals.* You should see:
+    *   Whisper transcribing your speech.
+    *   LLM Planner receiving the speech, generating a JSON plan, and publishing it.
+    *   VLA Orchestrator receiving the plan, dispatching actions to the mock servers.
+    *   Mock action servers logging their "execution."
+
+## Expected Output
+
+*   A fully integrated VLA pipeline demonstrated through logs and the simulated robot's (mocked) actions.
+*   Successful conversion of a natural language voice command into a sequence of executed robot actions.
+*   Understanding of the orchestration logic required to manage the VLA workflow.
+*   Clear visualization of the data flow between ASR, LLM planning, object detection, and robot action execution.
+
+## Assessment Questions
+
+*   Describe the role of the VLA orchestrator node in the full pipeline. How does it ensure the smooth flow of information and execution of tasks?
+*   Explain how ROS 2 Actions are particularly well-suited for implementing the individual steps within an LLM-generated robot plan.
+*   What feedback mechanisms could be implemented in the VLA pipeline to enhance its robustness and user experience?
+*   If an action server reports a failure (e.g., `grasp_object` fails), how would you design the VLA orchestrator to handle this error and potentially trigger a replanning step by the LLM?
+
+## Real-world Applications
+
+*   **Integrated Home Robotics:** A humanoid robot capable of understanding complex, multi-step instructions for tasks around the house, adapting to the environment.
+*   **Intelligent Factory Assistants:** Robots in manufacturing plants taking verbal orders to retrieve tools, assist with assembly, or reconfigure workstations.
+*   **Advanced Disaster Response:** Humanoid robots receiving high-level commands for reconnaissance, object manipulation, or victim assistance in dynamic and dangerous environments.
+*   **Personalized Healthcare Robotics:** Robots assisting patients with complex daily routines based on natural language communication, combining navigation, manipulation, and interaction.
+
+## Edge Cases
+
+*   **Pipeline Latency:** The cumulative latency of ASR, LLM inference, vision processing, and action execution can lead to a sluggish response, impacting real-time interaction.
+*   **Component Failures:** Any single component failure (e.g., ASR error, LLM API outage, object detection failure, action server crash) can halt or derail the entire pipeline.
+*   **Conflicting Information:** If the LLM plan contradicts visual evidence, the orchestrator needs robust conflict resolution.
+*   **Humanoid Body Awareness:** If the robot lacks precise self-awareness (e.g., current pose, gripper state, held object), it may execute invalid actions.
+
+---
+
+### **Key Entities**
+
+*   **VLA Pipeline:** The end-to-end system that translates natural language commands into robot actions, composed of interconnected modules for voice recognition, cognitive planning, visual perception, and physical execution.
+*   **Orchestrator Node:** A central ROS 2 node that manages the flow and coordination of tasks across the VLA pipeline, acting as a dispatcher for LLM plans and a client for robot action servers.
+*   **ROS 2 Actions:** A robust communication mechanism in ROS 2 for long-duration, goal-oriented tasks, providing feedback on progress and allowing for cancellation, essential for complex robot behaviors.
+*   **Action Server:** A ROS 2 node that implements the logic for a specific robot capability (e.g., navigation, grasping), receives goals from action clients, executes them, and provides feedback/results.
+*   **Action Client:** A ROS 2 node that initiates and monitors the execution of a goal on an action server, receiving feedback and waiting for a final result.
+*   **Task Decomposition:** The LLM's ability to break down complex natural language commands into a sequence of simpler, predefined action primitives, which the orchestrator then executes.
+*   **Feedback Mechanism:** The system's ability to communicate progress, status, or errors back to the human user or internal planning modules, enabling transparency and recovery.
+*   **State Management:** The internal logic within the orchestrator or individual action servers to keep track of the robot's current status, ongoing tasks, and environmental conditions.
+
+---
+
+### **References**
+
+*   Kollar, W., et al. (2018). Learning to follow language instructions in 3D environments. *Conference on Robot Learning (CoRL)*. (Placeholder citation)
+*   Paxton, C., et al. (2019). Rethinking Robotic Perception with Deep Learning. *Science Robotics, 4*(36), eaax2340. (Placeholder citation)
+*   Open Robotics. (n.d.). *ROS 2 Documentation: Actions*. (Placeholder citation)
+*   Anderson, P., et al. (2018). Vision-and-Language Navigation: Interpreting Visually-Grounded Navigation Instructions in Real Environments. *Conference on Robot Learning (CoRL)*. (Placeholder citation)

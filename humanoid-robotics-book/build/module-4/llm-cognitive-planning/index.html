@@ -1,0 +1,347 @@
+<!doctype html>
+<html lang="en" dir="ltr" class="docs-wrapper plugin-docs plugin-id-default docs-version-current docs-doc-page docs-doc-id-module-4/llm-cognitive-planning" data-has-hydrated="false">
+<head>
+<meta charset="UTF-8">
+<meta name="generator" content="Docusaurus v3.9.2">
+<title data-rh="true">4.3 LLM-Based Cognitive Planning | Humanoid Robotics Book</title><meta data-rh="true" name="viewport" content="width=device-width,initial-scale=1"><meta data-rh="true" name="twitter:card" content="summary_large_image"><meta data-rh="true" property="og:url" content="https://example.com/module-4/llm-cognitive-planning"><meta data-rh="true" property="og:locale" content="en"><meta data-rh="true" name="docusaurus_locale" content="en"><meta data-rh="true" name="docsearch:language" content="en"><meta data-rh="true" name="docusaurus_version" content="current"><meta data-rh="true" name="docusaurus_tag" content="docs-default-current"><meta data-rh="true" name="docsearch:version" content="current"><meta data-rh="true" name="docsearch:docusaurus_tag" content="docs-default-current"><meta data-rh="true" property="og:title" content="4.3 LLM-Based Cognitive Planning | Humanoid Robotics Book"><meta data-rh="true" name="description" content="With the ability to accurately transcribe human voice commands into text, the next critical component of a Vision-Language-Action (VLA) system for humanoid robots is to interpret these commands and translate them into a coherent sequence of robot-executable actions. This chapter delves into the exciting realm of LLM-based cognitive planning, where Large Language Models (LLMs) are leveraged not just for understanding human language, but for complex symbolic reasoning, task decomposition, and generating high-level plans that guide a robot&#x27;s behavior."><meta data-rh="true" property="og:description" content="With the ability to accurately transcribe human voice commands into text, the next critical component of a Vision-Language-Action (VLA) system for humanoid robots is to interpret these commands and translate them into a coherent sequence of robot-executable actions. This chapter delves into the exciting realm of LLM-based cognitive planning, where Large Language Models (LLMs) are leveraged not just for understanding human language, but for complex symbolic reasoning, task decomposition, and generating high-level plans that guide a robot&#x27;s behavior."><link data-rh="true" rel="icon" href="/img/favicon.ico"><link data-rh="true" rel="canonical" href="https://example.com/module-4/llm-cognitive-planning"><link data-rh="true" rel="alternate" href="https://example.com/module-4/llm-cognitive-planning" hreflang="en"><link data-rh="true" rel="alternate" href="https://example.com/module-4/llm-cognitive-planning" hreflang="x-default"><script data-rh="true" type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Module 4: Humanoid Robot Control","item":"https://example.com/category/module-4-humanoid-robot-control"},{"@type":"ListItem","position":2,"name":"4.3 LLM-Based Cognitive Planning","item":"https://example.com/module-4/llm-cognitive-planning"}]}</script><link rel="stylesheet" href="/assets/css/styles.43713d77.css">
+<script src="/assets/js/runtime~main.530bc908.js" defer="defer"></script>
+<script src="/assets/js/main.5ba9cfc2.js" defer="defer"></script>
+</head>
+<body class="navigation-with-keyboard">
+<svg style="display: none;"><defs>
+<symbol id="theme-svg-external-link" viewBox="0 0 24 24"><path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z"/></symbol>
+</defs></svg>
+<script>!function(){var t=function(){try{return new URLSearchParams(window.location.search).get("docusaurus-theme")}catch(t){}}()||function(){try{return window.localStorage.getItem("theme")}catch(t){}}();document.documentElement.setAttribute("data-theme",t||"light"),document.documentElement.setAttribute("data-theme-choice",t||"light")}(),function(){try{const c=new URLSearchParams(window.location.search).entries();for(var[t,e]of c)if(t.startsWith("docusaurus-data-")){var a=t.replace("docusaurus-data-","data-");document.documentElement.setAttribute(a,e)}}catch(t){}}()</script><div id="__docusaurus"><div role="region" aria-label="Skip to main content"><a class="skipToContent_fXgn" href="#__docusaurus_skipToContent_fallback">Skip to main content</a></div><nav aria-label="Main" class="theme-layout-navbar navbar navbar--fixed-top"><div class="navbar__inner"><div class="theme-layout-navbar-left navbar__items"><a class="navbar__brand" href="/"></a></div><div class="theme-layout-navbar-right navbar__items navbar__items--right"><div class="toggle_vylO colorModeToggle_DEke"><button class="clean-btn toggleButton_gllP toggleButtonDisabled_aARS" type="button" disabled="" title="system mode" aria-label="Switch between dark and light mode (currently system mode)"><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP lightToggleIcon_pyhR"><path fill="currentColor" d="M12,9c1.65,0,3,1.35,3,3s-1.35,3-3,3s-3-1.35-3-3S10.35,9,12,9 M12,7c-2.76,0-5,2.24-5,5s2.24,5,5,5s5-2.24,5-5 S14.76,7,12,7L12,7z M2,13l2,0c0.55,0,1-0.45,1-1s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S1.45,13,2,13z M20,13l2,0c0.55,0,1-0.45,1-1 s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S19.45,13,20,13z M11,2v2c0,0.55,0.45,1,1,1s1-0.45,1-1V2c0-0.55-0.45-1-1-1S11,1.45,11,2z M11,20v2c0,0.55,0.45,1,1,1s1-0.45,1-1v-2c0-0.55-0.45-1-1-1C11.45,19,11,19.45,11,20z M5.99,4.58c-0.39-0.39-1.03-0.39-1.41,0 c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0s0.39-1.03,0-1.41L5.99,4.58z M18.36,16.95 c-0.39-0.39-1.03-0.39-1.41,0c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0c0.39-0.39,0.39-1.03,0-1.41 L18.36,16.95z M19.42,5.99c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06c-0.39,0.39-0.39,1.03,0,1.41 s1.03,0.39,1.41,0L19.42,5.99z M7.05,18.36c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06 c-0.39,0.39-0.39,1.03,0,1.41s1.03,0.39,1.41,0L7.05,18.36z"></path></svg><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP darkToggleIcon_wfgR"><path fill="currentColor" d="M9.37,5.51C9.19,6.15,9.1,6.82,9.1,7.5c0,4.08,3.32,7.4,7.4,7.4c0.68,0,1.35-0.09,1.99-0.27C17.45,17.19,14.93,19,12,19 c-3.86,0-7-3.14-7-7C5,9.07,6.81,6.55,9.37,5.51z M12,3c-4.97,0-9,4.03-9,9s4.03,9,9,9s9-4.03,9-9c0-0.46-0.04-0.92-0.1-1.36 c-0.98,1.37-2.58,2.26-4.4,2.26c-2.98,0-5.4-2.42-5.4-5.4c0-1.81,0.89-3.42,2.26-4.4C12.92,3.04,12.46,3,12,3L12,3z"></path></svg><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP systemToggleIcon_QzmC"><path fill="currentColor" d="m12 21c4.971 0 9-4.029 9-9s-4.029-9-9-9-9 4.029-9 9 4.029 9 9 9zm4.95-13.95c1.313 1.313 2.05 3.093 2.05 4.95s-0.738 3.637-2.05 4.95c-1.313 1.313-3.093 2.05-4.95 2.05v-14c1.857 0 3.637 0.737 4.95 2.05z"></path></svg></button></div><div class="navbarSearchContainer_Bca1"></div></div></div><div role="presentation" class="navbar-sidebar__backdrop"></div></nav><div id="__docusaurus_skipToContent_fallback" class="theme-layout-main main-wrapper mainWrapper_z2l0"><div class="docsWrapper_hBAB"><button aria-label="Scroll back to top" class="clean-btn theme-back-to-top-button backToTopButton_sjWU" type="button"></button><div class="docRoot_UBD9"><aside class="theme-doc-sidebar-container docSidebarContainer_YfHR"><div class="sidebarViewport_aRkj"><div class="sidebar_njMd"><nav aria-label="Docs sidebar" class="menu thin-scrollbar menu_SIkG"><ul class="theme-doc-sidebar-menu menu__list"><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist" href="/category/module-1-the-robotic-nervous-system-ros-2"><span title="Module 1: The Robotic Nervous System (ROS 2)" class="categoryLinkLabel_W154">Module 1: The Robotic Nervous System (ROS 2)</span></a><button aria-label="Expand sidebar category &#x27;Module 1: The Robotic Nervous System (ROS 2)&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist" href="/category/module-2-humanoid-robot-kinematics"><span title="Module 2: Humanoid Robot Kinematics" class="categoryLinkLabel_W154">Module 2: Humanoid Robot Kinematics</span></a><button aria-label="Expand sidebar category &#x27;Module 2: Humanoid Robot Kinematics&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist" href="/category/module-3-humanoid-robot-dynamics"><span title="Module 3: Humanoid Robot Dynamics" class="categoryLinkLabel_W154">Module 3: Humanoid Robot Dynamics</span></a><button aria-label="Expand sidebar category &#x27;Module 3: Humanoid Robot Dynamics&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--active" href="/category/module-4-humanoid-robot-control"><span title="Module 4: Humanoid Robot Control" class="categoryLinkLabel_W154">Module 4: Humanoid Robot Control</span></a><button aria-label="Collapse sidebar category &#x27;Module 4: Humanoid Robot Control&#x27;" aria-expanded="true" type="button" class="clean-btn menu__caret"></button></div><ul class="menu__list"><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/module-4/what-is-vla"><span title="4.1 What Is Vision-Language-Action (VLA)?" class="linkLabel_WmDU">4.1 What Is Vision-Language-Action (VLA)?</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/module-4/voice-command-whisper"><span title="4.2 Voice Command Systems with Whisper" class="linkLabel_WmDU">4.2 Voice Command Systems with Whisper</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link menu__link--active" aria-current="page" tabindex="0" href="/module-4/llm-cognitive-planning"><span title="4.3 LLM-Based Cognitive Planning" class="linkLabel_WmDU">4.3 LLM-Based Cognitive Planning</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/module-4/visual-object-grounding"><span title="4.4 Visual Object Grounding" class="linkLabel_WmDU">4.4 Visual Object Grounding</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/module-4/full-vla-pipeline"><span title="4.5 Full Voice-to-Action Integration Pipeline" class="linkLabel_WmDU">4.5 Full Voice-to-Action Integration Pipeline</span></a></li></ul></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist" href="/category/miscellaneous"><span title="Miscellaneous" class="categoryLinkLabel_W154">Miscellaneous</span></a><button aria-label="Expand sidebar category &#x27;Miscellaneous&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/appendices/"><span title="7.1 Appendices - Resources and Further Reading" class="linkLabel_WmDU">7.1 Appendices - Resources and Further Reading</span></a></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/capstone/capstone-integration-guide"><span title="capstone" class="categoryLinkLabel_W154">capstone</span></a></div></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/getting-started"><span title="Getting Started - Setting Up Your Environment" class="linkLabel_WmDU">Getting Started - Setting Up Your Environment</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/hardware-lab-setup/"><span title="6.1 Hardware &amp; Lab Setup - Beyond Simulation" class="linkLabel_WmDU">6.1 Hardware &amp; Lab Setup - Beyond Simulation</span></a></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/home/overview"><span title="home" class="categoryLinkLabel_W154">home</span></a></div></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/"><span title="Welcome to the Humanoid Robotics Book" class="linkLabel_WmDU">Welcome to the Humanoid Robotics Book</span></a></li></ul></nav></div></div></aside><main class="docMainContainer_TBSr"><div class="container padding-top--md padding-bottom--lg"><div class="row"><div class="col docItemCol_VOVn"><div class="docItemContainer_Djhp"><article><nav class="theme-doc-breadcrumbs breadcrumbsContainer_Z_bl" aria-label="Breadcrumbs"><ul class="breadcrumbs"><li class="breadcrumbs__item"><a aria-label="Home page" class="breadcrumbs__link" href="/"><svg viewBox="0 0 24 24" class="breadcrumbHomeIcon_YNFT"><path d="M10 19v-5h4v5c0 .55.45 1 1 1h3c.55 0 1-.45 1-1v-7h1.7c.46 0 .68-.57.33-.87L12.67 3.6c-.38-.34-.96-.34-1.34 0l-8.36 7.53c-.34.3-.13.87.33.87H5v7c0 .55.45 1 1 1h3c.55 0 1-.45 1-1z" fill="currentColor"></path></svg></a></li><li class="breadcrumbs__item"><a class="breadcrumbs__link" href="/category/module-4-humanoid-robot-control"><span>Module 4: Humanoid Robot Control</span></a></li><li class="breadcrumbs__item breadcrumbs__item--active"><span class="breadcrumbs__link">4.3 LLM-Based Cognitive Planning</span></li></ul></nav><div class="tocCollapsible_ETCw theme-doc-toc-mobile tocMobile_ITEo"><button type="button" class="clean-btn tocCollapsibleButton_TO0P">On this page</button></div><div class="theme-doc-markdown markdown"><header><h1>4.3 LLM-Based Cognitive Planning</h1></header><p>With the ability to accurately transcribe human voice commands into text, the next critical component of a Vision-Language-Action (VLA) system for humanoid robots is to interpret these commands and translate them into a coherent sequence of robot-executable actions. This chapter delves into the exciting realm of LLM-based cognitive planning, where Large Language Models (LLMs) are leveraged not just for understanding human language, but for complex symbolic reasoning, task decomposition, and generating high-level plans that guide a robot&#x27;s behavior.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="goal">Goal<a href="#goal" class="hash-link" aria-label="Direct link to Goal" title="Direct link to Goal" translate="no">​</a></h2>
+<p>The goal of this chapter is to teach students how to use LLMs (e.g., ChatGPT/Claude) to convert natural language commands into sequences of robotic actions, enabling high-level cognitive planning for humanoids within a VLA framework.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="learning-objectives">Learning Objectives<a href="#learning-objectives" class="hash-link" aria-label="Direct link to Learning Objectives" title="Direct link to Learning Objectives" translate="no">​</a></h2>
+<ul>
+<li class="">Understand the role of Large Language Models (LLMs) in robotic cognitive planning.</li>
+<li class="">Grasp how LLMs can perform natural language task decomposition.</li>
+<li class="">Learn techniques for prompting LLMs to generate structured robot action plans.</li>
+<li class="">Differentiate between high-level human commands and low-level robot actions.</li>
+<li class="">Implement a ROS 2 node that communicates with an LLM API to generate action sequences.</li>
+<li class="">Understand the challenges of grounding abstract LLM plans into physical robot capabilities.</li>
+<li class="">Explore strategies for error handling and replanning with LLMs.</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="prerequisites">Prerequisites<a href="#prerequisites" class="hash-link" aria-label="Direct link to Prerequisites" title="Direct link to Prerequisites" translate="no">​</a></h2>
+<ul>
+<li class="">Familiarity with Python programming and <code>rclpy</code>.</li>
+<li class="">Understanding of ROS 2 topics and actions.</li>
+<li class="">Conceptual understanding of Large Language Models (LLMs) and their capabilities.</li>
+<li class="">An OpenAI (ChatGPT) or Anthropic (Claude) API key (or access to a local LLM).</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="key-concepts">Key Concepts<a href="#key-concepts" class="hash-link" aria-label="Direct link to Key Concepts" title="Direct link to Key Concepts" translate="no">​</a></h2>
+<ul>
+<li class=""><strong>Large Language Model (LLM):</strong> A type of artificial intelligence model trained on vast amounts of text data, capable of understanding, generating, and reasoning with human-like language.</li>
+<li class=""><strong>Cognitive Planning:</strong> The process of translating a high-level goal into a sequence of sub-goals or actions, often involving symbolic reasoning and state estimation.</li>
+<li class=""><strong>Natural Language Task Decomposition:</strong> Breaking down a complex natural language command into simpler, sequential steps that a robot can execute.</li>
+<li class=""><strong>Prompt Engineering:</strong> The art and science of crafting effective inputs (prompts) to LLMs to elicit desired outputs.</li>
+<li class=""><strong>Function Calling / Tool Use:</strong> The capability of modern LLMs to generate arguments for functions or use external tools to perform actions. Crucial for robotics.</li>
+<li class=""><strong>Action Primitive:</strong> A fundamental, low-level robotic action that can be executed directly by the robot&#x27;s control system (e.g., <code>navigate_to(location)</code>, <code>grasp_object(object_id)</code>).</li>
+<li class=""><strong>State Representation:</strong> How the current state of the robot and environment is described to the LLM to inform its planning.</li>
+<li class=""><strong>Feedback Loop:</strong> Providing the LLM with the outcome of executed actions to enable adaptive planning and error correction.</li>
+<li class=""><strong>Plan Validation:</strong> Ensuring that the LLM-generated plan is feasible and safe for the robot to execute.</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="tools">Tools<a href="#tools" class="hash-link" aria-label="Direct link to Tools" title="Direct link to Tools" translate="no">​</a></h2>
+<ul>
+<li class=""><strong>OpenAI API (or Anthropic Claude API):</strong> For accessing powerful LLMs.</li>
+<li class=""><strong>Python <code>requests</code> library (or LLM client libraries):</strong> For making API calls.</li>
+<li class=""><strong>ROS 2 Humble:</strong> For integrating the LLM planner node into the robotic system.</li>
+<li class=""><strong><code>std_msgs/msg/String</code>:</strong> For receiving transcribed speech.</li>
+<li class=""><strong>Custom ROS 2 message/action types:</strong> For structured robot plans.</li>
+<li class=""><strong>Code Editor:</strong> Visual Studio Code.</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="chapter-sections">Chapter Sections<a href="#chapter-sections" class="hash-link" aria-label="Direct link to Chapter Sections" title="Direct link to Chapter Sections" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="431-the-rise-of-llms-in-robotics">4.3.1 The Rise of LLMs in Robotics<a href="#431-the-rise-of-llms-in-robotics" class="hash-link" aria-label="Direct link to 4.3.1 The Rise of LLMs in Robotics" title="Direct link to 4.3.1 The Rise of LLMs in Robotics" translate="no">​</a></h3>
+<ul>
+<li class="">Bridging the symbolic-subsymbolic gap in AI.</li>
+<li class="">LLMs as general-purpose reasoning engines for high-level tasks.</li>
+<li class="">From generating text to generating executable code/plans.</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="432-natural-language-task-decomposition-with-llms">4.3.2 Natural Language Task Decomposition with LLMs<a href="#432-natural-language-task-decomposition-with-llms" class="hash-link" aria-label="Direct link to 4.3.2 Natural Language Task Decomposition with LLMs" title="Direct link to 4.3.2 Natural Language Task Decomposition with LLMs" translate="no">​</a></h3>
+<ul>
+<li class="">How LLMs can break down complex commands like &quot;make coffee&quot; into sub-tasks: &quot;get mug,&quot; &quot;brew coffee,&quot; &quot;add sugar.&quot;</li>
+<li class="">Identifying implied steps and preconditions.</li>
+<li class="">The importance of context and domain knowledge for effective decomposition.</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="433-prompt-engineering-for-robot-planning">4.3.3 Prompt Engineering for Robot Planning<a href="#433-prompt-engineering-for-robot-planning" class="hash-link" aria-label="Direct link to 4.3.3 Prompt Engineering for Robot Planning" title="Direct link to 4.3.3 Prompt Engineering for Robot Planning" translate="no">​</a></h3>
+<ul>
+<li class=""><strong>Zero-shot, Few-shot, and Chain-of-Thought Prompting:</strong> Strategies for guiding LLM behavior.</li>
+<li class=""><strong>Defining Robot Capabilities (Tools/Functions):</strong> Informing the LLM about the robot&#x27;s available actions.<!-- -->
+<ul>
+<li class="">Example: <code>navigate_to(location)</code>, <code>grasp_object(object_id)</code>, <code>report_status(message)</code>.</li>
+</ul>
+</li>
+<li class=""><strong>Structured Output:</strong> Requesting LLM to generate plans in a specific format (e.g., JSON, YAML, Python function calls).</li>
+<li class=""><strong>Persona and Role-Playing:</strong> Instructing the LLM to act as a &quot;robot planner.&quot;</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="434-designing-an-llm-based-planner-ros-2-node">4.3.4 Designing an LLM-Based Planner ROS 2 Node<a href="#434-designing-an-llm-based-planner-ros-2-node" class="hash-link" aria-label="Direct link to 4.3.4 Designing an LLM-Based Planner ROS 2 Node" title="Direct link to 4.3.4 Designing an LLM-Based Planner ROS 2 Node" translate="no">​</a></h3>
+<ul>
+<li class=""><strong>Input:</strong> Subscribing to a topic with transcribed human commands (e.g., <code>/speech_to_text</code>).</li>
+<li class=""><strong>LLM Query:</strong> Formatting the prompt to the LLM API, including the command and robot capabilities.</li>
+<li class=""><strong>Output Parsing:</strong> Interpreting the LLM&#x27;s generated plan (e.g., a list of action primitives).</li>
+<li class=""><strong>Action Dispatcher:</strong> Publishing parsed actions to a ROS 2 action server or a topic for execution.</li>
+<li class=""><strong>State Representation:</strong> How to inform the LLM about the current state of the robot and environment.</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="435-grounding-llm-plans-in-physical-reality">4.3.5 Grounding LLM Plans in Physical Reality<a href="#435-grounding-llm-plans-in-physical-reality" class="hash-link" aria-label="Direct link to 4.3.5 Grounding LLM Plans in Physical Reality" title="Direct link to 4.3.5 Grounding LLM Plans in Physical Reality" translate="no">​</a></h3>
+<ul>
+<li class=""><strong>Symbolic to Subsymbolic:</strong> Translating LLM&#x27;s abstract concepts (e.g., &quot;kitchen&quot;) into concrete coordinates or object IDs.</li>
+<li class=""><strong>Plan Validation and Safety Checks:</strong> Ensuring the LLM&#x27;s proposed actions are physically feasible and safe.</li>
+<li class=""><strong>Error Handling and Replanning:</strong> What happens if an action fails? How can the LLM generate an alternative plan?</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="required-diagrams">Required Diagrams<a href="#required-diagrams" class="hash-link" aria-label="Direct link to Required Diagrams" title="Direct link to Required Diagrams" translate="no">​</a></h2>
+<ul>
+<li class=""><strong>LLM Cognitive Planning Flow:</strong> A diagram showing transcribed text input -&gt; LLM -&gt; structured action plan -&gt; robot action dispatcher.</li>
+<li class=""><strong>Prompt Engineering Example:</strong> Illustrating a prompt that defines robot tools and a task, and the expected LLM output.</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="hands-on-labs">Hands-on Labs<a href="#hands-on-labs" class="hash-link" aria-label="Direct link to Hands-on Labs" title="Direct link to Hands-on Labs" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="lab-431-generate-robot-action-plans-with-llm">Lab 4.3.1: Generate Robot Action Plans with LLM<a href="#lab-431-generate-robot-action-plans-with-llm" class="hash-link" aria-label="Direct link to Lab 4.3.1: Generate Robot Action Plans with LLM" title="Direct link to Lab 4.3.1: Generate Robot Action Plans with LLM" translate="no">​</a></h3>
+<p><strong>Objective:</strong> Create a ROS 2 Python node that subscribes to transcribed speech commands, sends them to an LLM (e.g., OpenAI&#x27;s GPT-4 or Claude), and publishes a structured sequence of robot action primitives based on the LLM&#x27;s response.</p>
+<p><strong>Prerequisites:</strong> Completed Lab 4.2.1 (Whisper ASR node), OpenAI/Anthropic API key, Python programming.</p>
+<p><strong>Instructions:</strong></p>
+<ol>
+<li class=""><strong>Create a new ROS 2 Python package for the LLM planner:</strong>
+<div class="language-bash codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#bfc7d5;--prism-background-color:#292d3e"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-bash codeBlock_bY9V thin-scrollbar" style="color:#bfc7d5;background-color:#292d3e"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#bfc7d5"><span class="token plain">cd &lt;your_ros2_ws&gt;/src</span><br></span><span class="token-line" style="color:#bfc7d5"><span class="token plain">ros2 pkg create --build-type ament_python llm_robot_planner --dependencies rclpy std_msgs</span><br></span></code></pre></div></div>
+</li>
+<li class=""><strong>Install LLM client library:</strong>
+<div class="language-bash codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#bfc7d5;--prism-background-color:#292d3e"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-bash codeBlock_bY9V thin-scrollbar" style="color:#bfc7d5;background-color:#292d3e"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#bfc7d5"><span class="token plain">pip install openai # Or anthropic for Claude</span><br></span></code></pre></div></div>
+</li>
+<li class=""><strong>Set up your API Key:</strong> Store your OpenAI API key in an environment variable <code>OPENAI_API_KEY</code>.</li>
+<li class=""><strong>Navigate into the package and create <code>src/llm_robot_planner/llm_planner_node.py</code>:</strong>
+<pre tabindex="0" class="codeBlockStandalone_MEMb thin-scrollbar language-python codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#bfc7d5;--prism-background-color:#292d3e"><code class="codeBlockLines_e6Vv"></code></pre>
+</li>
+</ol>
+<!-- -->
+  import rclpy
+  from rclpy.node import Node
+  from std_msgs.msg import String
+  import openai # Or anthropic
+  import json
+  import os
+
+  class LLMRobotPlanner(Node):
+
+      def __init__(self):
+          super().__init__(&#x27;llm_robot_planner&#x27;)
+          self.subscription = self.create_subscription(
+              String,
+              &#x27;/speech_to_text&#x27;,
+              self.speech_callback,
+              10)
+          self.action_publisher_ = self.create_publisher(String, &#x27;/robot_action_plan&#x27;, 10)
+          self.get_logger().info(&#x27;LLM Robot Planner Node initialized.&#x27;)
+
+          # Initialize OpenAI client (or Anthropic for Claude)
+          self.api_key = os.getenv(&quot;OPENAI_API_KEY&quot;) # Ensure this env var is set
+          if not self.api_key:
+              self.get_logger().error(&quot;OPENAI_API_KEY environment variable not set.&quot;)
+              # rclpy.shutdown()
+              return
+
+          self.client = openai.OpenAI(api_key=self.api_key) # For OpenAI
+          # For Anthropic: self.client = anthropic.Anthropic(api_key=self.api_key)
+
+          # Define robot capabilities (action primitives) for the LLM
+          self.robot_capabilities = [
+              {
+                  &quot;name&quot;: &quot;navigate_to&quot;,
+                  &quot;description&quot;: &quot;Moves the robot to a specified location.&quot;,
+                  &quot;parameters&quot;: {
+                      &quot;type&quot;: &quot;object&quot;,
+                      &quot;properties&quot;: {
+                          &quot;location&quot;: {&quot;type&quot;: &quot;string&quot;, &quot;description&quot;: &quot;The name of the location (e.g., &#x27;kitchen&#x27;, &#x27;table&#x27;).&quot;}
+                      },
+                      &quot;required&quot;: [&quot;location&quot;]
+                  }
+              },
+              {
+                  &quot;name&quot;: &quot;grasp_object&quot;,
+                  &quot;description&quot;: &quot;Instructs the robot to pick up a specific object.&quot;,
+                  &quot;parameters&quot;: {
+                      &quot;type&quot;: &quot;object&quot;,
+                      &quot;properties&quot;: {
+                          &quot;object_name&quot;: {&quot;type&quot;: &quot;string&quot;, &quot;description&quot;: &quot;The name of the object to grasp (e.g., &#x27;red apple&#x27;).&quot;}
+                      },
+                      &quot;required&quot;: [&quot;object_name&quot;]
+                  }
+              },
+              {
+                  &quot;name&quot;: &quot;place_object&quot;,
+                  &quot;description&quot;: &quot;Instructs the robot to place the currently held object at a specified location.&quot;,
+                  &quot;parameters&quot;: {
+                      &quot;type&quot;: &quot;object&quot;,
+                      &quot;properties&quot;: {
+                          &quot;location&quot;: {&quot;type&quot;: &quot;string&quot;, &quot;description&quot;: &quot;The name of the location to place the object (e.g., &#x27;counter&#x27;, &#x27;bin&#x27;).&quot;}
+                      },
+                      &quot;required&quot;: [&quot;location&quot;]
+                  }
+              },
+               {
+                  &quot;name&quot;: &quot;deliver_object_to_person&quot;,
+                  &quot;description&quot;: &quot;Instructs the robot to deliver the held object to a person at a specified location.&quot;,
+                  &quot;parameters&quot;: {
+                      &quot;type&quot;: &quot;object&quot;,
+                      &quot;properties&quot;: {
+                          &quot;person_location&quot;: {&quot;type&quot;: &quot;string&quot;, &quot;description&quot;: &quot;The location where the person is (e.g., &#x27;living room&#x27;, &#x27;my side&#x27;).&quot;}
+                      },
+                      &quot;required&quot;: [&quot;person_location&quot;]
+                  }
+              },
+              {
+                  &quot;name&quot;: &quot;report_status&quot;,
+                  &quot;description&quot;: &quot;The robot reports its current status or completion of a task.&quot;,
+                  &quot;parameters&quot;: {
+                      &quot;type&quot;: &quot;object&quot;,
+                      &quot;properties&quot;: {
+                          &quot;message&quot;: {&quot;type&quot;: &quot;string&quot;, &quot;description&quot;: &quot;The status message to report.&quot;}
+                      },
+                      &quot;required&quot;: [&quot;message&quot;]
+                  }
+              }
+          ]
+
+      self.system_prompt = f&quot;&quot;&quot;You are a helpful humanoid robot assistant. Your task is to translate human natural language commands into a sequence of robot actions.
+You have the following tools available:
+{json.dumps(self.robot_capabilities, indent=2)}
+
+Please respond with a JSON array of tool calls. Each element in the array should be a tool call object with &#x27;name&#x27; and &#x27;parameters&#x27;.
+Example:
+[
+{{&#x27; &#x27;}}&quot;name&quot;: &quot;navigate_to&quot;, &quot;parameters&quot;: {{&quot;location&quot;: &quot;kitchen&quot;}}{{&#x27; &#x27;}}},
+{{&#x27; &#x27;}}&quot;name&quot;: &quot;grasp_object&quot;, &quot;parameters&quot;: {{&quot;object_name&quot;: &quot;red apple&quot;}}{{&#x27; &#x27;}}},
+{{&#x27; &#x27;}}&quot;name&quot;: &quot;report_status&quot;, &quot;parameters&quot;: {{&quot;message&quot;: &quot;Task complete!&quot;}}{{&#x27; &#x27;}}}
+]
+
+Break down complex tasks into logical, sequential steps. Be concise and use only the provided tool functions. If a command is unclear or requires more information, ask clarifying questions using the report_status tool (e.g., {{&#x27; &#x27;}}&quot;name&quot;: &quot;report_status&quot;, &quot;parameters&quot;: {{&quot;message&quot;: &quot;Please specify which object to pick up.&quot;}}{{&#x27; &#x27;}}}).
+Assume objects are visible and reachable unless explicitly stated otherwise.
+&quot;&quot;&quot;
+  def speech_callback(self, msg: String):
+      command = msg.data
+      self.get_logger().info(f&#x27;Received voice command: &quot;{command}&quot;&#x27;)
+      # Construct the messages for the LLM
+      messages = [
+          {&quot;role&quot;: &quot;system&quot;, &quot;content&quot;: self.system_prompt},
+          {&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: command}
+      ]
+
+      try:
+          # Call the LLM API
+          # For OpenAI with function calling
+          response = self.client.chat.completions.create(
+              model=&quot;gpt-4o&quot;, # Use a capable model
+              messages=messages,
+              tools=self.robot_capabilities,
+              tool_choice=&quot;auto&quot;, # Let the model decide if it needs to use a tool
+              temperature=0.0 # For more deterministic output
+          )
+
+          response_message = response.choices[0].message
+          tool_calls = response_message.tool_calls
+
+          if tool_calls:
+              plan_steps = []
+              for tool_call in tool_calls:
+                  plan_step = {
+                      &quot;name&quot;: tool_call.function.name,
+                      &quot;parameters&quot;: json.loads(tool_call.function.arguments)
+                  }
+                  plan_steps.append(plan_step)
+              
+              plan_json = json.dumps(plan_steps, indent=2)
+              self.get_logger().info(f&quot;Generated plan:
+{plan_json}&quot;)
+              
+              # Publish the structured plan
+              plan_msg = String()
+              plan_msg.data = plan_json
+              self.action_publisher_.publish(plan_msg)
+          else:
+              self.get_logger().warn(f&quot;LLM did not generate tool calls for command: {command}. Response: {response_message.content}&quot;)
+              # You might publish a &quot;report_status&quot; message here asking for clarification
+
+      except openai.APIError as e:
+          self.get_logger().error(f&quot;OpenAI API Error: {e}&quot;)
+      except Exception as e:
+          self.get_logger().error(f&quot;An unexpected error occurred: {e}&quot;)
+
+  def destroy_node(self):
+      super().destroy_node()
+
+def main(args=None):
+  rclpy.init(args=args)
+  llm_planner_node = LLMRobotPlanner()
+  rclpy.spin(llm_planner_node)
+  llm_planner_node.destroy_node()
+  rclpy.shutdown()
+
+if __name__ == &#x27;__main__&#x27;:
+  main()
+<!-- -->
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#bfc7d5;--prism-background-color:#292d3e"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#bfc7d5;background-color:#292d3e"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#bfc7d5"><span class="token plain">5.  **Edit `setup.py` for `llm_robot_planner`:** Add the entry point.</span><br></span><span class="token-line" style="color:#bfc7d5"><span class="token plain">```python</span><br></span><span class="token-line" style="color:#bfc7d5"><span class="token plain">from setuptools import find_packages, setup</span><br></span><span class="token-line" style="color:#bfc7d5"><span class="token plain" style="display:inline-block"></span><br></span><span class="token-line" style="color:#bfc7d5"><span class="token plain">package_name = &#x27;llm_robot_planner&#x27;</span><br></span><span class="token-line" style="color:#bfc7d5"><span class="token plain" style="display:inline-block"></span><br></span><span class="token-line" style="color:#bfc7d5"><span class="token plain">setup(</span><br></span><span class="token-line" style="color:#bfc7d5"><span class="token plain">    name=package_name,</span><br></span><span class="token-line" style="color:#bfc7d5"><span class="token plain">    version=&#x27;0.0.0&#x27;,</span><br></span><span class="token-line" style="color:#bfc7d5"><span class="token plain">    packages=find_packages(exclude=[&#x27;test&#x27;]),</span><br></span><span class="token-line" style="color:#bfc7d5"><span class="token plain">    data_files=[</span><br></span><span class="token-line" style="color:#bfc7d5"><span class="token plain">        (&#x27;share/&#x27; + package_name, [&#x27;package.xml&#x27;]),</span><br></span><span class="token-line" style="color:#bfc7d5"><span class="token plain">    ],</span><br></span><span class="token-line" style="color:#bfc7d5"><span class="token plain">    install_requires=[&#x27;setuptools&#x27;, &#x27;openai&#x27;], # Add openai</span><br></span><span class="token-line" style="color:#bfc7d5"><span class="token plain">    zip_safe=True,</span><br></span><span class="token-line" style="color:#bfc7d5"><span class="token plain">    maintainer=&#x27;your_name&#x27;,</span><br></span><span class="token-line" style="color:#bfc7d5"><span class="token plain">    maintainer_email=&#x27;your_email@example.com&#x27;,</span><br></span><span class="token-line" style="color:#bfc7d5"><span class="token plain">    description=&#x27;ROS 2 package for LLM-based robot planning.&#x27;,</span><br></span><span class="token-line" style="color:#bfc7d5"><span class="token plain">    license=&#x27;Apache-2.0&#x27;,</span><br></span><span class="token-line" style="color:#bfc7d5"><span class="token plain">    tests_require=[&#x27;pytest&#x27;],</span><br></span><span class="token-line" style="color:#bfc7d5"><span class="token plain">    entry_points={</span><br></span><span class="token-line" style="color:#bfc7d5"><span class="token plain">        &#x27;console_scripts&#x27;: [</span><br></span><span class="token-line" style="color:#bfc7d5"><span class="token plain">            &#x27;llm_planner = llm_robot_planner.llm_planner_node:main&#x27;,</span><br></span><span class="token-line" style="color:#bfc7d5"><span class="token plain">        ],</span><br></span><span class="token-line" style="color:#bfc7d5"><span class="token plain">    },</span><br></span><span class="token-line" style="color:#bfc7d5"><span class="token plain">)</span><br></span></code></pre></div></div>
+<ol start="6">
+<li class=""><strong>Build your package and source your workspace:</strong>
+<div class="language-bash codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#bfc7d5;--prism-background-color:#292d3e"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-bash codeBlock_bY9V thin-scrollbar" style="color:#bfc7d5;background-color:#292d3e"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#bfc7d5"><span class="token plain">cd &lt;your_ros2_ws&gt;</span><br></span><span class="token-line" style="color:#bfc7d5"><span class="token plain">colcon build --packages-select llm_robot_planner</span><br></span><span class="token-line" style="color:#bfc7d5"><span class="token plain">source install/setup.bash</span><br></span></code></pre></div></div>
+</li>
+<li class=""><strong>Run the Whisper ASR node (from Lab 4.2.1) in one terminal:</strong>
+<div class="language-bash codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#bfc7d5;--prism-background-color:#292d3e"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-bash codeBlock_bY9V thin-scrollbar" style="color:#bfc7d5;background-color:#292d3e"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#bfc7d5"><span class="token plain">ros2 run whisper_ros_asr whisper_node</span><br></span></code></pre></div></div>
+</li>
+<li class=""><strong>In a separate terminal, run the LLM Robot Planner node:</strong>
+<div class="language-bash codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#bfc7d5;--prism-background-color:#292d3e"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-bash codeBlock_bY9V thin-scrollbar" style="color:#bfc7d5;background-color:#292d3e"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#bfc7d5"><span class="token plain">ros2 run llm_robot_planner llm_planner</span><br></span></code></pre></div></div>
+</li>
+<li class=""><strong>Speak a command into your microphone</strong> (e.g., &quot;Robot, please go to the kitchen, pick up the red apple, and bring it to me here.&quot;).</li>
+<li class=""><strong>Monitor the <code>/robot_action_plan</code> topic:</strong>
+<div class="language-bash codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#bfc7d5;--prism-background-color:#292d3e"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-bash codeBlock_bY9V thin-scrollbar" style="color:#bfc7d5;background-color:#292d3e"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#bfc7d5"><span class="token plain">ros2 topic echo /robot_action_plan</span><br></span></code></pre></div></div>
+<!-- -->You should see the LLM&#x27;s generated JSON plan, breaking down your command into a sequence of <code>navigate_to</code>, <code>grasp_object</code>, and <code>deliver_object_to_person</code> calls.</li>
+</ol>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="expected-output">Expected Output<a href="#expected-output" class="hash-link" aria-label="Direct link to Expected Output" title="Direct link to Expected Output" translate="no">​</a></h2>
+<ul>
+<li class="">A functional ROS 2 node that subscribes to text commands.</li>
+<li class="">Successful interaction with an external LLM API (e.g., OpenAI).</li>
+<li class="">The LLM generating a structured, robot-executable plan (sequence of function calls) in JSON format.</li>
+<li class="">The generated plan published to a ROS 2 topic (<code>/robot_action_plan</code>).</li>
+<li class="">Understanding of prompt engineering to guide LLM planning for robotics.</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="assessment-questions">Assessment Questions<a href="#assessment-questions" class="hash-link" aria-label="Direct link to Assessment Questions" title="Direct link to Assessment Questions" translate="no">​</a></h2>
+<ul>
+<li class="">How does an LLM contribute to &quot;cognitive planning&quot; for a robot, going beyond simple natural language understanding?</li>
+<li class="">Describe the process of &quot;function calling&quot; or &quot;tool use&quot; in LLMs and explain its significance for bridging natural language commands with robot action primitives.</li>
+<li class="">Design a prompt for an LLM that would enable a humanoid robot to assist in a simple cooking task, providing the LLM with relevant action primitives (e.g., <code>cut_ingredient</code>, <code>add_to_pot</code>, <code>stir</code>).</li>
+<li class="">What are the security implications of integrating an external LLM API into a robotic system, especially one operating in a physical environment?</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="real-world-applications">Real-world Applications<a href="#real-world-applications" class="hash-link" aria-label="Direct link to Real-world Applications" title="Direct link to Real-world Applications" translate="no">​</a></h2>
+<ul>
+<li class=""><strong>Complex Task Automation:</strong> Humanoid robots performing multi-step household chores or industrial assembly tasks from high-level natural language instructions.</li>
+<li class=""><strong>Human-Robot Teaming:</strong> Robots acting as intelligent assistants, understanding ambiguous human requests and generating flexible plans to achieve shared goals.</li>
+<li class=""><strong>Adaptive Mission Planning:</strong> Robots autonomously generating and adjusting their plans in dynamic, uncertain environments based on verbal updates or changing objectives.</li>
+<li class=""><strong>Robotics in Education and Training:</strong> Simplifying the programming of complex robot behaviors by allowing students to define tasks in natural language.</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="edge-cases">Edge Cases<a href="#edge-cases" class="hash-link" aria-label="Direct link to Edge Cases" title="Direct link to Edge Cases" translate="no">​</a></h2>
+<ul>
+<li class=""><strong>LLM Hallucinations:</strong> The LLM might generate actions or parameters that are nonsensical or do not align with the robot&#x27;s capabilities.</li>
+<li class=""><strong>Context Window Limitations:</strong> For very long or highly complex tasks, the LLM&#x27;s context window might be exceeded, leading to incomplete or flawed plans.</li>
+<li class=""><strong>API Rate Limits and Cost:</strong> Frequent API calls to powerful LLMs can incur significant costs and hit rate limits, requiring careful management.</li>
+<li class=""><strong>Misinterpretation of State:</strong> If the LLM&#x27;s understanding of the robot&#x27;s current state or environment is outdated or incorrect, it can generate an unexecutable plan.</li>
+</ul>
+<hr>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="key-entities"><strong>Key Entities</strong><a href="#key-entities" class="hash-link" aria-label="Direct link to key-entities" title="Direct link to key-entities" translate="no">​</a></h3>
+<ul>
+<li class=""><strong>Large Language Model (LLM):</strong> An advanced AI model capable of processing, understanding, and generating human language, used here for interpreting complex commands and generating action plans.</li>
+<li class=""><strong>Cognitive Planning:</strong> The high-level reasoning process that transforms abstract goals (derived from natural language) into a concrete, sequential plan of robot actions.</li>
+<li class=""><strong>Natural Language Task Decomposition:</strong> The ability of an LLM to break down a single, complex natural language command into a series of smaller, more manageable sub-tasks or action primitives.</li>
+<li class=""><strong>Prompt Engineering:</strong> The technique of carefully designing the input (prompt) to an LLM, including instructions, examples, and definitions of available tools, to guide it toward generating a desired output format and content.</li>
+<li class=""><strong>Function Calling / Tool Use:</strong> A feature of modern LLMs that allows them to generate structured calls to predefined functions (or &quot;tools&quot;) based on user prompts, which is critical for converting natural language into robot-executable commands.</li>
+<li class=""><strong>Action Primitive:</strong> A discrete, low-level operation that a robot is physically capable of executing (e.g., <code>navigate_to</code>, <code>grasp_object</code>), forming the building blocks of an LLM-generated plan.</li>
+<li class=""><strong>API Key:</strong> A secret token used to authenticate requests to external LLM services, ensuring secure access and billing.</li>
+<li class=""><strong><code>std_msgs/msg/String</code>:</strong> A basic ROS 2 message type suitable for transmitting raw text commands from ASR and structured JSON plans from the LLM.</li>
+</ul>
+<hr>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="references"><strong>References</strong><a href="#references" class="hash-link" aria-label="Direct link to references" title="Direct link to references" translate="no">​</a></h3>
+<ul>
+<li class="">Huang, K., et al. (2022). Inner Monologue: Empowering Large Language Models to Reason about Physical Interactions. <em>arXiv preprint arXiv:2207.05697</em>. (Placeholder citation)</li>
+<li class="">OpenAI. (n.d.). <em>Function calling and other API updates</em>. (Placeholder citation)</li>
+<li class="">Ahn, L., et al. (2022). SayCan: Learning Language Grounded Robotic Skills from Natural Language Instructions. <em>Conference on Robot Learning (CoRL)</em>. (Placeholder citation)</li>
+<li class="">Wang, X., et al. (2023). Voyager: An Open-Ended Embodied Agent with Large Language Models. <em>arXiv preprint arXiv:2305.16291</em>. (Placeholder citation)</li>
+</ul></div></article><nav class="docusaurus-mt-lg pagination-nav" aria-label="Docs pages"><a class="pagination-nav__link pagination-nav__link--prev" href="/module-4/voice-command-whisper"><div class="pagination-nav__sublabel">Previous</div><div class="pagination-nav__label">4.2 Voice Command Systems with Whisper</div></a><a class="pagination-nav__link pagination-nav__link--next" href="/module-4/visual-object-grounding"><div class="pagination-nav__sublabel">Next</div><div class="pagination-nav__label">4.4 Visual Object Grounding</div></a></nav></div></div><div class="col col--3"><div class="tableOfContents_bqdL thin-scrollbar theme-doc-toc-desktop"><ul class="table-of-contents table-of-contents__left-border"><li><a href="#goal" class="table-of-contents__link toc-highlight">Goal</a></li><li><a href="#learning-objectives" class="table-of-contents__link toc-highlight">Learning Objectives</a></li><li><a href="#prerequisites" class="table-of-contents__link toc-highlight">Prerequisites</a></li><li><a href="#key-concepts" class="table-of-contents__link toc-highlight">Key Concepts</a></li><li><a href="#tools" class="table-of-contents__link toc-highlight">Tools</a></li><li><a href="#chapter-sections" class="table-of-contents__link toc-highlight">Chapter Sections</a><ul><li><a href="#431-the-rise-of-llms-in-robotics" class="table-of-contents__link toc-highlight">4.3.1 The Rise of LLMs in Robotics</a></li><li><a href="#432-natural-language-task-decomposition-with-llms" class="table-of-contents__link toc-highlight">4.3.2 Natural Language Task Decomposition with LLMs</a></li><li><a href="#433-prompt-engineering-for-robot-planning" class="table-of-contents__link toc-highlight">4.3.3 Prompt Engineering for Robot Planning</a></li><li><a href="#434-designing-an-llm-based-planner-ros-2-node" class="table-of-contents__link toc-highlight">4.3.4 Designing an LLM-Based Planner ROS 2 Node</a></li><li><a href="#435-grounding-llm-plans-in-physical-reality" class="table-of-contents__link toc-highlight">4.3.5 Grounding LLM Plans in Physical Reality</a></li></ul></li><li><a href="#required-diagrams" class="table-of-contents__link toc-highlight">Required Diagrams</a></li><li><a href="#hands-on-labs" class="table-of-contents__link toc-highlight">Hands-on Labs</a><ul><li><a href="#lab-431-generate-robot-action-plans-with-llm" class="table-of-contents__link toc-highlight">Lab 4.3.1: Generate Robot Action Plans with LLM</a></li></ul></li><li><a href="#expected-output" class="table-of-contents__link toc-highlight">Expected Output</a></li><li><a href="#assessment-questions" class="table-of-contents__link toc-highlight">Assessment Questions</a></li><li><a href="#real-world-applications" class="table-of-contents__link toc-highlight">Real-world Applications</a></li><li><a href="#edge-cases" class="table-of-contents__link toc-highlight">Edge Cases</a><ul><li><a href="#key-entities" class="table-of-contents__link toc-highlight"><strong>Key Entities</strong></a></li><li><a href="#references" class="table-of-contents__link toc-highlight"><strong>References</strong></a></li></ul></li></ul></div></div></div></div></main></div></div></div></div>
+</body>
+</html>

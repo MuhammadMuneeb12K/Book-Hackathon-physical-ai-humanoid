@@ -1,0 +1,26 @@
+{
+  "id": "capstone/capstone-integration-guide",
+  "title": "5.1 Capstone - The Integrated Humanoid Robotics System",
+  "description": "Congratulations on making it to the Capstone module! Throughout this book, you've journeyed through the intricate landscape of humanoid robotics, mastering the Robotic Nervous System (ROS 2), building Digital Twins in Gazebo and Unity, empowering the AI-Robot Brain with NVIDIA Isaac Sim and VSLAM, and developing Vision-Language-Action (VLA) capabilities. This Capstone is designed to unify all these disparate concepts and components into a single, cohesive, and functional humanoid robotics system. It is here that theory truly meets practice, and individual modules culminate in an autonomous, intelligent agent ready to respond to its world.",
+  "source": "@site/docs/capstone/integration-guide.mdx",
+  "sourceDirName": "capstone",
+  "slug": "/capstone/capstone-integration-guide",
+  "permalink": "/capstone/capstone-integration-guide",
+  "draft": false,
+  "unlisted": false,
+  "tags": [],
+  "version": "current",
+  "frontMatter": {
+    "id": "capstone-integration-guide",
+    "title": "5.1 Capstone - The Integrated Humanoid Robotics System"
+  },
+  "sidebar": "defaultSidebar",
+  "previous": {
+    "title": "7.1 Appendices - Resources and Further Reading",
+    "permalink": "/appendices/"
+  },
+  "next": {
+    "title": "Getting Started - Setting Up Your Environment",
+    "permalink": "/getting-started"
+  }
+}

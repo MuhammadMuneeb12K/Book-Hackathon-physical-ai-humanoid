@@ -1,0 +1,27 @@
+{
+  "id": "module-4/voice-command-whisper",
+  "title": "4.2 Voice Command Systems with Whisper",
+  "description": "The journey into Vision-Language-Action (VLA) begins with the most natural form of human communication: spoken language. For a humanoid robot to truly understand and respond to human directives, it must first accurately transcribe spoken words into text. This chapter introduces voice command systems and focuses on OpenAI Whisper, a state-of-the-art Automatic Speech Recognition (ASR) model. We will explore how Whisper can be integrated into a robotic pipeline to reliably convert human speech into text commands, serving as the foundational input for intelligent robot planning and action.",
+  "source": "@site/docs/module-4/02-voice-command-whisper.mdx",
+  "sourceDirName": "module-4",
+  "slug": "/module-4/voice-command-whisper",
+  "permalink": "/module-4/voice-command-whisper",
+  "draft": false,
+  "unlisted": false,
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 2,
+  "frontMatter": {
+    "id": "voice-command-whisper",
+    "title": "4.2 Voice Command Systems with Whisper"
+  },
+  "sidebar": "defaultSidebar",
+  "previous": {
+    "title": "4.1 What Is Vision-Language-Action (VLA)?",
+    "permalink": "/module-4/what-is-vla"
+  },
+  "next": {
+    "title": "4.3 LLM-Based Cognitive Planning",
+    "permalink": "/module-4/llm-cognitive-planning"
+  }
+}

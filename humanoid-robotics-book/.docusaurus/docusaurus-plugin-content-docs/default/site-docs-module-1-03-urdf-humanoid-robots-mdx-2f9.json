@@ -1,0 +1,27 @@
+{
+  "id": "module-1/urdf-humanoid-robots",
+  "title": "1.3 URDF for Humanoid Robots",
+  "description": "With a grasp of ROS 2's communication paradigms and the ability to craft Python nodes, the next crucial step in humanoid robotics is understanding how to describe the robot itself. The Unified Robot Description Format (URDF) provides a standardized XML format for modeling a robot's physical structure, kinematics, and visual properties. This chapter will guide you through creating and interpreting URDF files specifically tailored for humanoid robots, bridging the gap between mechanical design and software control.",
+  "source": "@site/docs/module-1/03-urdf-humanoid-robots.mdx",
+  "sourceDirName": "module-1",
+  "slug": "/module-1/urdf-humanoid-robots",
+  "permalink": "/module-1/urdf-humanoid-robots",
+  "draft": false,
+  "unlisted": false,
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 3,
+  "frontMatter": {
+    "id": "urdf-humanoid-robots",
+    "title": "1.3 URDF for Humanoid Robots"
+  },
+  "sidebar": "defaultSidebar",
+  "previous": {
+    "title": "1.2 Building Python Nodes with rclpy",
+    "permalink": "/module-1/building-python-nodes"
+  },
+  "next": {
+    "title": "1.4 TF2: Frames & Transformations",
+    "permalink": "/module-1/tf2-frames-transformations"
+  }
+}

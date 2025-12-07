@@ -1,0 +1,27 @@
+{
+  "id": "module-3/synthetic-data-domain-randomization",
+  "title": "3.2 Synthetic Data & Domain Randomization",
+  "description": "In the previous chapter, we introduced NVIDIA Isaac Sim as a powerful platform for humanoid robotics. One of its most compelling features is its capability for Synthetic Data Generation (SDG). Training robust AI models, especially for computer vision tasks in robotics, often requires massive amounts of diverse, labeled data. Acquiring and annotating such data from the real world is incredibly time-consuming, expensive, and sometimes dangerous. This chapter explores how Isaac Sim addresses this challenge by generating synthetic data and employs a technique called domain randomization to bridge the gap between simulation and reality.",
+  "source": "@site/docs/module-3/02-synthetic-data-domain-randomization.mdx",
+  "sourceDirName": "module-3",
+  "slug": "/module-3/synthetic-data-domain-randomization",
+  "permalink": "/module-3/synthetic-data-domain-randomization",
+  "draft": false,
+  "unlisted": false,
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 2,
+  "frontMatter": {
+    "id": "synthetic-data-domain-randomization",
+    "title": "3.2 Synthetic Data & Domain Randomization"
+  },
+  "sidebar": "defaultSidebar",
+  "previous": {
+    "title": "3.1 Introduction to NVIDIA Isaac Sim",
+    "permalink": "/module-3/introduction-isaac-sim"
+  },
+  "next": {
+    "title": "3.3 Perception with Isaac ROS (VSLAM)",
+    "permalink": "/module-3/perception-isaac-ros-vslam"
+  }
+}

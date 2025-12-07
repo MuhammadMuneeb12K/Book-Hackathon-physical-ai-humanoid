@@ -1,0 +1,130 @@
+<?xml version="1.0" ?>
+<sdf version="1.7">
+  <model name="humanoid_robot">
+    <link name="base_link">
+      <visual name="visual">
+        <geometry><box><size>0.01 0.01 0.01</size></box></geometry>
+      </visual>
+    </link>
+
+    <!-- Include the URDF directly as a nested model for simplicity in Gazebo -->
+    <!-- In a real project, you'd typically convert URDF to SDF or use robot_state_publisher with ROS 2 -->
+    <include>
+      <uri>file://./humanoid.urdf</uri>
+      <name>humanoid_model</name>
+      <pose>0 0 0.8 0 0 0</pose> <!-- Adjust pose to place the robot correctly -->
+    </include>
+
+    <!-- Add an IMU Sensor to the torso link (assuming torso link exists in humanoid.urdf) -->
+    <!-- Note: This requires the humanoid_model to expose its links for direct attachment -->
+    <!-- For simplicity, let's attach to a conceptual base_link of the SDF model -->
+    <link name="imu_link">
+      <pose>0 0 0.8 0 0 0</pose>
+      <inertial>
+        <mass>0.01</mass>
+        <inertia><ixx>1e-6</ixx><ixy>0</ixy><ixz>0</ixz><iyy>1e-6</iyy><iyz>0</iyz><izz>1e-6</izz></inertia>
+      </inertial>
+      <visual name="visual">
+        <geometry><box><size>0.02 0.02 0.02</size></box></geometry>
+        <material><ambient>0.1 0.1 0.1 1</ambient><diffuse>0.1 0.1 0.1 1</diffuse><specular>0.1 0.1 0.1 1</specular></material>
+      </visual>
+      <sensor name="imu_sensor" type="imu">
+        <always_on>1</always_on>
+        <update_rate>100</update_rate>
+        <imu>
+          <angular_velocity><x><noise type="gaussian"><mean>0.0</mean><stddev>2e-4</stddev></noise></x><y><noise type="gaussian"><mean>0.0</mean><stddev>2e-4</stddev></noise></y><z><noise type="gaussian"><mean>0.0</mean><stddev>2e-4</stddev></noise></z></angular_velocity>
+          <linear_acceleration><x><noise type="gaussian"><mean>0.0</mean><stddev>1.7e-2</stddev></noise></x><y><noise type="gaussian"><mean>0.0</mean><stddev>1.7e-2</stddev></noise></y><z><noise type="gaussian"><mean>0.0</mean><stddev>1.7e-2</stddev></noise></z></linear_acceleration>
+        </imu>
+        <plugin name="ros2_imu_plugin" filename="libgazebo_ros_imu_sensor.so">
+          <ros>
+            <namespace>/humanoid</namespace>
+            <remapping>~/out:=imu</remapping>
+          </ros>
+          <initial_orientation_as_reference>false</initial_orientation_as_reference>
+          <frame_name>imu_link</frame_name>
+        </plugin>
+      </sensor>
+    </link>
+
+    <!-- Add a RGB-D Camera Sensor to the head link -->
+    <link name="camera_link">
+      <pose>0 0 0.9 0 0 0</pose> <!-- Position above the head -->
+      <inertial>
+        <mass>0.01</mass>
+        <inertia><ixx>1e-6</ixx><ixy>0</ixy><ixz>0</ixz><iyy>1e-6</iyy><iyz>0</iyz><izz>1e-6</izz></inertia>
+      </inertial>
+      <visual name="visual">
+        <geometry><box><size>0.05 0.05 0.05</size></box></geometry>
+        <material><ambient>0.8 0.0 0.0 1</ambient><diffuse>0.8 0.0 0.0 1</diffuse><specular>0.8 0.0 0.0 1</specular></material>
+      </visual>
+      <sensor name="camera_sensor" type="camera">
+        <camera>
+          <horizontal_fov>1.047</horizontal_fov>
+          <image><width>640</width><height>480</height><format>R8G8B8</format></image>
+          <clip><near>0.1</near><far>100</far></clip>
+          <noise><type>gaussian</type><mean>0.0</mean><stddev>0.007</stddev></noise>
+        </camera>
+        <always_on>1</always_on>
+        <update_rate>30</update_rate>
+        <plugin name="ros2_camera_plugin" filename="libgazebo_ros_camera.so">
+          <ros>
+            <namespace>/humanoid</namespace>
+            <argument>--ros-args -r __ns:=/humanoid/camera</argument>
+            <remapping>image_raw:=color/image_raw</remapping>
+            <remapping>camera_info:=color/camera_info</remapping>
+            <remapping>depth/image_raw:=depth/image_raw</remapping>
+            <remapping>depth/camera_info:=depth/camera_info</remapping>
+          </ros>
+          <frame_name>camera_link_optical</frame_name>
+        </plugin>
+      </sensor>
+    </link>
+
+    <!-- Add a LiDAR Sensor (Ray Sensor) -->
+    <link name="lidar_link">
+      <pose>0 0 0.85 0 0 0</pose> <!-- Position slightly above base -->
+      <inertial>
+        <mass>0.01</mass>
+        <inertia><ixx>1e-6</ixx><ixy>0</ixy><ixz>0</ixz><iyy>1e-6</iyy><iyz>0</iyz><izz>1e-6</izz></inertia>
+      </inertial>
+      <visual name="visual">
+        <geometry><cylinder><radius>0.03</radius><length>0.03</length></cylinder></geometry>
+        <material><ambient>0.0 0.8 0.0 1</ambient><diffuse>0.0 0.8 0.0 1</diffuse><specular>0.0 0.8 0.0 1</specular></material>
+      </visual>
+      <sensor name="lidar_sensor" type="ray">
+        <pose>0 0 0 0 0 0</pose>
+        <ray>
+          <scan>
+            <horizontal>
+              <samples>640</samples>
+              <resolution>1</resolution>
+              <min_angle>-2.26</min_angle>
+              <max_angle>2.26</max_angle>
+            </horizontal>
+            <vertical>
+              <samples>1</samples>
+              <resolution>1</resolution>
+              <min_angle>0</min_angle>
+              <max_angle>0</max_angle>
+            </vertical>
+          </scan>
+          <range>
+            <min>0.08</min>
+            <max>10.0</max>
+            <resolution>0.01</resolution>
+          </range>
+        </ray>
+        <always_on>1</always_on>
+        <update_rate>10</update_rate>
+        <plugin name="ros2_lidar_plugin" filename="libgazebo_ros_laser.so">
+          <ros>
+            <namespace>/humanoid</namespace>
+            <remapping>~/out:=scan</remapping>
+          </ros>
+          <frame_name>lidar_link</frame_name>
+        </plugin>
+      </sensor>
+    </link>
+
+  </model>
+</sdf>

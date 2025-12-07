@@ -1,0 +1,26 @@
+{
+  "id": "hardware-lab-setup/hardware-lab-setup",
+  "title": "6.1 Hardware & Lab Setup - Beyond Simulation",
+  "description": "While the previous modules have extensively leveraged the power of simulation for development and testing, the ultimate goal of humanoid robotics is deployment on physical hardware. This chapter bridges the gap between the virtual and real worlds, providing guidance on setting up a physical lab environment, understanding essential hardware components, and safely deploying the intelligence developed in simulation onto a real humanoid robot. Transitioning from simulation to reality presents unique challenges and demands careful consideration of safety, calibration, and hardware-specific configurations.",
+  "source": "@site/docs/hardware-lab-setup/index.mdx",
+  "sourceDirName": "hardware-lab-setup",
+  "slug": "/hardware-lab-setup/",
+  "permalink": "/hardware-lab-setup/",
+  "draft": false,
+  "unlisted": false,
+  "tags": [],
+  "version": "current",
+  "frontMatter": {
+    "id": "hardware-lab-setup",
+    "title": "6.1 Hardware & Lab Setup - Beyond Simulation"
+  },
+  "sidebar": "defaultSidebar",
+  "previous": {
+    "title": "Getting Started - Setting Up Your Environment",
+    "permalink": "/getting-started"
+  },
+  "next": {
+    "title": "Overview - Physical AI & Humanoid Robotics",
+    "permalink": "/home/overview"
+  }
+}

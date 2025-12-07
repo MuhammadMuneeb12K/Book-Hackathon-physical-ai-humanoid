@@ -1,0 +1,308 @@
+---
+id: synthetic-data-domain-randomization
+title: 3.2 Synthetic Data & Domain Randomization
+---
+In the previous chapter, we introduced NVIDIA Isaac Sim as a powerful platform for humanoid robotics. One of its most compelling features is its capability for Synthetic Data Generation (SDG). Training robust AI models, especially for computer vision tasks in robotics, often requires massive amounts of diverse, labeled data. Acquiring and annotating such data from the real world is incredibly time-consuming, expensive, and sometimes dangerous. This chapter explores how Isaac Sim addresses this challenge by generating synthetic data and employs a technique called domain randomization to bridge the gap between simulation and reality.
+
+## Goal
+
+The goal of this chapter is to teach students how to use synthetic data and domain randomization within Isaac Sim for training robotic policies, enabling them to overcome data scarcity and accelerate the development of robust AI for humanoid robots.
+
+## Learning Objectives
+
+*   Understand the concept of synthetic data generation and its importance for AI in robotics.
+*   Identify the challenges of real-world data collection and how synthetic data alleviates them.
+*   Learn the principles of domain randomization and how it helps improve sim-to-real transfer.
+*   Implement basic synthetic data generation pipelines in Isaac Sim.
+*   Apply domain randomization techniques to various scene parameters (e.g., textures, lighting, object positions).
+*   Grasp how to generate automatically labeled datasets (segmentation masks, bounding boxes, depth maps) from simulation.
+
+## Prerequisites
+
+*   Familiarity with NVIDIA Isaac Sim (from the previous chapter).
+*   Basic understanding of machine learning and deep learning concepts, especially in computer vision (e.g., object detection, segmentation).
+*   Conceptual understanding of the "sim-to-real gap."
+
+## Key Concepts
+
+*   **Synthetic Data Generation (SDG):** Creating artificially generated data from simulations, specifically designed to train AI models.
+*   **Domain Randomization (DR):** A technique where various parameters of a simulation (e.g., textures, lighting, object positions, camera properties) are randomized to force a neural network to learn invariant features, improving its generalization to the real world.
+*   **Sim-to-Real Transfer:** The process of successfully deploying AI models trained in simulation onto real-world robotic hardware.
+*   **Ground Truth Labels:** Automatically generated, perfectly accurate labels (e.g., bounding boxes, segmentation masks, depth) that come for free with synthetic data.
+*   **Photorealistic Simulation:** Creating virtual environments that are visually indistinguishable from reality, which enhances the quality of synthetic data.
+*   **Physics-Based Rendering:** Utilizing physical properties of light and materials to generate realistic images.
+*   **Perception Models:** AI models that enable robots to interpret sensor data, such as object detectors, semantic segmenters, and pose estimators.
+*   **Reinforcement Learning (RL):** A machine learning paradigm where an agent learns to make decisions by performing actions in an environment to maximize a reward signal. Synthetic data is crucial for RL in simulation.
+
+## Tools
+
+*   **NVIDIA Isaac Sim:** The primary platform for SDG and DR.
+*   **Omni.isaac.synthetic_utils:** Isaac Sim's API for synthetic data generation.
+*   **Python Scripting:** For automating data generation and randomization in Isaac Sim.
+*   **Deep Learning Frameworks (Conceptual):** PyTorch, TensorFlow for training models with synthetic data.
+
+## Chapter Sections
+
+### 3.2.1 The Data Bottleneck in AI Robotics
+
+*   Challenges of real-world data collection: expense, time, safety, rarity of certain events.
+*   The need for vast, diverse, and well-labeled datasets for deep learning.
+*   Humanoid robotics challenges: diverse environments, complex interactions, safety.
+
+### 3.2.2 Introduction to Synthetic Data Generation
+
+*   How simulation can provide infinite, perfectly labeled data.
+*   Types of synthetic data: RGB images, depth maps, instance segmentation masks, bounding boxes, normal maps, optical flow.
+*   Benefits: Cost-effectiveness, control over data distribution, access to ground truth.
+
+### 3.2.3 Bridging the Sim-to-Real Gap with Domain Randomization
+
+*   **The Sim-to-Real Gap Problem:** Models trained purely in simulation often perform poorly in the real world due to differences in visual appearance, physics, etc.
+*   **Concept of Domain Randomization:** Randomizing non-essential properties of the simulation to encourage the AI model to focus on intrinsic features rather than superficial cues.
+*   **Effect on Neural Networks:** Forces the network to learn robust, generalized representations.
+
+### 3.2.4 Implementing Synthetic Data Generation in Isaac Sim
+
+*   **Setting up the Scene:** Populating the environment with objects and textures.
+*   **Using `omni.isaac.synthetic_utils`:**
+    *   Adding `Annotators` (e.g., `LdrTexture`, `Depth`, `InstanceSegmentation`).
+    *   Configuring output format and saving options.
+    *   Capturing data programmatically.
+*   **Example: Generating Object Detection Dataset:** Capturing images with bounding box and class labels.
+
+### 3.2.5 Applying Domain Randomization Techniques
+
+*   **Randomizing Textures:** Dynamically changing materials and appearances of objects.
+*   **Randomizing Lighting:** Varying light sources, intensity, color, and shadows.
+*   **Randomizing Object Poses:** Changing positions and orientations of objects within a defined range.
+*   **Randomizing Camera Properties:** Slight variations in camera focal length, noise, etc.
+*   **Combining Randomizations:** The multiplicative effect of multiple randomizations.
+
+### 3.2.6 Evaluation and Best Practices for SDG & DR
+
+*   Metrics for evaluating synthetic data quality.
+*   Iterative process: Train, test, analyze real-world performance, refine randomization.
+*   Common pitfalls: Insufficient randomization, overfitting to the randomized domain.
+*   Balancing realism and randomization.
+
+## Required Diagrams
+
+*   **Synthetic Data Pipeline:** A flowchart illustrating the process from Isaac Sim scene to labeled dataset output.
+*   **Domain Randomization Effect:** A conceptual diagram showing how randomization creates diverse training examples, making the model robust to real-world variations.
+
+## Hands-on Labs
+
+### Lab 3.2.1: Generate a Robotic Policy Training Dataset with Domain Randomization
+
+**Objective:** Create an Isaac Sim scene with a humanoid robot and a target object, then apply domain randomization to generate a dataset that can be used for training a simple object detection or manipulation policy.
+
+**Prerequisites:** Completed Lab 3.1.1 (basic Isaac Sim setup), Python scripting for Isaac Sim.
+
+**Instructions:**
+
+1.  **Start Isaac Sim and create a new stage.**
+2.  **Add a Ground Plane and a Humanoid Robot:** (e.g., the `franka_humanoid_example.usd` from the previous lab). Position the humanoid.
+3.  **Add a Target Object:**
+    *   From the Content Browser, navigate to `Isaac -> Props -> Blocks` and drag a `BlockA.usd` into the scene.
+    *   Position the block in front of the humanoid.
+4.  **Add a Camera to the Scene:**
+    *   Go to `Create -> Camera -> Camera`.
+    *   Position the camera to look at the humanoid and the block, ideally from the humanoid's perspective (e.g., attached to its head or a static position looking at its workspace).
+5.  **Enable Synthetic Data Generation:**
+    *   Open the `Extension` window (`Window -> Extensions`). Search for and enable `omni.isaac.synthetic_utils`.
+    *   In the `Camera` prim's properties (select the camera in the Stage window), add annotators by clicking the `+ Add` button in the `Annotators` section (often under `Raw USD Properties` or `Camera`). Add `LdrTexture` (for RGB), `Depth` (for depth image), and `InstanceSegmentation` (for object masks).
+6.  **Implement Python Script for Randomization and Capture:**
+    *   Open the Script Editor (`Window -> Script Editor`).
+    *   Paste the following Python code. This script will randomize the block's position and material, then capture an image with annotations.
+
+    ```python
+    import omni.usd
+    from omni.isaac.core.prims import RigidPrim
+    from omni.isaac.core.utils.nucleus import get_assets_root_path
+    from omni.isaac.core.utils.stage import add_reference_to_stage
+    from omni.isaac.synthetic_utils import SyntheticDataHelper
+    import numpy as np
+    import random
+    from pxr import Gf, UsdLux, UsdGeom, UsdPhysics
+
+    # Get the current stage
+    stage = omni.usd.get_context().get_stage()
+
+    # Get the camera prim path (adjust if your camera name is different)
+    camera_prim_path = "/World/Camera"
+    camera_prim = stage.GetPrimAtPath(camera_prim_path)
+
+    # Initialize synthetic data helper
+    sd_helper = SyntheticDataHelper()
+
+    # Get the block prim
+    block_prim_path = "/World/BlockA" # Adjust if your block prim path is different
+    block_prim = UsdGeom.Xformable(stage.GetPrimAtPath(block_prim_path))
+
+    # --- Domain Randomization Setup ---
+    # Randomize object position (within a range relative to the humanoid)
+    def randomize_block_position():
+        if block_prim:
+            x = random.uniform(-0.3, 0.3)
+            y = random.uniform(-0.3, 0.3)
+            z = random.uniform(0.01, 0.2) # Avoid spawning inside ground
+            # Assuming the humanoid is at (0,0,0) or a known location, this defines a workspace
+            block_prim.AddTranslateOp().Set(Gf.Vec3d(x, y, z))
+            print(f"Randomized block position to: ({x:.2f}, {y:.2f}, {z:.2f})")
+
+    # Randomize material (simple example, replace with more diverse assets if available)
+    # This requires having different materials defined in your USD
+    def randomize_block_material():
+        if block_prim:
+            # Example: cycle through some materials
+            materials_to_use = [
+                "/World/Looks/Red_Plastic",
+                "/World/Looks/Blue_Plastic",
+                "/World/Looks/Green_Plastic"
+            ]
+            # Ensure these materials exist on your stage or in your USD assets
+            # A more robust approach would involve creating them programmatically
+            chosen_material_path = random.choice(materials_to_use)
+            # Apply material to the prim's shader
+            # This is a simplified example. USD material assignment can be complex.
+            # You might need to directly modify the "shader" attribute or bind a material
+            # block_prim.GetPrim().CreateRelationship("material:binding").SetTargets([chosen_material_path])
+            # For simplicity, if the prim has a "material" attribute, set it
+            # Or use OmniPBR shader properties if the material is created in a certain way
+            # This part is highly dependent on how your materials are set up.
+            # For this lab, assume we just change color if no complex material setup.
+            # Example: If BlockA has a default material, try to change its color.
+            # This is a placeholder as direct color change on default material might not work easily.
+            # A better way is to attach different USD materials.
+            print(f"Randomized block material/color (conceptual for now)")
+
+
+    # Randomize lighting (very basic - cycling through some light intensities)
+    def randomize_light_intensity():
+        lights = [UsdLux.Light(p) for p in stage.Traverse() if p.IsA(UsdLux.Light)]
+        for light in lights:
+            if light.GetIntensityAttr():
+                intensity = random.uniform(1000, 50000) # Randomize between 1000 and 50000 lumens
+                light.GetIntensityAttr().Set(intensity)
+                print(f"Randomized light '{light.GetPrim().GetName()}' intensity to {intensity:.0f}")
+
+    # --- Data Generation Loop ---
+    num_samples = 50 # Number of synthetic data samples to generate
+    output_dir = "/tmp/isaac_sim_dataset" # Output directory for captured data
+    import os
+    os.makedirs(output_dir, exist_ok=True)
+
+
+    async def generate_data():
+        print(f"Starting synthetic data generation. Saving to: {output_dir}")
+        await sd_helper.initialize_async()
+
+        for i in range(num_samples):
+            # Apply randomization
+            randomize_block_position()
+            # randomize_block_material() # This part needs robust material setup
+            randomize_light_intensity()
+
+            # Wait for physics and rendering to settle (optional, but good for dynamic scenes)
+            await omni.isaac.core.utils.carb.sync_frame()
+
+            # Capture data
+            data = sd_helper.get_ground_truth(
+                [
+                    "rgb",
+                    "depth",
+                    "instance_segmentation"
+                ],
+                path=camera_prim_path # Capture from our defined camera
+            )
+
+            # Save the captured data
+            rgb_img = data["rgb"]
+            depth_img = data["depth"]
+            segmentation_img = data["instance_segmentation"]
+
+            rgb_path = os.path.join(output_dir, f"rgb_{i:04d}.png")
+            depth_path = os.path.join(output_dir, f"depth_{i:04d}.npy") # Save depth as numpy array
+            segmentation_path = os.path.join(output_dir, f"segmentation_{i:04d}.npy")
+
+            # For RGB, use PIL or OpenCV for saving if not directly supported by Isaac API
+            # For this example, we just show the capture. sd_helper.save_pass() might be used.
+            # sd_helper.save_pass(rgb_img, rgb_path) # Example if save_pass worked directly
+            # For actual saving, you'd convert numpy array to image file (e.g., using PIL)
+            from PIL import Image
+            Image.fromarray(rgb_img).save(rgb_path)
+            np.save(depth_path, depth_img)
+            np.save(segmentation_path, segmentation_img)
+
+            print(f"Captured sample {i+1}/{num_samples}")
+
+        print("Synthetic data generation complete!")
+
+    # To run this, you need to execute it in the Isaac Sim Script Editor
+    # You might need to call this function via omni.timeline.get_timeline().play() or similar
+    # For interactive execution, simply call:
+    # import asyncio
+    # asyncio.ensure_future(generate_data())
+
+    # In a real script, this would be part of a larger extension or application flow
+    # For a quick test in script editor, manually run generate_data() after setup.
+    # Note: omni.timeline.get_timeline().play() is often needed before data collection
+    # if physics needs to run. This script assumes static scene for simplicity,
+    # but randomization happens between captures.
+    ```
+7.  **Run the Script:**
+    *   Click the "Play" button in the Isaac Sim UI to start the simulation.
+    *   In the Script Editor, click the "Run" button (green triangle).
+    *   Observe the console output (in Isaac Sim's terminal or Omniverse Launcher's console) as data is generated.
+8.  **Inspect Output:**
+    *   After the script completes, navigate to the `/tmp/isaac_sim_dataset` directory (or your chosen `output_dir`).
+    *   You should find RGB images, depth numpy arrays, and instance segmentation numpy arrays. Examine them to see the variations.
+
+## Expected Output
+
+*   An Isaac Sim stage configured for synthetic data generation.
+*   A clear understanding of how to define randomizable parameters within an Isaac Sim scene.
+*   A generated dataset consisting of RGB images, depth maps, and instance segmentation masks with varying object poses, materials, and lighting.
+*   Familiarity with using Isaac Sim's Python API to automate data capture and randomization.
+
+## Assessment Questions
+
+*   Explain why synthetic data generation is particularly beneficial for training perception models for humanoid robots compared to traditional real-world data collection.
+*   Describe at least three different parameters you would randomize in a simulation environment to improve the sim-to-real transfer of a humanoid robot's object recognition model.
+*   What is "ground truth" data in the context of synthetic data, and how does Isaac Sim provide it?
+*   How would an insufficient range of randomization in your dataset affect the performance of a deep learning model when deployed on a real robot?
+
+## Real-world Applications
+
+*   **Autonomous Navigation Dataset Generation:** Creating diverse datasets of challenging environments (e.g., cluttered warehouses, construction sites) for training navigation agents for humanoid robots.
+*   **Human-Robot Interaction (HRI) Behavior Training:** Generating data for models that recognize human gestures, intentions, or social cues by randomizing human avatar appearances, poses, and environmental contexts.
+*   **Robot Grasping and Manipulation:** Training object detection and grasping pose estimation models using synthetic images of objects in various configurations, lighting, and textures.
+*   **Defect Detection in Manufacturing:** Generating images of products with various types of defects under randomized conditions to train quality inspection AI.
+
+## Edge Cases
+
+*   **Computational Cost of Photorealism:** High-fidelity rendering for every sample can be computationally intensive and time-consuming, requiring powerful GPUs.
+*   **"Unrealistic" Randomizations:** Applying randomization techniques too broadly can lead to scenes that are physically impossible or too far from reality, reducing the utility of the data.
+*   **Subtle Sim-to-Real Gaps:** Even with extensive randomization, subtle differences in physics, sensor models, or material properties can persist, leading to a residual sim-to-real gap.
+*   **Data Storage and Management:** Generating massive synthetic datasets requires significant storage and efficient data management strategies.
+
+---
+
+### **Key Entities**
+
+*   **Synthetic Data:** Data (e.g., images, depth maps, labels) artificially created in a simulated environment, often to train machine learning models.
+*   **Domain Randomization:** A technique in simulation where non-essential visual or physical parameters are randomly varied across generated data samples to improve the robustness and generalization of trained models to real-world conditions.
+*   **Sim-to-Real Transfer:** The crucial process of taking an AI model or control policy that was developed and optimized in a simulation and successfully applying it to a physical robot.
+*   **Ground Truth Labels:** Perfect, automatically generated annotations (e.g., bounding boxes, instance masks, precise depth values) that are readily available in synthetic datasets without manual effort.
+*   **Annotators:** Specific components or APIs within Isaac Sim (e.g., `LdrTexture`, `Depth`, `InstanceSegmentation`) that capture various types of ground truth data from the simulation camera.
+*   **USD (Universal Scene Description):** The native scene description format of Isaac Sim, allowing for programmatic manipulation of scene elements, properties, and randomization.
+*   **Perception Models:** Machine learning models that enable robots to interpret sensory input (vision, lidar, etc.) to understand their environment and identify objects.
+
+---
+
+### **References**
+
+*   Tobin, J., et al. (2017). Domain randomization for transferring deep neural networks from simulation to the real world. *IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS)*. (Placeholder citation)
+*   NVIDIA. (n.d.). *NVIDIA Isaac Sim Documentation: Synthetic Data Generation*. (Placeholder citation)
+*   Sadeghi, F., et al. (2016). Cad2rl: Real single-image flight without a single real image. *Robotics: Science and Systems (RSS) workshop on Learning for Manipulation*. (Placeholder citation)
+*   Tremblay, J., et al. (2018). Training deep networks with synthetic data: Bridging the reality gap by domain randomization. *Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition (CVPR) Workshops*. (Placeholder citation)

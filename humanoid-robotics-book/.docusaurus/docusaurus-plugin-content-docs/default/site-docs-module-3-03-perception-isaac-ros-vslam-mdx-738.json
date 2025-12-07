@@ -1,0 +1,27 @@
+{
+  "id": "module-3/perception-isaac-ros-vslam",
+  "title": "3.3 Perception with Isaac ROS (VSLAM)",
+  "description": "With the ability to create photorealistic simulations and generate synthetic data in Isaac Sim, we now focus on endowing our humanoid robots with the critical sense of sight and self-awareness within their environment. This chapter delves into perception, specifically Visual Simultaneous Localization and Mapping (VSLAM), utilizing NVIDIA's hardware-accelerated Isaac ROS GEMs. VSLAM allows a robot to build a map of an unknown environment while simultaneously estimating its own pose within that map using visual input, a cornerstone for autonomous navigation and interaction.",
+  "source": "@site/docs/module-3/03-perception-isaac-ros-vslam.mdx",
+  "sourceDirName": "module-3",
+  "slug": "/module-3/perception-isaac-ros-vslam",
+  "permalink": "/module-3/perception-isaac-ros-vslam",
+  "draft": false,
+  "unlisted": false,
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 3,
+  "frontMatter": {
+    "id": "perception-isaac-ros-vslam",
+    "title": "3.3 Perception with Isaac ROS (VSLAM)"
+  },
+  "sidebar": "defaultSidebar",
+  "previous": {
+    "title": "3.2 Synthetic Data & Domain Randomization",
+    "permalink": "/module-3/synthetic-data-domain-randomization"
+  },
+  "next": {
+    "title": "3.4 Navigation with Nav2 for Humanoids",
+    "permalink": "/module-3/navigation-nav2-humanoids"
+  }
+}

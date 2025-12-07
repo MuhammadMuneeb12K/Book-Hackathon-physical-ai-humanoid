@@ -1,0 +1,27 @@
+{
+  "id": "module-2/sensor-simulation",
+  "title": "2.4 Sensor Simulation (LiDAR, Depth, IMU)",
+  "description": "With a physics-accurate environment established in Gazebo, the next crucial step for developing intelligent humanoid robots is to equip them with virtual senses. Just as in the real world, robots rely heavily on sensor data to perceive their surroundings, localize themselves, and make informed decisions. This chapter focuses on simulating essential robotics sensors—LiDAR, IMU, and RGB-D cameras—within Gazebo, enabling you to generate realistic data streams for perception algorithms and control systems.",
+  "source": "@site/docs/module-2/04-sensor-simulation.mdx",
+  "sourceDirName": "module-2",
+  "slug": "/module-2/sensor-simulation",
+  "permalink": "/module-2/sensor-simulation",
+  "draft": false,
+  "unlisted": false,
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 4,
+  "frontMatter": {
+    "id": "sensor-simulation",
+    "title": "2.4 Sensor Simulation (LiDAR, Depth, IMU)"
+  },
+  "sidebar": "defaultSidebar",
+  "previous": {
+    "title": "2.3 Physics Simulation (Gravity, Rigid Bodies, Collisions)",
+    "permalink": "/module-2/physics-simulation"
+  },
+  "next": {
+    "title": "2.5 Unity for High-Fidelity Robotics",
+    "permalink": "/module-2/unity-for-robotics"
+  }
+}

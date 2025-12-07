@@ -1,0 +1,141 @@
+---
+id: building-python-nodes
+title: 1.2 Building Python Nodes with rclpy
+---
+Following our exploration of ROS 2's foundational architecture, this chapter shifts focus to practical implementation. We will learn how to develop functional ROS 2 nodes using `rclpy`, the Python client library for ROS 2. Building custom nodes is essential for extending robotic capabilities, integrating new sensors, and implementing control algorithms.
+
+## Goal
+
+The goal of this chapter is to teach students how to build ROS 2 Python nodes using `rclpy` to create functional components for humanoid robot control and data processing.
+
+## Learning Objectives
+
+*   Understand the structure of a basic ROS 2 Python node.
+*   Learn to create and initialize a ROS 2 node using `rclpy`.
+*   Implement publishers to send messages over ROS 2 topics.
+*   Implement subscribers to receive and process messages from ROS 2 topics.
+*   Create simple ROS 2 services to handle request-reply communication.
+*   Learn how to compile and run ROS 2 Python packages.
+
+## Prerequisites
+
+*   A functional ROS 2 Humble installation (as covered in the "Getting Started" section).
+*   Basic to intermediate proficiency in Python programming.
+*   Familiarity with the ROS 2 communication concepts (nodes, topics, services) from the previous chapter.
+*   Understanding of standard Python project structure (modules, packages).
+
+## Key Concepts
+
+*   **`rclpy`:** The Python client library for ROS 2.
+*   **`Node` class:** The base class for all ROS 2 Python nodes, providing core ROS 2 functionalities.
+*   **Publisher:** An object in a node responsible for sending messages on a topic.
+*   **Subscriber:** An object in a node responsible for receiving messages from a topic.
+*   **Service Server:** An object in a node that provides a service, responding to requests.
+*   **Service Client:** An object in a node that sends requests to a service server.
+*   **Message Types:** Predefined data structures for topics, defined in `.msg` files.
+*   **Service Types:** Predefined request-response structures for services, defined in `.srv` files.
+*   **`setup.py`:** Standard Python script for building and installing packages.
+*   **`package.xml`:** ROS 2 manifest file describing a package's metadata and dependencies.
+
+## Tools
+
+*   **ROS 2 Humble:** The robotic framework.
+*   **Python 3:** The programming language.
+*   **`colcon build`:** The ROS 2 build system.
+*   **`ros2 run`:** Command-line tool to execute ROS 2 nodes.
+*   **Code Editor:** Visual Studio Code (recommended).
+
+## Chapter Sections
+
+### 1.2.1 Anatomy of a ROS 2 Python Package
+
+*   **Workspace Structure:** Understanding `colcon` workspaces.
+*   **`package.xml`:** Declaring dependencies and metadata.
+*   **`setup.py`:** Defining entry points and package installation.
+*   **Directory Layout:** `src`, `resource`, `test` folders.
+
+### 1.2.2 Creating Your First ROS 2 Python Node
+
+*   **Initialization:** Importing `rclpy` and initializing the ROS 2 client library.
+*   **Node Creation:** Instantiating the `Node` class.
+*   **Spinning the Node:** Keeping the node alive and processing callbacks.
+*   **Shutting Down:** Proper ROS 2 shutdown procedures.
+
+### 1.2.3 Implementing Publishers and Subscribers
+
+*   **Defining Custom Message Types (Briefly):** How to use existing message types and a glance at custom ones.
+*   **Creating a Publisher:**
+    *   `self.create_publisher(msg_type, topic_name, qos_profile)`.
+    *   Publishing data in a loop with timers.
+*   **Creating a Subscriber:**
+    *   `self.create_subscription(msg_type, topic_name, callback_function, qos_profile)`.
+    *   Processing incoming messages in a callback.
+*   **Example: IMU Data Publisher and Subscriber:** A practical example demonstrating sensor data flow.
+
+### 1.2.4 Implementing Services
+
+*   **Defining Custom Service Types (Briefly):** Using existing service types.
+*   **Creating a Service Server:**
+    *   `self.create_service(srv_type, service_name, callback_function)`.
+    *   Handling requests and sending responses in a callback.
+*   **Creating a Service Client:**
+    *   `client.call_async(request)`.
+    *   Sending requests and processing future responses.
+*   **Example: Joint Command Service:** A service to set a specific joint angle for a robot.
+
+### 1.2.5 Building and Running Your Python Package
+
+*   **Building with `colcon build`:** Compiling your ROS 2 Python package.
+*   **Running Nodes:** Using `ros2 run <package_name> <executable_name>`.
+*   **Debugging Tips:** Common errors and how to troubleshoot.
+
+## Expected Output
+
+*   A functional ROS 2 Python package containing publisher and subscriber nodes.
+*   Ability to create custom ROS 2 nodes using `rclpy` to interact with topics.
+*   Understanding of the `colcon` build system for Python packages.
+*   The `imu_subscriber` node successfully processes IMU data.
+*   The `joint_publisher` node successfully publishes joint commands.
+
+## Assessment Questions
+
+*   Describe the essential steps to create a new ROS 2 Python package.
+*   What is the role of `rclpy.spin()` in a ROS 2 Python node?
+*   How would you modify the `ImuSubscriber` to filter out IMU messages based on a specific `frame_id`?
+*   Explain the purpose of `setup.py` and `package.xml` in a ROS 2 Python package.
+
+## Real-world Applications
+
+*   **Sensor Data Acquisition:** Writing nodes to interface with new hardware sensors (e.g., custom LiDAR, camera, force/torque sensors) and publish their data to ROS 2 topics.
+*   **Low-Level Actuator Control:** Developing nodes that translate high-level commands into specific joint positions, velocities, or efforts for robot motors.
+*   **Custom Algorithm Integration:** Implementing novel control algorithms, state estimators, or perception routines as ROS 2 nodes to process data and generate commands.
+*   **Humanoid Gait Generation:** A node publishing a sequence of joint commands to execute a walking or balancing gait.
+
+## Edge Cases
+
+*   **Callback Queue Overload:** If a subscriber's callback takes too long to process messages, the queue can build up, leading to latency or dropped messages.
+*   **Incorrect Message Types:** Publishing or subscribing with an incorrect message type will lead to communication errors.
+*   **Missing Dependencies:** Not declaring all Python or ROS 2 dependencies in `package.xml` and `setup.py` can cause runtime failures.
+*   **Node Crashes:** Unhandled exceptions in node callbacks can crash the node, interrupting the robotic system.
+
+---
+
+### **Key Entities**
+
+*   **`rclpy`:** The primary Python library for interfacing with the ROS 2 framework.
+*   **`Node`:** The fundamental building block in ROS 2, representing an executable process that can communicate with other nodes.
+*   **`Publisher`:** An `rclpy` object within a node responsible for sending messages on a specific topic.
+*   **`Subscriber`:** An `rclpy` object within a node responsible for receiving messages from a specific topic and processing them via a callback function.
+*   **`JointState`:** A standard ROS 2 message type (`sensor_msgs/msg/JointState`) used to convey the position, velocity, and effort of a robot's joints.
+*   **`Imu`:** A standard ROS 2 message type (`sensor_msgs/msg/Imu`) used to convey inertial measurement unit data (orientation, angular velocity, linear acceleration).
+*   **`colcon build`:** The standard build tool for ROS 2 packages, compiling source code and installing executables and libraries.
+*   **`setup.py`:** A Python script used by `setuptools` to define how a Python package is built and distributed, including console script entry points for ROS 2 nodes.
+
+---
+
+### **References**
+
+*   Open Robotics. (2022). *ROS 2 Documentation: Writing a Python Publisher and Subscriber (rclpy)*. (Placeholder citation)
+*   Open Robotics. (2022). *ROS 2 Documentation: Writing a Python Service and Client (rclpy)*. (Placeholder citation)
+*   Python Software Foundation. (2023). *Python 3 Documentation*. (Placeholder citation)
+*   Mesa, L., & Rojas, A. (2020). Modern C++ and Python Programming for ROS 2. *Packt Publishing*. (Placeholder citation)

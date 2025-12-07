@@ -1,0 +1,27 @@
+{
+  "id": "module-1/ros2-architecture",
+  "title": "1.1 ROS 2 Architecture & DDS - The Robotic Nervous System",
+  "description": "Welcome to Module 1: The Robotic Nervous System (ROS 2). In this chapter, we delve into the fundamental architecture of ROS 2, understanding how it forms the communication backbone for complex robotic systems, especially humanoid robots. We will explore the core concepts of the Data Distribution Service (DDS) and how it facilitates real-time, decentralized communication between various components.",
+  "source": "@site/docs/module-1/01-ros2-architecture.mdx",
+  "sourceDirName": "module-1",
+  "slug": "/module-1/ros2-architecture",
+  "permalink": "/module-1/ros2-architecture",
+  "draft": false,
+  "unlisted": false,
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 1,
+  "frontMatter": {
+    "id": "ros2-architecture",
+    "title": "1.1 ROS 2 Architecture & DDS - The Robotic Nervous System"
+  },
+  "sidebar": "defaultSidebar",
+  "previous": {
+    "title": "Module 1: The Robotic Nervous System (ROS 2)",
+    "permalink": "/category/module-1-the-robotic-nervous-system-ros-2"
+  },
+  "next": {
+    "title": "1.2 Building Python Nodes with rclpy",
+    "permalink": "/module-1/building-python-nodes"
+  }
+}

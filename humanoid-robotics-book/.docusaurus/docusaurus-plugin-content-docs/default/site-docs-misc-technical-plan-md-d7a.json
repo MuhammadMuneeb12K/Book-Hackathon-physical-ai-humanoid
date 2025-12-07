@@ -1,0 +1,23 @@
+{
+  "id": "misc/technical-plan",
+  "title": "Technical Plan: Physical AI & Humanoid Robotics Project",
+  "description": "This document outlines the technical plan for the Physical AI & Humanoid Robotics Project, structured according to the 4-module specifications and including plans for documentation build and deployment using Docusaurus and GitHub Pages. This plan adheres to technical, actionable, and Spec-Kit Plus workflows, with APA citations where research is referenced.",
+  "source": "@site/docs/misc/technical-plan.md",
+  "sourceDirName": "misc",
+  "slug": "/misc/technical-plan",
+  "permalink": "/misc/technical-plan",
+  "draft": false,
+  "unlisted": false,
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "defaultSidebar",
+  "previous": {
+    "title": "Miscellaneous",
+    "permalink": "/category/miscellaneous"
+  },
+  "next": {
+    "title": "7.1 Appendices - Resources and Further Reading",
+    "permalink": "/appendices/"
+  }
+}

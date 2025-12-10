@@ -5,7 +5,7 @@
   "source": "@site/docs/module-4/01-what-is-vla.mdx",
   "sourceDirName": "module-4",
   "slug": "/module-4/what-is-vla",
-  "permalink": "/module-4/what-is-vla",
+  "permalink": "/Book-Hackathon-physical-ai-humanoid/module-4/what-is-vla",
   "draft": false,
   "unlisted": false,
   "tags": [],
@@ -18,10 +18,10 @@
   "sidebar": "defaultSidebar",
   "previous": {
     "title": "Module 4: Humanoid Robot Control",
-    "permalink": "/category/module-4-humanoid-robot-control"
+    "permalink": "/Book-Hackathon-physical-ai-humanoid/category/module-4-humanoid-robot-control"
   },
   "next": {
     "title": "4.2 Voice Command Systems with Whisper",
-    "permalink": "/module-4/voice-command-whisper"
+    "permalink": "/Book-Hackathon-physical-ai-humanoid/module-4/voice-command-whisper"
   }
 }

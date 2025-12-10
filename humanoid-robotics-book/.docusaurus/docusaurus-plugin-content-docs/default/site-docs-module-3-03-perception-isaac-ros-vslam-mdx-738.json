@@ -5,7 +5,7 @@
   "source": "@site/docs/module-3/03-perception-isaac-ros-vslam.mdx",
   "sourceDirName": "module-3",
   "slug": "/module-3/perception-isaac-ros-vslam",
-  "permalink": "/module-3/perception-isaac-ros-vslam",
+  "permalink": "/Book-Hackathon-physical-ai-humanoid/module-3/perception-isaac-ros-vslam",
   "draft": false,
   "unlisted": false,
   "tags": [],
@@ -18,10 +18,10 @@
   "sidebar": "defaultSidebar",
   "previous": {
     "title": "3.2 Synthetic Data & Domain Randomization",
-    "permalink": "/module-3/synthetic-data-domain-randomization"
+    "permalink": "/Book-Hackathon-physical-ai-humanoid/module-3/synthetic-data-domain-randomization"
   },
   "next": {
     "title": "3.4 Navigation with Nav2 for Humanoids",
-    "permalink": "/module-3/navigation-nav2-humanoids"
+    "permalink": "/Book-Hackathon-physical-ai-humanoid/module-3/navigation-nav2-humanoids"
   }
 }

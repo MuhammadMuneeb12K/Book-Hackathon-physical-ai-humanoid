@@ -5,7 +5,7 @@
   "source": "@site/docs/appendices/index.mdx",
   "sourceDirName": "appendices",
   "slug": "/appendices/",
-  "permalink": "/appendices/",
+  "permalink": "/Book-Hackathon-physical-ai-humanoid/appendices/",
   "draft": false,
   "unlisted": false,
   "tags": [],
@@ -17,10 +17,10 @@
   "sidebar": "defaultSidebar",
   "previous": {
     "title": "Technical Plan: Physical AI & Humanoid Robotics Project",
-    "permalink": "/misc/technical-plan"
+    "permalink": "/Book-Hackathon-physical-ai-humanoid/misc/technical-plan"
   },
   "next": {
     "title": "5.1 Capstone - The Integrated Humanoid Robotics System",
-    "permalink": "/capstone/capstone-integration-guide"
+    "permalink": "/Book-Hackathon-physical-ai-humanoid/capstone/capstone-integration-guide"
   }
 }

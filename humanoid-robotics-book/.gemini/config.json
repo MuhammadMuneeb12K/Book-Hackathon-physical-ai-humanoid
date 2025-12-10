@@ -1,0 +1,16 @@
+
+{
+  "mcpServers": {
+    "filesystem": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-filesystem", "D:\\mk\\giaic\\Book-Hackathon-physical-ai-humanoid\\humanoid-robotics-book"]
+    },
+    "github": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-github"],
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "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"
+      }
+    }
+  }
+}

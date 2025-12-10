@@ -5,7 +5,7 @@
   "source": "@site/docs/module-1/02-building-python-nodes.mdx",
   "sourceDirName": "module-1",
   "slug": "/module-1/building-python-nodes",
-  "permalink": "/module-1/building-python-nodes",
+  "permalink": "/Book-Hackathon-physical-ai-humanoid/module-1/building-python-nodes",
   "draft": false,
   "unlisted": false,
   "tags": [],
@@ -18,10 +18,10 @@
   "sidebar": "defaultSidebar",
   "previous": {
     "title": "1.1 ROS 2 Architecture & DDS - The Robotic Nervous System",
-    "permalink": "/module-1/ros2-architecture"
+    "permalink": "/Book-Hackathon-physical-ai-humanoid/module-1/ros2-architecture"
   },
   "next": {
     "title": "1.3 URDF for Humanoid Robots",
-    "permalink": "/module-1/urdf-humanoid-robots"
+    "permalink": "/Book-Hackathon-physical-ai-humanoid/module-1/urdf-humanoid-robots"
   }
 }

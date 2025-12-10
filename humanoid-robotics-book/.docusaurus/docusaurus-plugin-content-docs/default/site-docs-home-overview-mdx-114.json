@@ -5,7 +5,7 @@
   "source": "@site/docs/home/overview.mdx",
   "sourceDirName": "home",
   "slug": "/home/overview",
-  "permalink": "/home/overview",
+  "permalink": "/Book-Hackathon-physical-ai-humanoid/home/overview",
   "draft": false,
   "unlisted": false,
   "tags": [],
@@ -17,10 +17,10 @@
   "sidebar": "defaultSidebar",
   "previous": {
     "title": "6.1 Hardware & Lab Setup - Beyond Simulation",
-    "permalink": "/hardware-lab-setup/"
+    "permalink": "/Book-Hackathon-physical-ai-humanoid/hardware-lab-setup/"
   },
   "next": {
     "title": "Welcome to the Humanoid Robotics Book",
-    "permalink": "/"
+    "permalink": "/Book-Hackathon-physical-ai-humanoid/"
   }
 }

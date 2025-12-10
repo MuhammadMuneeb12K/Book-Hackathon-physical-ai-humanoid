@@ -5,7 +5,7 @@
   "source": "@site/docs/module-2/01-what-is-digital-twin.mdx",
   "sourceDirName": "module-2",
   "slug": "/module-2/what-is-digital-twin",
-  "permalink": "/module-2/what-is-digital-twin",
+  "permalink": "/Book-Hackathon-physical-ai-humanoid/module-2/what-is-digital-twin",
   "draft": false,
   "unlisted": false,
   "tags": [],
@@ -18,10 +18,10 @@
   "sidebar": "defaultSidebar",
   "previous": {
     "title": "Module 2: Humanoid Robot Kinematics",
-    "permalink": "/category/module-2-humanoid-robot-kinematics"
+    "permalink": "/Book-Hackathon-physical-ai-humanoid/category/module-2-humanoid-robot-kinematics"
   },
   "next": {
     "title": "2.2 Building Gazebo Worlds",
-    "permalink": "/module-2/building-gazebo-worlds"
+    "permalink": "/Book-Hackathon-physical-ai-humanoid/module-2/building-gazebo-worlds"
   }
 }

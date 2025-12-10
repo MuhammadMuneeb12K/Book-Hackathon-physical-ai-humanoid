@@ -3,241 +3,241 @@ import ComponentCreator from '@docusaurus/ComponentCreator';
 
 export default [
   {
-    path: '/__docusaurus/debug',
-    component: ComponentCreator('/__docusaurus/debug', '5ff'),
+    path: '/Book-Hackathon-physical-ai-humanoid/__docusaurus/debug/',
+    component: ComponentCreator('/Book-Hackathon-physical-ai-humanoid/__docusaurus/debug/', '205'),
     exact: true
   },
   {
-    path: '/__docusaurus/debug/config',
-    component: ComponentCreator('/__docusaurus/debug/config', '5ba'),
+    path: '/Book-Hackathon-physical-ai-humanoid/__docusaurus/debug/config/',
+    component: ComponentCreator('/Book-Hackathon-physical-ai-humanoid/__docusaurus/debug/config/', '1c2'),
     exact: true
   },
   {
-    path: '/__docusaurus/debug/content',
-    component: ComponentCreator('/__docusaurus/debug/content', 'a2b'),
+    path: '/Book-Hackathon-physical-ai-humanoid/__docusaurus/debug/content/',
+    component: ComponentCreator('/Book-Hackathon-physical-ai-humanoid/__docusaurus/debug/content/', '1d0'),
     exact: true
   },
   {
-    path: '/__docusaurus/debug/globalData',
-    component: ComponentCreator('/__docusaurus/debug/globalData', 'c3c'),
+    path: '/Book-Hackathon-physical-ai-humanoid/__docusaurus/debug/globalData/',
+    component: ComponentCreator('/Book-Hackathon-physical-ai-humanoid/__docusaurus/debug/globalData/', 'abf'),
     exact: true
   },
   {
-    path: '/__docusaurus/debug/metadata',
-    component: ComponentCreator('/__docusaurus/debug/metadata', '156'),
+    path: '/Book-Hackathon-physical-ai-humanoid/__docusaurus/debug/metadata/',
+    component: ComponentCreator('/Book-Hackathon-physical-ai-humanoid/__docusaurus/debug/metadata/', 'c10'),
     exact: true
   },
   {
-    path: '/__docusaurus/debug/registry',
-    component: ComponentCreator('/__docusaurus/debug/registry', '88c'),
+    path: '/Book-Hackathon-physical-ai-humanoid/__docusaurus/debug/registry/',
+    component: ComponentCreator('/Book-Hackathon-physical-ai-humanoid/__docusaurus/debug/registry/', '2c4'),
     exact: true
   },
   {
-    path: '/__docusaurus/debug/routes',
-    component: ComponentCreator('/__docusaurus/debug/routes', '000'),
+    path: '/Book-Hackathon-physical-ai-humanoid/__docusaurus/debug/routes/',
+    component: ComponentCreator('/Book-Hackathon-physical-ai-humanoid/__docusaurus/debug/routes/', 'fbe'),
     exact: true
   },
   {
-    path: '/',
-    component: ComponentCreator('/', '927'),
+    path: '/Book-Hackathon-physical-ai-humanoid/',
+    component: ComponentCreator('/Book-Hackathon-physical-ai-humanoid/', 'ce5'),
     routes: [
       {
-        path: '/',
-        component: ComponentCreator('/', '574'),
+        path: '/Book-Hackathon-physical-ai-humanoid/',
+        component: ComponentCreator('/Book-Hackathon-physical-ai-humanoid/', 'f64'),
         routes: [
           {
-            path: '/',
-            component: ComponentCreator('/', 'b95'),
+            path: '/Book-Hackathon-physical-ai-humanoid/',
+            component: ComponentCreator('/Book-Hackathon-physical-ai-humanoid/', '0a9'),
             routes: [
               {
-                path: '/appendices/',
-                component: ComponentCreator('/appendices/', '19d'),
+                path: '/Book-Hackathon-physical-ai-humanoid/appendices/',
+                component: ComponentCreator('/Book-Hackathon-physical-ai-humanoid/appendices/', '409'),
                 exact: true,
                 sidebar: "defaultSidebar"
               },
               {
-                path: '/capstone/capstone-integration-guide',
-                component: ComponentCreator('/capstone/capstone-integration-guide', '725'),
+                path: '/Book-Hackathon-physical-ai-humanoid/capstone/capstone-integration-guide/',
+                component: ComponentCreator('/Book-Hackathon-physical-ai-humanoid/capstone/capstone-integration-guide/', 'd4f'),
                 exact: true,
                 sidebar: "defaultSidebar"
               },
               {
-                path: '/category/miscellaneous',
-                component: ComponentCreator('/category/miscellaneous', '3d9'),
+                path: '/Book-Hackathon-physical-ai-humanoid/category/miscellaneous/',
+                component: ComponentCreator('/Book-Hackathon-physical-ai-humanoid/category/miscellaneous/', '82a'),
                 exact: true,
                 sidebar: "defaultSidebar"
               },
               {
-                path: '/category/module-1-the-robotic-nervous-system-ros-2',
-                component: ComponentCreator('/category/module-1-the-robotic-nervous-system-ros-2', '020'),
+                path: '/Book-Hackathon-physical-ai-humanoid/category/module-1-the-robotic-nervous-system-ros-2/',
+                component: ComponentCreator('/Book-Hackathon-physical-ai-humanoid/category/module-1-the-robotic-nervous-system-ros-2/', '79f'),
                 exact: true,
                 sidebar: "defaultSidebar"
               },
               {
-                path: '/category/module-2-humanoid-robot-kinematics',
-                component: ComponentCreator('/category/module-2-humanoid-robot-kinematics', '357'),
+                path: '/Book-Hackathon-physical-ai-humanoid/category/module-2-humanoid-robot-kinematics/',
+                component: ComponentCreator('/Book-Hackathon-physical-ai-humanoid/category/module-2-humanoid-robot-kinematics/', '164'),
                 exact: true,
                 sidebar: "defaultSidebar"
               },
               {
-                path: '/category/module-3-humanoid-robot-dynamics',
-                component: ComponentCreator('/category/module-3-humanoid-robot-dynamics', '539'),
+                path: '/Book-Hackathon-physical-ai-humanoid/category/module-3-humanoid-robot-dynamics/',
+                component: ComponentCreator('/Book-Hackathon-physical-ai-humanoid/category/module-3-humanoid-robot-dynamics/', '2ed'),
                 exact: true,
                 sidebar: "defaultSidebar"
               },
               {
-                path: '/category/module-4-humanoid-robot-control',
-                component: ComponentCreator('/category/module-4-humanoid-robot-control', '04b'),
+                path: '/Book-Hackathon-physical-ai-humanoid/category/module-4-humanoid-robot-control/',
+                component: ComponentCreator('/Book-Hackathon-physical-ai-humanoid/category/module-4-humanoid-robot-control/', 'e9c'),
                 exact: true,
                 sidebar: "defaultSidebar"
               },
               {
-                path: '/getting-started',
-                component: ComponentCreator('/getting-started', 'cb7'),
+                path: '/Book-Hackathon-physical-ai-humanoid/getting-started/',
+                component: ComponentCreator('/Book-Hackathon-physical-ai-humanoid/getting-started/', '943'),
                 exact: true,
                 sidebar: "defaultSidebar"
               },
               {
-                path: '/hardware-lab-setup/',
-                component: ComponentCreator('/hardware-lab-setup/', 'ef9'),
+                path: '/Book-Hackathon-physical-ai-humanoid/hardware-lab-setup/',
+                component: ComponentCreator('/Book-Hackathon-physical-ai-humanoid/hardware-lab-setup/', 'd09'),
                 exact: true,
                 sidebar: "defaultSidebar"
               },
               {
-                path: '/home/overview',
-                component: ComponentCreator('/home/overview', 'd79'),
+                path: '/Book-Hackathon-physical-ai-humanoid/home/overview/',
+                component: ComponentCreator('/Book-Hackathon-physical-ai-humanoid/home/overview/', '738'),
                 exact: true,
                 sidebar: "defaultSidebar"
               },
               {
-                path: '/misc/technical-plan',
-                component: ComponentCreator('/misc/technical-plan', '6d1'),
+                path: '/Book-Hackathon-physical-ai-humanoid/misc/technical-plan/',
+                component: ComponentCreator('/Book-Hackathon-physical-ai-humanoid/misc/technical-plan/', '9f7'),
                 exact: true,
                 sidebar: "defaultSidebar"
               },
               {
-                path: '/module-1/building-python-nodes',
-                component: ComponentCreator('/module-1/building-python-nodes', '8aa'),
+                path: '/Book-Hackathon-physical-ai-humanoid/module-1/building-python-nodes/',
+                component: ComponentCreator('/Book-Hackathon-physical-ai-humanoid/module-1/building-python-nodes/', '247'),
                 exact: true,
                 sidebar: "defaultSidebar"
               },
               {
-                path: '/module-1/launch-files-multi-node',
-                component: ComponentCreator('/module-1/launch-files-multi-node', '59b'),
+                path: '/Book-Hackathon-physical-ai-humanoid/module-1/launch-files-multi-node/',
+                component: ComponentCreator('/Book-Hackathon-physical-ai-humanoid/module-1/launch-files-multi-node/', 'a47'),
                 exact: true,
                 sidebar: "defaultSidebar"
               },
               {
-                path: '/module-1/ros2-architecture',
-                component: ComponentCreator('/module-1/ros2-architecture', '7ba'),
+                path: '/Book-Hackathon-physical-ai-humanoid/module-1/ros2-architecture/',
+                component: ComponentCreator('/Book-Hackathon-physical-ai-humanoid/module-1/ros2-architecture/', 'ce5'),
                 exact: true,
                 sidebar: "defaultSidebar"
               },
               {
-                path: '/module-1/tf2-frames-transformations',
-                component: ComponentCreator('/module-1/tf2-frames-transformations', '4d4'),
+                path: '/Book-Hackathon-physical-ai-humanoid/module-1/tf2-frames-transformations/',
+                component: ComponentCreator('/Book-Hackathon-physical-ai-humanoid/module-1/tf2-frames-transformations/', '8a7'),
                 exact: true,
                 sidebar: "defaultSidebar"
               },
               {
-                path: '/module-1/urdf-humanoid-robots',
-                component: ComponentCreator('/module-1/urdf-humanoid-robots', 'b79'),
+                path: '/Book-Hackathon-physical-ai-humanoid/module-1/urdf-humanoid-robots/',
+                component: ComponentCreator('/Book-Hackathon-physical-ai-humanoid/module-1/urdf-humanoid-robots/', '2d2'),
                 exact: true,
                 sidebar: "defaultSidebar"
               },
               {
-                path: '/module-2/building-gazebo-worlds',
-                component: ComponentCreator('/module-2/building-gazebo-worlds', '30d'),
+                path: '/Book-Hackathon-physical-ai-humanoid/module-2/building-gazebo-worlds/',
+                component: ComponentCreator('/Book-Hackathon-physical-ai-humanoid/module-2/building-gazebo-worlds/', 'a3f'),
                 exact: true,
                 sidebar: "defaultSidebar"
               },
               {
-                path: '/module-2/physics-simulation',
-                component: ComponentCreator('/module-2/physics-simulation', '8f1'),
+                path: '/Book-Hackathon-physical-ai-humanoid/module-2/physics-simulation/',
+                component: ComponentCreator('/Book-Hackathon-physical-ai-humanoid/module-2/physics-simulation/', '11a'),
                 exact: true,
                 sidebar: "defaultSidebar"
               },
               {
-                path: '/module-2/sensor-simulation',
-                component: ComponentCreator('/module-2/sensor-simulation', '708'),
+                path: '/Book-Hackathon-physical-ai-humanoid/module-2/sensor-simulation/',
+                component: ComponentCreator('/Book-Hackathon-physical-ai-humanoid/module-2/sensor-simulation/', '743'),
                 exact: true,
                 sidebar: "defaultSidebar"
               },
               {
-                path: '/module-2/unity-for-robotics',
-                component: ComponentCreator('/module-2/unity-for-robotics', 'f36'),
+                path: '/Book-Hackathon-physical-ai-humanoid/module-2/unity-for-robotics/',
+                component: ComponentCreator('/Book-Hackathon-physical-ai-humanoid/module-2/unity-for-robotics/', 'ff6'),
                 exact: true,
                 sidebar: "defaultSidebar"
               },
               {
-                path: '/module-2/what-is-digital-twin',
-                component: ComponentCreator('/module-2/what-is-digital-twin', '308'),
+                path: '/Book-Hackathon-physical-ai-humanoid/module-2/what-is-digital-twin/',
+                component: ComponentCreator('/Book-Hackathon-physical-ai-humanoid/module-2/what-is-digital-twin/', '5f4'),
                 exact: true,
                 sidebar: "defaultSidebar"
               },
               {
-                path: '/module-3/introduction-isaac-sim',
-                component: ComponentCreator('/module-3/introduction-isaac-sim', '394'),
+                path: '/Book-Hackathon-physical-ai-humanoid/module-3/introduction-isaac-sim/',
+                component: ComponentCreator('/Book-Hackathon-physical-ai-humanoid/module-3/introduction-isaac-sim/', '107'),
                 exact: true,
                 sidebar: "defaultSidebar"
               },
               {
-                path: '/module-3/navigation-nav2-humanoids',
-                component: ComponentCreator('/module-3/navigation-nav2-humanoids', '4ff'),
+                path: '/Book-Hackathon-physical-ai-humanoid/module-3/navigation-nav2-humanoids/',
+                component: ComponentCreator('/Book-Hackathon-physical-ai-humanoid/module-3/navigation-nav2-humanoids/', '171'),
                 exact: true,
                 sidebar: "defaultSidebar"
               },
               {
-                path: '/module-3/perception-isaac-ros-vslam',
-                component: ComponentCreator('/module-3/perception-isaac-ros-vslam', '90d'),
+                path: '/Book-Hackathon-physical-ai-humanoid/module-3/perception-isaac-ros-vslam/',
+                component: ComponentCreator('/Book-Hackathon-physical-ai-humanoid/module-3/perception-isaac-ros-vslam/', '3b5'),
                 exact: true,
                 sidebar: "defaultSidebar"
               },
               {
-                path: '/module-3/synthetic-data-domain-randomization',
-                component: ComponentCreator('/module-3/synthetic-data-domain-randomization', '36d'),
+                path: '/Book-Hackathon-physical-ai-humanoid/module-3/synthetic-data-domain-randomization/',
+                component: ComponentCreator('/Book-Hackathon-physical-ai-humanoid/module-3/synthetic-data-domain-randomization/', '46d'),
                 exact: true,
                 sidebar: "defaultSidebar"
               },
               {
-                path: '/module-3/training-robot-policies',
-                component: ComponentCreator('/module-3/training-robot-policies', '775'),
+                path: '/Book-Hackathon-physical-ai-humanoid/module-3/training-robot-policies/',
+                component: ComponentCreator('/Book-Hackathon-physical-ai-humanoid/module-3/training-robot-policies/', 'c47'),
                 exact: true,
                 sidebar: "defaultSidebar"
               },
               {
-                path: '/module-4/full-vla-pipeline',
-                component: ComponentCreator('/module-4/full-vla-pipeline', '3ef'),
+                path: '/Book-Hackathon-physical-ai-humanoid/module-4/full-vla-pipeline/',
+                component: ComponentCreator('/Book-Hackathon-physical-ai-humanoid/module-4/full-vla-pipeline/', 'eef'),
                 exact: true,
                 sidebar: "defaultSidebar"
               },
               {
-                path: '/module-4/llm-cognitive-planning',
-                component: ComponentCreator('/module-4/llm-cognitive-planning', 'f99'),
+                path: '/Book-Hackathon-physical-ai-humanoid/module-4/llm-cognitive-planning/',
+                component: ComponentCreator('/Book-Hackathon-physical-ai-humanoid/module-4/llm-cognitive-planning/', '01e'),
                 exact: true,
                 sidebar: "defaultSidebar"
               },
               {
-                path: '/module-4/visual-object-grounding',
-                component: ComponentCreator('/module-4/visual-object-grounding', 'fe7'),
+                path: '/Book-Hackathon-physical-ai-humanoid/module-4/visual-object-grounding/',
+                component: ComponentCreator('/Book-Hackathon-physical-ai-humanoid/module-4/visual-object-grounding/', '07d'),
                 exact: true,
                 sidebar: "defaultSidebar"
               },
               {
-                path: '/module-4/voice-command-whisper',
-                component: ComponentCreator('/module-4/voice-command-whisper', 'b19'),
+                path: '/Book-Hackathon-physical-ai-humanoid/module-4/voice-command-whisper/',
+                component: ComponentCreator('/Book-Hackathon-physical-ai-humanoid/module-4/voice-command-whisper/', '862'),
                 exact: true,
                 sidebar: "defaultSidebar"
               },
               {
-                path: '/module-4/what-is-vla',
-                component: ComponentCreator('/module-4/what-is-vla', '954'),
+                path: '/Book-Hackathon-physical-ai-humanoid/module-4/what-is-vla/',
+                component: ComponentCreator('/Book-Hackathon-physical-ai-humanoid/module-4/what-is-vla/', 'b32'),
                 exact: true,
                 sidebar: "defaultSidebar"
               },
               {
-                path: '/',
-                component: ComponentCreator('/', 'a61'),
+                path: '/Book-Hackathon-physical-ai-humanoid/',
+                component: ComponentCreator('/Book-Hackathon-physical-ai-humanoid/', '3eb'),
                 exact: true,
                 sidebar: "defaultSidebar"
               }

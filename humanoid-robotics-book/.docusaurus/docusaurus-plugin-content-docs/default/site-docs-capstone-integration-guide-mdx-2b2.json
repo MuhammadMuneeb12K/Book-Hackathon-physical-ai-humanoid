@@ -5,7 +5,7 @@
   "source": "@site/docs/capstone/integration-guide.mdx",
   "sourceDirName": "capstone",
   "slug": "/capstone/capstone-integration-guide",
-  "permalink": "/capstone/capstone-integration-guide",
+  "permalink": "/Book-Hackathon-physical-ai-humanoid/capstone/capstone-integration-guide",
   "draft": false,
   "unlisted": false,
   "tags": [],
@@ -17,10 +17,10 @@
   "sidebar": "defaultSidebar",
   "previous": {
     "title": "7.1 Appendices - Resources and Further Reading",
-    "permalink": "/appendices/"
+    "permalink": "/Book-Hackathon-physical-ai-humanoid/appendices/"
   },
   "next": {
     "title": "Getting Started - Setting Up Your Environment",
-    "permalink": "/getting-started"
+    "permalink": "/Book-Hackathon-physical-ai-humanoid/getting-started"
   }
 }

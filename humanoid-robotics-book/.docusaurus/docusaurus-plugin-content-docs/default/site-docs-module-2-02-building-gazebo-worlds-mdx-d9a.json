@@ -5,7 +5,7 @@
   "source": "@site/docs/module-2/02-building-gazebo-worlds.mdx",
   "sourceDirName": "module-2",
   "slug": "/module-2/building-gazebo-worlds",
-  "permalink": "/module-2/building-gazebo-worlds",
+  "permalink": "/Book-Hackathon-physical-ai-humanoid/module-2/building-gazebo-worlds",
   "draft": false,
   "unlisted": false,
   "tags": [],
@@ -18,10 +18,10 @@
   "sidebar": "defaultSidebar",
   "previous": {
     "title": "2.1 What Is a Digital Twin?",
-    "permalink": "/module-2/what-is-digital-twin"
+    "permalink": "/Book-Hackathon-physical-ai-humanoid/module-2/what-is-digital-twin"
   },
   "next": {
     "title": "2.3 Physics Simulation (Gravity, Rigid Bodies, Collisions)",
-    "permalink": "/module-2/physics-simulation"
+    "permalink": "/Book-Hackathon-physical-ai-humanoid/module-2/physics-simulation"
   }
 }

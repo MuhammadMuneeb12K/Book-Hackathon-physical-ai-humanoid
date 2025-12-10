@@ -1,0 +1,20 @@
+﻿{
+  "servers": {
+    "docusaurus-dev": {
+      "command": "node",
+      "args": [".mcp/servers/docusaurus-dev/index.js"]
+    },
+    "docusaurus-build": {
+      "command": "node",
+      "args": [".mcp/servers/docusaurus-build/index.js"]
+    },
+    "github-commit": {
+      "command": "node",
+      "args": [".mcp/servers/github-commit/index.js"]
+    },
+    "github-push": {
+      "command": "node",
+      "args": [".mcp/servers/github-push/index.js"]
+    }
+  }
+}

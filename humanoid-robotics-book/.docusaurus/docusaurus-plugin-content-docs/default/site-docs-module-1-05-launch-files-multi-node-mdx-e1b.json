@@ -5,7 +5,7 @@
   "source": "@site/docs/module-1/05-launch-files-multi-node.mdx",
   "sourceDirName": "module-1",
   "slug": "/module-1/launch-files-multi-node",
-  "permalink": "/module-1/launch-files-multi-node",
+  "permalink": "/Book-Hackathon-physical-ai-humanoid/module-1/launch-files-multi-node",
   "draft": false,
   "unlisted": false,
   "tags": [],
@@ -18,10 +18,10 @@
   "sidebar": "defaultSidebar",
   "previous": {
     "title": "1.4 TF2: Frames & Transformations",
-    "permalink": "/module-1/tf2-frames-transformations"
+    "permalink": "/Book-Hackathon-physical-ai-humanoid/module-1/tf2-frames-transformations"
   },
   "next": {
     "title": "Module 2: Humanoid Robot Kinematics",
-    "permalink": "/category/module-2-humanoid-robot-kinematics"
+    "permalink": "/Book-Hackathon-physical-ai-humanoid/category/module-2-humanoid-robot-kinematics"
   }
 }

@@ -6,8 +6,9 @@
 export default {
   "title": "Humanoid Robotics Book",
   "tagline": "Project Documentation",
-  "url": "https://example.com",
-  "baseUrl": "/",
+  "url": "https://muhammadmuneeb12k.github.io",
+  "baseUrl": "/Book-Hackathon-physical-ai-humanoid/",
+  "trailingSlash": true,
   "onBrokenLinks": "throw",
   "markdown": {
     "hooks": {
@@ -27,8 +28,8 @@ export default {
     }
   },
   "favicon": "img/favicon.ico",
-  "organizationName": "your-org",
-  "projectName": "humanoid-robotics-book",
+  "organizationName": "muhammadmuneeb12k",
+  "projectName": "Book-Hackathon-physical-ai-humanoid",
   "presets": [
     [
       "@docusaurus/preset-classic",
@@ -38,7 +39,7 @@ export default {
           "routeBasePath": "/"
         },
         "theme": {
-          "customCss": "D:\\mk\\giaic\\Hackathon\\humanoid-robotics-book\\src\\css\\custom.css"
+          "customCss": "D:\\mk\\giaic\\Book-Hackathon-physical-ai-humanoid\\humanoid-robotics-book\\src\\css\\custom.css"
         }
       }
     ]

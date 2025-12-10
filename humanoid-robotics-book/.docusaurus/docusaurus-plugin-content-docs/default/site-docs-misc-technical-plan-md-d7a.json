@@ -5,7 +5,7 @@
   "source": "@site/docs/misc/technical-plan.md",
   "sourceDirName": "misc",
   "slug": "/misc/technical-plan",
-  "permalink": "/misc/technical-plan",
+  "permalink": "/Book-Hackathon-physical-ai-humanoid/misc/technical-plan",
   "draft": false,
   "unlisted": false,
   "tags": [],
@@ -14,10 +14,10 @@
   "sidebar": "defaultSidebar",
   "previous": {
     "title": "Miscellaneous",
-    "permalink": "/category/miscellaneous"
+    "permalink": "/Book-Hackathon-physical-ai-humanoid/category/miscellaneous"
   },
   "next": {
     "title": "7.1 Appendices - Resources and Further Reading",
-    "permalink": "/appendices/"
+    "permalink": "/Book-Hackathon-physical-ai-humanoid/appendices/"
   }
 }

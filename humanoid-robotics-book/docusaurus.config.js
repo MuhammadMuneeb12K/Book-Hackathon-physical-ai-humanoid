@@ -23,6 +23,7 @@ module.exports = {
       '@docusaurus/preset-classic',
       {
         docs: {
+          sidebarPath: require.resolve('./sidebars.js'),
           path: 'docs',         // your docs folder
           routeBasePath: '/',   // root path
         },

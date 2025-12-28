@@ -15,7 +15,7 @@
     "id": "navigation-nav2-humanoids",
     "title": "3.4 Navigation with Nav2 for Humanoids"
   },
-  "sidebar": "defaultSidebar",
+  "sidebar": "tutorialSidebar",
   "previous": {
     "title": "3.3 Perception with Isaac ROS (VSLAM)",
     "permalink": "/Book-Hackathon-physical-ai-humanoid/module-3/perception-isaac-ros-vslam"

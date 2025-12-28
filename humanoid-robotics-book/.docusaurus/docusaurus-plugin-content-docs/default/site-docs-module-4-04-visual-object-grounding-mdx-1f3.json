@@ -15,7 +15,7 @@
     "id": "visual-object-grounding",
     "title": "4.4 Visual Object Grounding"
   },
-  "sidebar": "defaultSidebar",
+  "sidebar": "tutorialSidebar",
   "previous": {
     "title": "4.3 LLM-Based Cognitive Planning",
     "permalink": "/Book-Hackathon-physical-ai-humanoid/module-4/llm-cognitive-planning"

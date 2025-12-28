@@ -15,7 +15,7 @@
     "id": "llm-cognitive-planning",
     "title": "4.3 LLM-Based Cognitive Planning"
   },
-  "sidebar": "defaultSidebar",
+  "sidebar": "tutorialSidebar",
   "previous": {
     "title": "4.2 Voice Command Systems with Whisper",
     "permalink": "/Book-Hackathon-physical-ai-humanoid/module-4/voice-command-whisper"

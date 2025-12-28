@@ -15,7 +15,7 @@
     "id": "sensor-simulation",
     "title": "2.4 Sensor Simulation (LiDAR, Depth, IMU)"
   },
-  "sidebar": "defaultSidebar",
+  "sidebar": "tutorialSidebar",
   "previous": {
     "title": "2.3 Physics Simulation (Gravity, Rigid Bodies, Collisions)",
     "permalink": "/Book-Hackathon-physical-ai-humanoid/module-2/physics-simulation"

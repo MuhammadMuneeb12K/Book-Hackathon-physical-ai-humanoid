@@ -15,7 +15,7 @@
     "id": "urdf-humanoid-robots",
     "title": "1.3 URDF for Humanoid Robots"
   },
-  "sidebar": "defaultSidebar",
+  "sidebar": "tutorialSidebar",
   "previous": {
     "title": "1.2 Building Python Nodes with rclpy",
     "permalink": "/Book-Hackathon-physical-ai-humanoid/module-1/building-python-nodes"

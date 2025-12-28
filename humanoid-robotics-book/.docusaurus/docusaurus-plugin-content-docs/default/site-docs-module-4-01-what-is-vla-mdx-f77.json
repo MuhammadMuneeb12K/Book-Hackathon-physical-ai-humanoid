@@ -15,10 +15,10 @@
     "id": "what-is-vla",
     "title": "4.1 What Is Vision-Language-Action (VLA)?"
   },
-  "sidebar": "defaultSidebar",
+  "sidebar": "tutorialSidebar",
   "previous": {
-    "title": "Module 4: Humanoid Robot Control",
-    "permalink": "/Book-Hackathon-physical-ai-humanoid/category/module-4-humanoid-robot-control"
+    "title": "3.5 Training Robot Policies",
+    "permalink": "/Book-Hackathon-physical-ai-humanoid/module-3/training-robot-policies"
   },
   "next": {
     "title": "4.2 Voice Command Systems with Whisper",

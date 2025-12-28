@@ -42,144 +42,124 @@
       "plugin": "plugin---book-hackathon-physical-ai-humanoid-docusaurus-debug-b-38-e44"
     }
   },
-  "/Book-Hackathon-physical-ai-humanoid/-ce5": {
+  "/Book-Hackathon-physical-ai-humanoid/-99f": {
     "__comp": "__comp---theme-docs-root-5-e-9-0b6",
     "__context": {
       "plugin": "plugin---book-hackathon-physical-ai-humanoid-aba-f12"
     }
   },
-  "/Book-Hackathon-physical-ai-humanoid/-f64": {
+  "/Book-Hackathon-physical-ai-humanoid/-a5d": {
     "__comp": "__comp---theme-doc-version-roota-7-b-5de",
     "__props": "__props---book-hackathon-physical-ai-humanoid-914-bab"
   },
-  "/Book-Hackathon-physical-ai-humanoid/-0a9": {
+  "/Book-Hackathon-physical-ai-humanoid/-dd9": {
     "__comp": "__comp---theme-doc-roota-94-67a"
   },
-  "/Book-Hackathon-physical-ai-humanoid/appendices/-409": {
+  "/Book-Hackathon-physical-ai-humanoid/appendices/-d72": {
     "__comp": "__comp---theme-doc-item-178-a40",
     "content": "content---book-hackathon-physical-ai-humanoid-appendices-475-21e"
   },
-  "/Book-Hackathon-physical-ai-humanoid/capstone/capstone-integration-guide/-d4f": {
+  "/Book-Hackathon-physical-ai-humanoid/capstone/capstone-integration-guide/-55b": {
     "__comp": "__comp---theme-doc-item-178-a40",
     "content": "content---book-hackathon-physical-ai-humanoid-capstone-capstone-integration-guide-2-b-2-d2c"
   },
-  "/Book-Hackathon-physical-ai-humanoid/category/miscellaneous/-82a": {
-    "__comp": "__comp---theme-doc-category-generated-index-page-14-e-640",
-    "__props": "__props---book-hackathon-physical-ai-humanoid-category-miscellaneous-79-f-39a"
-  },
-  "/Book-Hackathon-physical-ai-humanoid/category/module-1-the-robotic-nervous-system-ros-2/-79f": {
-    "__comp": "__comp---theme-doc-category-generated-index-page-14-e-640",
-    "__props": "__props---book-hackathon-physical-ai-humanoid-category-module-1-the-robotic-nervous-system-ros-2-658-73a"
-  },
-  "/Book-Hackathon-physical-ai-humanoid/category/module-2-humanoid-robot-kinematics/-164": {
-    "__comp": "__comp---theme-doc-category-generated-index-page-14-e-640",
-    "__props": "__props---book-hackathon-physical-ai-humanoid-category-module-2-humanoid-robot-kinematics-d-80-47c"
-  },
-  "/Book-Hackathon-physical-ai-humanoid/category/module-3-humanoid-robot-dynamics/-2ed": {
-    "__comp": "__comp---theme-doc-category-generated-index-page-14-e-640",
-    "__props": "__props---book-hackathon-physical-ai-humanoid-category-module-3-humanoid-robot-dynamics-932-d7c"
-  },
-  "/Book-Hackathon-physical-ai-humanoid/category/module-4-humanoid-robot-control/-e9c": {
-    "__comp": "__comp---theme-doc-category-generated-index-page-14-e-640",
-    "__props": "__props---book-hackathon-physical-ai-humanoid-category-module-4-humanoid-robot-control-09-a-c86"
-  },
-  "/Book-Hackathon-physical-ai-humanoid/getting-started/-943": {
+  "/Book-Hackathon-physical-ai-humanoid/getting-started/-e22": {
     "__comp": "__comp---theme-doc-item-178-a40",
     "content": "content---book-hackathon-physical-ai-humanoid-getting-started-302-b57"
   },
-  "/Book-Hackathon-physical-ai-humanoid/hardware-lab-setup/-d09": {
+  "/Book-Hackathon-physical-ai-humanoid/hardware-lab-setup/-024": {
     "__comp": "__comp---theme-doc-item-178-a40",
     "content": "content---book-hackathon-physical-ai-humanoid-hardware-lab-setup-b-8-f-b7b"
   },
-  "/Book-Hackathon-physical-ai-humanoid/home/overview/-738": {
+  "/Book-Hackathon-physical-ai-humanoid/home/overview/-de2": {
     "__comp": "__comp---theme-doc-item-178-a40",
     "content": "content---book-hackathon-physical-ai-humanoid-home-overview-114-a13"
   },
-  "/Book-Hackathon-physical-ai-humanoid/misc/technical-plan/-9f7": {
+  "/Book-Hackathon-physical-ai-humanoid/misc/technical-plan/-b81": {
     "__comp": "__comp---theme-doc-item-178-a40",
     "content": "content---book-hackathon-physical-ai-humanoid-misc-technical-plan-d-7-a-65a"
   },
-  "/Book-Hackathon-physical-ai-humanoid/module-1/building-python-nodes/-247": {
+  "/Book-Hackathon-physical-ai-humanoid/module-1/building-python-nodes/-88c": {
     "__comp": "__comp---theme-doc-item-178-a40",
     "content": "content---book-hackathon-physical-ai-humanoid-module-1-building-python-nodes-76-f-781"
   },
-  "/Book-Hackathon-physical-ai-humanoid/module-1/launch-files-multi-node/-a47": {
+  "/Book-Hackathon-physical-ai-humanoid/module-1/launch-files-multi-node/-9e1": {
     "__comp": "__comp---theme-doc-item-178-a40",
     "content": "content---book-hackathon-physical-ai-humanoid-module-1-launch-files-multi-node-e-1-b-0c6"
   },
-  "/Book-Hackathon-physical-ai-humanoid/module-1/ros2-architecture/-ce5": {
+  "/Book-Hackathon-physical-ai-humanoid/module-1/ros2-architecture/-503": {
     "__comp": "__comp---theme-doc-item-178-a40",
     "content": "content---book-hackathon-physical-ai-humanoid-module-1-ros-2-architecture-e-16-913"
   },
-  "/Book-Hackathon-physical-ai-humanoid/module-1/tf2-frames-transformations/-8a7": {
+  "/Book-Hackathon-physical-ai-humanoid/module-1/tf2-frames-transformations/-9a7": {
     "__comp": "__comp---theme-doc-item-178-a40",
     "content": "content---book-hackathon-physical-ai-humanoid-module-1-tf-2-frames-transformations-1-bf-bef"
   },
-  "/Book-Hackathon-physical-ai-humanoid/module-1/urdf-humanoid-robots/-2d2": {
+  "/Book-Hackathon-physical-ai-humanoid/module-1/urdf-humanoid-robots/-019": {
     "__comp": "__comp---theme-doc-item-178-a40",
     "content": "content---book-hackathon-physical-ai-humanoid-module-1-urdf-humanoid-robots-2-f-9-5e5"
   },
-  "/Book-Hackathon-physical-ai-humanoid/module-2/building-gazebo-worlds/-a3f": {
+  "/Book-Hackathon-physical-ai-humanoid/module-2/building-gazebo-worlds/-365": {
     "__comp": "__comp---theme-doc-item-178-a40",
     "content": "content---book-hackathon-physical-ai-humanoid-module-2-building-gazebo-worlds-d-9-a-433"
   },
-  "/Book-Hackathon-physical-ai-humanoid/module-2/physics-simulation/-11a": {
+  "/Book-Hackathon-physical-ai-humanoid/module-2/physics-simulation/-a57": {
     "__comp": "__comp---theme-doc-item-178-a40",
     "content": "content---book-hackathon-physical-ai-humanoid-module-2-physics-simulation-ba-6-883"
   },
-  "/Book-Hackathon-physical-ai-humanoid/module-2/sensor-simulation/-743": {
+  "/Book-Hackathon-physical-ai-humanoid/module-2/sensor-simulation/-289": {
     "__comp": "__comp---theme-doc-item-178-a40",
     "content": "content---book-hackathon-physical-ai-humanoid-module-2-sensor-simulation-c-60-33e"
   },
-  "/Book-Hackathon-physical-ai-humanoid/module-2/unity-for-robotics/-ff6": {
+  "/Book-Hackathon-physical-ai-humanoid/module-2/unity-for-robotics/-1c4": {
     "__comp": "__comp---theme-doc-item-178-a40",
     "content": "content---book-hackathon-physical-ai-humanoid-module-2-unity-for-robotics-9-e-3-334"
   },
-  "/Book-Hackathon-physical-ai-humanoid/module-2/what-is-digital-twin/-5f4": {
+  "/Book-Hackathon-physical-ai-humanoid/module-2/what-is-digital-twin/-a1d": {
     "__comp": "__comp---theme-doc-item-178-a40",
     "content": "content---book-hackathon-physical-ai-humanoid-module-2-what-is-digital-twin-7-eb-3dd"
   },
-  "/Book-Hackathon-physical-ai-humanoid/module-3/introduction-isaac-sim/-107": {
+  "/Book-Hackathon-physical-ai-humanoid/module-3/introduction-isaac-sim/-b0d": {
     "__comp": "__comp---theme-doc-item-178-a40",
     "content": "content---book-hackathon-physical-ai-humanoid-module-3-introduction-isaac-sim-b-6-d-cba"
   },
-  "/Book-Hackathon-physical-ai-humanoid/module-3/navigation-nav2-humanoids/-171": {
+  "/Book-Hackathon-physical-ai-humanoid/module-3/navigation-nav2-humanoids/-4f8": {
     "__comp": "__comp---theme-doc-item-178-a40",
     "content": "content---book-hackathon-physical-ai-humanoid-module-3-navigation-nav-2-humanoids-f-20-ea8"
   },
-  "/Book-Hackathon-physical-ai-humanoid/module-3/perception-isaac-ros-vslam/-3b5": {
+  "/Book-Hackathon-physical-ai-humanoid/module-3/perception-isaac-ros-vslam/-aa9": {
     "__comp": "__comp---theme-doc-item-178-a40",
     "content": "content---book-hackathon-physical-ai-humanoid-module-3-perception-isaac-ros-vslam-738-823"
   },
-  "/Book-Hackathon-physical-ai-humanoid/module-3/synthetic-data-domain-randomization/-46d": {
+  "/Book-Hackathon-physical-ai-humanoid/module-3/synthetic-data-domain-randomization/-c6b": {
     "__comp": "__comp---theme-doc-item-178-a40",
     "content": "content---book-hackathon-physical-ai-humanoid-module-3-synthetic-data-domain-randomization-7-c-3-e43"
   },
-  "/Book-Hackathon-physical-ai-humanoid/module-3/training-robot-policies/-c47": {
+  "/Book-Hackathon-physical-ai-humanoid/module-3/training-robot-policies/-0f0": {
     "__comp": "__comp---theme-doc-item-178-a40",
     "content": "content---book-hackathon-physical-ai-humanoid-module-3-training-robot-policies-a-91-266"
   },
-  "/Book-Hackathon-physical-ai-humanoid/module-4/full-vla-pipeline/-eef": {
+  "/Book-Hackathon-physical-ai-humanoid/module-4/full-vla-pipeline/-dc0": {
     "__comp": "__comp---theme-doc-item-178-a40",
     "content": "content---book-hackathon-physical-ai-humanoid-module-4-full-vla-pipeline-584-e8a"
   },
-  "/Book-Hackathon-physical-ai-humanoid/module-4/llm-cognitive-planning/-01e": {
+  "/Book-Hackathon-physical-ai-humanoid/module-4/llm-cognitive-planning/-adc": {
     "__comp": "__comp---theme-doc-item-178-a40",
     "content": "content---book-hackathon-physical-ai-humanoid-module-4-llm-cognitive-planning-926-033"
   },
-  "/Book-Hackathon-physical-ai-humanoid/module-4/visual-object-grounding/-07d": {
+  "/Book-Hackathon-physical-ai-humanoid/module-4/visual-object-grounding/-0eb": {
     "__comp": "__comp---theme-doc-item-178-a40",
     "content": "content---book-hackathon-physical-ai-humanoid-module-4-visual-object-grounding-1-f-3-996"
   },
-  "/Book-Hackathon-physical-ai-humanoid/module-4/voice-command-whisper/-862": {
+  "/Book-Hackathon-physical-ai-humanoid/module-4/voice-command-whisper/-826": {
     "__comp": "__comp---theme-doc-item-178-a40",
     "content": "content---book-hackathon-physical-ai-humanoid-module-4-voice-command-whisper-5-a-2-878"
   },
-  "/Book-Hackathon-physical-ai-humanoid/module-4/what-is-vla/-b32": {
+  "/Book-Hackathon-physical-ai-humanoid/module-4/what-is-vla/-83b": {
     "__comp": "__comp---theme-doc-item-178-a40",
     "content": "content---book-hackathon-physical-ai-humanoid-module-4-what-is-vla-f-77-961"
   },
-  "/Book-Hackathon-physical-ai-humanoid/-3eb": {
+  "/Book-Hackathon-physical-ai-humanoid/-be7": {
     "__comp": "__comp---theme-doc-item-178-a40",
     "content": "content---book-hackathon-physical-ai-humanoid-c-37-885"
   }

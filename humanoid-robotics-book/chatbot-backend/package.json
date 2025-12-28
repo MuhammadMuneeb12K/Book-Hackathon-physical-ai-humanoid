@@ -1,0 +1,47 @@
+{
+  "name": "chatbot-backend",
+  "version": "0.1.0",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "test:openrouter": "ts-node --esm --require=dotenv/config src/lib/test-openrouter.ts",
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint"
+  },
+  "dependencies": {
+    "@hookform/resolvers": "^5.2.2",
+    "@prisma/client": "^5.22.0",
+    "@qdrant/js-client-rest": "^1.16.2",
+    "@tanstack/react-query": "^5.90.12",
+    "better-auth": "^1.4.7",
+    "dotenv": "^17.2.3",
+    "next": "^16.0.10",
+    "node-fetch": "^3.3.2",
+    "openai": "^6.15.0",
+    "prisma": "^5.22.0",
+    "react": "^19.2.1",
+    "react-dom": "^19.2.1",
+    "react-hook-form": "^7.68.0",
+    "undici": "^7.16.0",
+    "uuid": "^13.0.0",
+    "zod": "^4.2.1",
+    "zustand": "^5.0.9"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^20.19.27",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "autoprefixer": "^10.4.17",
+    "babel-plugin-react-compiler": "1.0.0",
+    "eslint": "^9",
+    "eslint-config-next": "16.0.10",
+    "eslint-plugin-react-compiler": "^19.1.0-rc.2",
+    "postcss": "^8.4.33",
+    "tailwindcss": "^3.4.1",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3"
+  }
+}

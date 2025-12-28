@@ -15,7 +15,7 @@
     "id": "physics-simulation",
     "title": "2.3 Physics Simulation (Gravity, Rigid Bodies, Collisions)"
   },
-  "sidebar": "defaultSidebar",
+  "sidebar": "tutorialSidebar",
   "previous": {
     "title": "2.2 Building Gazebo Worlds",
     "permalink": "/Book-Hackathon-physical-ai-humanoid/module-2/building-gazebo-worlds"

@@ -1,0 +1,157 @@
+---
+id: getting-started
+title: Getting Started - Setting Up Your Environment
+---
+This section provides essential guidance for setting up your development environment, ensuring you have all the necessary tools and configurations to follow along with the book's practical exercises. A well-prepared environment is crucial for a smooth learning experience in the complex domain of humanoid robotics.
+
+## Goal
+
+The goal of this "Getting Started" guide is to establish a robust and consistent development environment that supports all the modules and hands-on labs presented in this book. Upon completion, you will have a functional setup for ROS 2 development, simulation, and AI model integration.
+
+## Learning Objectives
+
+*   Understand the recommended operating system and hardware requirements.
+*   Successfully install and configure Ubuntu 22.04 LTS (Jammy Jellyfish).
+*   Install NVIDIA GPU drivers and CUDA Toolkit for accelerated computing.
+*   Set up ROS 2 Humble Hawksbill, including all necessary development tools.
+*   Configure Python environments and package managers (pip, conda).
+*   Understand and prepare for potential hardware-specific dependencies (e.g., NVIDIA Jetson, RTX GPUs).
+
+## Prerequisites
+
+*   A dedicated computer (desktop or laptop) capable of running Ubuntu.
+*   For advanced simulation (Isaac Sim) and AI tasks, an NVIDIA GPU (RTX series recommended) is highly advisable.
+*   Basic familiarity with Linux command-line operations.
+*   Stable internet connection for downloading software packages.
+
+## Key Concepts
+
+*   **Operating System (OS) Choice:** The importance of a stable Linux distribution for robotics development.
+*   **Package Management:** Using `apt` and `pip` for software installation.
+*   **GPU Acceleration:** Understanding the role of NVIDIA drivers and CUDA in AI and simulation.
+*   **ROS 2 Distributions:** The concept of long-term support (LTS) distributions like Humble Hawksbill.
+*   **Python Virtual Environments:** Best practices for managing Python dependencies.
+*   **Containerization (Optional but Recommended):** Introduction to Docker for consistent environments (briefly mentioned for advanced users).
+
+## Tools
+
+*   **Operating System:** Ubuntu 22.04 LTS (Jammy Jellyfish).
+*   **ROS 2 Distribution:** Humble Hawksbill.
+*   **Python:** Version 3.10 (default with Ubuntu 22.04).
+*   **NVIDIA Drivers & CUDA Toolkit:** Specific versions compatible with your GPU and Isaac Sim.
+*   **`apt`:** Ubuntu's default package manager.
+*   **`pip`:** Python's package installer.
+*   **`git`:** Version control system.
+*   **Code Editor:** Visual Studio Code (recommended) with relevant extensions (e.g., Python, ROS).
+
+## Chapter Sections
+
+### 1. Choosing Your Development Machine and Operating System
+
+*   **Hardware Recommendations:** CPU, RAM, Storage, and GPU considerations.
+*   **Why Ubuntu 22.04 LTS?** Stability, community support, and compatibility with ROS 2 Humble.
+*   **Installation Guide:** A high-level overview of installing Ubuntu 22.04 (dual-boot or fresh install).
+
+### 2. NVIDIA GPU Setup (Crucial for AI and Simulation)
+
+*   **Verifying Your GPU:** How to check your NVIDIA GPU model.
+*   **Installing NVIDIA Drivers:** Step-by-step guide for proprietary driver installation.
+*   **CUDA Toolkit Installation:** Ensuring correct CUDA version for Isaac Sim and other AI frameworks.
+*   **cuDNN Installation:** Configuring the CUDA Deep Neural Network library.
+
+### 3. ROS 2 Humble Hawksbill Installation
+
+*   **Adding the ROS 2 Repositories:** Configuring your `apt` sources.
+*   **Installing ROS 2 Desktop Full:** Comprehensive installation of ROS 2 and development tools.
+*   **Environment Setup:** Sourcing the ROS 2 setup files.
+*   **Verifying ROS 2 Installation:** Running basic `talker` and `listener` examples.
+
+### 4. Python Environment and Dependencies
+
+*   **Default Python 3.10:** Utilizing the system's Python.
+*   **Managing Python Packages with `pip`:** Installing common robotics and AI libraries.
+*   **Virtual Environments (Recommended):** Creating and activating `venv` for project isolation.
+
+### 5. Git and Other Essential Utilities
+
+*   **Installing Git:** Setting up version control.
+*   **Configuring Git:** User name and email.
+*   **Other Useful Tools:** `htop`, `tmux`, `curl`, `wget`.
+
+### 6. Code Editor Setup (Visual Studio Code)
+
+*   **Installing VS Code:** Getting the popular code editor.
+*   **Essential Extensions:** Python, C/C++, ROS, Remote Development.
+*   **Workspace Configuration:** Setting up `settings.json` for consistent formatting and linting.
+
+## Required Diagrams
+
+*   **Development Environment Stack:** A layered diagram showing OS, drivers, CUDA, ROS 2, Python, and applications.
+*   **ROS 2 Installation Flowchart:** A step-by-step visual guide to ROS 2 setup.
+
+## Hands-on Labs
+
+### Lab 1: Verify Ubuntu and Basic Utilities
+1.  **Objective:** Confirm a successful Ubuntu installation and basic command-line functionality.
+2.  **Instructions:**
+    *   Open a terminal (`Ctrl+Alt+T`).
+    *   Run `lsb_release -a` to verify Ubuntu 22.04.
+    *   Run `python3 --version` to check Python installation (should be 3.10.x).
+    *   Run `sudo apt update && sudo apt upgrade -y` to update your system.
+    *   Install `git` if not already present: `sudo apt install git -y`.
+    *   Verify `git` installation: `git --version`.
+
+### Lab 2: Confirm NVIDIA Driver and CUDA Installation
+1.  **Objective:** Ensure NVIDIA GPU drivers and CUDA Toolkit are correctly installed and detected.
+2.  **Instructions:**
+    *   Open a terminal.
+    *   Run `nvidia-smi` to verify driver installation and GPU status. Note the CUDA version reported by `nvidia-smi` (this is the driver-API compatibility, not the toolkit version).
+    *   Run `nvcc --version` to confirm the CUDA Toolkit installation and its version. This version should ideally match or be compatible with the CUDA version required by Isaac Sim or other deep learning frameworks you intend to use.
+    *   (Optional) Run a CUDA sample to verify functionality: `cuda-install-samples-$(nvcc -V | grep -oP 'V\d+\.\d+' | cut -c 2-)/NVIDIA_CUDA-$(nvcc -V | grep -oP 'V\d+\.\d+' | cut -c 2-)/bin/x86_64/linux/release/deviceQuery`. Look for "Result = PASS".
+
+### Lab 3: Validate ROS 2 Humble Setup
+1.  **Objective:** Verify that ROS 2 Humble Hawksbill is correctly installed and configured.
+2.  **Instructions:**
+    *   Open a new terminal.
+    *   Source the ROS 2 setup script: `source /opt/ros/humble/setup.bash`.
+    *   Run a ROS 2 `talker` node: `ros2 run demo_nodes_cpp talker`.
+    *   Open a *second* terminal.
+    *   Source the ROS 2 setup script: `source /opt/ros/humble/setup.bash`.
+    *   Run a ROS 2 `listener` node: `ros2 run demo_nodes_py listener`.
+    *   Observe messages being exchanged between the two terminals.
+
+## Expected Output
+
+*   A fully configured Ubuntu 22.04 system with NVIDIA GPU drivers, CUDA Toolkit, and ROS 2 Humble Hawksbill installed.
+*   Ability to run basic ROS 2 example nodes (`talker`/`listener`).
+*   A functional Python environment ready for robotics and AI development.
+
+## Assessment Questions
+
+*   Why is an LTS (Long Term Support) version of Ubuntu recommended for ROS 2 development?
+*   Explain the role of NVIDIA drivers and the CUDA Toolkit in accelerating AI and simulation tasks.
+*   What is the purpose of sourcing the `setup.bash` file in ROS 2?
+*   How do Python virtual environments contribute to better project management in robotics?
+
+## Real-world Applications
+
+*   **Robotics Development Labs:** Standardizing development environments for student projects and research.
+*   **Industrial Automation:** Setting up consistent deployment targets for robot control software.
+*   **AI/Machine Learning Engineering:** Ensuring reproducible research environments for model training and deployment.
+*   **Embedded Systems Development:** Preparing cross-compilation environments for robotics hardware.
+
+## Edge Cases
+
+*   **GPU Compatibility Issues:** Older NVIDIA GPUs might not support the latest CUDA versions required by Isaac Sim.
+*   **ROS 2 Dependency Conflicts:** Other installed software might conflict with ROS 2 packages.
+*   **Network Proxy Settings:** Installation issues in environments with strict network proxies.
+*   **Disk Space Limitations:** Insufficient disk space for installing all necessary tools and datasets.
+
+---
+
+### **References**
+
+*   Canonical. (2022). *Ubuntu 22.04 LTS (Jammy Jellyfish) Release Notes*. (Placeholder citation)
+*   NVIDIA. (2023). *CUDA Toolkit Documentation*. (Placeholder citation)
+*   Open Robotics. (2022). *ROS 2 Documentation: Humble Hawksbill*. (Placeholder citation)
+*   Van Rossum, G., & Drake, F. L. (2009). *Python 3 Reference Manual*. CreateSpace. (Placeholder citation)

@@ -14,13 +14,9 @@
     "id": "appendices",
     "title": "7.1 Appendices - Resources and Further Reading"
   },
-  "sidebar": "defaultSidebar",
+  "sidebar": "tutorialSidebar",
   "previous": {
     "title": "Technical Plan: Physical AI & Humanoid Robotics Project",
     "permalink": "/Book-Hackathon-physical-ai-humanoid/misc/technical-plan"
-  },
-  "next": {
-    "title": "5.1 Capstone - The Integrated Humanoid Robotics System",
-    "permalink": "/Book-Hackathon-physical-ai-humanoid/capstone/capstone-integration-guide"
   }
 }

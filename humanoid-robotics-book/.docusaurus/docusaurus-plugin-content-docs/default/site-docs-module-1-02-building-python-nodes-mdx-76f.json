@@ -15,7 +15,7 @@
     "id": "building-python-nodes",
     "title": "1.2 Building Python Nodes with rclpy"
   },
-  "sidebar": "defaultSidebar",
+  "sidebar": "tutorialSidebar",
   "previous": {
     "title": "1.1 ROS 2 Architecture & DDS - The Robotic Nervous System",
     "permalink": "/Book-Hackathon-physical-ai-humanoid/module-1/ros2-architecture"

@@ -15,7 +15,7 @@
     "id": "tf2-frames-transformations",
     "title": "1.4 TF2: Frames & Transformations"
   },
-  "sidebar": "defaultSidebar",
+  "sidebar": "tutorialSidebar",
   "previous": {
     "title": "1.3 URDF for Humanoid Robots",
     "permalink": "/Book-Hackathon-physical-ai-humanoid/module-1/urdf-humanoid-robots"

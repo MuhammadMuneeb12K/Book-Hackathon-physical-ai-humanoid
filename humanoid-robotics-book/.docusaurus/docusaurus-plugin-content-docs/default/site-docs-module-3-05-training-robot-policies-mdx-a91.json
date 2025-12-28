@@ -15,13 +15,13 @@
     "id": "training-robot-policies",
     "title": "3.5 Training Robot Policies"
   },
-  "sidebar": "defaultSidebar",
+  "sidebar": "tutorialSidebar",
   "previous": {
     "title": "3.4 Navigation with Nav2 for Humanoids",
     "permalink": "/Book-Hackathon-physical-ai-humanoid/module-3/navigation-nav2-humanoids"
   },
   "next": {
-    "title": "Module 4: Humanoid Robot Control",
-    "permalink": "/Book-Hackathon-physical-ai-humanoid/category/module-4-humanoid-robot-control"
+    "title": "4.1 What Is Vision-Language-Action (VLA)?",
+    "permalink": "/Book-Hackathon-physical-ai-humanoid/module-4/what-is-vla"
   }
 }

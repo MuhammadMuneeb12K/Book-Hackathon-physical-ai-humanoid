@@ -1,0 +1,377 @@
+---
+id: tf2-frames-transformations
+title: "1.4 TF2: Frames & Transformations"
+---
+
+Building upon our understanding of URDF for describing a robot's physical structure, this chapter introduces TF2 – the ROS 2 framework for managing coordinate frames and transformations. In robotics, especially with complex humanoid systems, understanding where the robot is in its environment, where its sensors are relative to its body, and how its end-effectors move, all depend on accurate spatial relationships. TF2 provides a powerful, standardized way to keep track of these relationships over time.
+
+## Goal
+
+The goal of this chapter is to teach students about TF2, how it manages coordinate frames and transformations, and its importance in enabling humanoid robots to reason about their own state and the location of objects and sensors in a dynamic environment.
+
+## Learning Objectives
+
+*   Understand the concept of coordinate frames and transformations in robotics.
+*   Grasp the role and importance of TF2 in ROS 2 for managing these transformations.
+*   Learn how to publish static and dynamic transforms using TF2.
+*   Learn how to listen for and apply transforms to data from different frames.
+*   Visualize TF2 frames and their relationships in RViz2.
+*   Understand the concept of the TF2 tree and common pitfalls.
+
+## Prerequisites
+
+*   Familiarity with 3D geometry, vectors, and matrices (basic level).
+*   Understanding of URDF and robot kinematics from the previous chapter.
+*   A functional ROS 2 Humble environment with RViz2.
+
+## Key Concepts
+
+*   **Coordinate Frame:** A reference system used to define the position and orientation of objects in 3D space.
+*   **Transformation (Transform):** The mathematical operation that converts coordinates from one frame to another (translation + rotation).
+*   **TF2 (Transform Frame 2):** The ROS 2 package that keeps track of multiple coordinate frames and allows users to query the transformation between any two frames at any time.
+*   **TF2 Tree:** The directed graph structure formed by all published transforms, where each node is a frame and each edge is a transformation.
+*   **`tf2_ros.TransformBroadcaster`:** A class used to publish transforms (e.g., from a sensor to the robot's base).
+*   **`tf2_ros.Buffer`:** Stores all received transforms.
+*   **`tf2_ros.TransformListener`:** Uses the `Buffer` to query transformations.
+*   **`tf2_ros.StaticTransformBroadcaster`:** For publishing transforms that do not change over time.
+*   **Time Travel:** TF2's ability to provide transformations between any two frames at any point in time (within its buffer).
+*   **Parent-Child Relationship:** Transforms are always defined from a child frame to a parent frame.
+
+## Tools
+
+*   **ROS 2 Humble:** The robotic framework.
+*   **TF2:** The ROS 2 transformation library.
+*   **`rviz2`:** For visualizing frames and their relationships.
+*   **`tf2_tools`:** Command-line tools like `view_frames` and `tf2_echo`.
+*   **Code Editor:** Visual Studio Code.
+
+## Chapter Sections
+
+### 1.4.1 The Need for Coordinate Frames in Robotics
+
+*   Why a single coordinate system is insufficient for a mobile, articulated robot.
+*   Examples: Robot base frame, camera frame, end-effector frame, world frame.
+*   The problem of knowing "where is what" relative to each other.
+
+### 1.4.2 Introduction to TF2: What it Does
+
+*   Overview of TF2's core functionality:
+    *   Maintains the relationships between coordinate frames.
+    *   Allows querying of transformations between any two frames.
+    *   Handles "time travel" (transforms at specific past times).
+*   The TF2 Tree structure: parent-child relationships.
+
+### 1.4.3 Publishing Transforms: Static and Dynamic
+
+*   **`StaticTransformBroadcaster`:**
+    *   When to use static transforms (e.g., sensor mounted rigidly on a robot link).
+    *   Python example of publishing a static transform.
+*   **`TransformBroadcaster`:**
+    *   When to use dynamic transforms (e.g., robot's odometry, moving object detections).
+    *   Python example of publishing a dynamic transform from an odometry source.
+
+### 1.4.4 Listening for Transforms and Applying Them
+
+*   **`Buffer` and `TransformListener`:** How to set up a listener.
+*   **Querying Transforms:** `tf2_buffer.lookup_transform(target_frame, source_frame, time)`.
+*   **Applying Transforms:** Transforming points, vectors, and poses from one frame to another.
+*   Python example: Transforming a detected object's position from camera frame to robot base frame.
+
+### 1.4.5 Visualizing TF2 in RViz2
+
+*   **Adding the TF Display:** Observing the TF2 tree and individual frames.
+*   **`tf2_echo`:** Command-line tool to inspect the transform between two frames.
+*   **`view_frames`:** Generating a PDF visualization of the entire TF2 tree.
+*   Debugging TF2 issues using RViz2.
+
+### 1.4.6 Common TF2 Patterns and Pitfalls
+
+*   **Establishing a World Frame:** `map`, `odom`, or `world`.
+*   **The Importance of `base_link`:** The robot's primary reference frame.
+*   **Transforming Sensor Data:** Correctly relating sensor measurements to the robot's state.
+*   **Loop Closures:** Avoiding cycles in the TF2 tree.
+*   **Stale Transforms:** What happens when transforms are not updated frequently enough.
+
+## Required Diagrams
+
+*   **TF2 Tree Structure (Humanoid Example):** Illustrating a hierarchy like `map -> odom -> base_link -> torso_link -> head_link -> camera_link`.
+*   **Transformation Illustration:** A 2D or 3D drawing showing a point in one frame being transformed into another frame.
+*   **TF2 Publisher/Listener Flow:** A diagram showing a node publishing transforms, TF2 storing them, and another node querying them.
+
+## Hands-on Labs
+
+### Lab 1.4.1: Publish a Static Transform for a Camera
+
+**Objective:** Publish a static transform for a simulated camera mounted on the head of the humanoid robot from the previous lab.
+
+**Prerequisites:** Completed Lab 1.3.1 (URDF visualization).
+
+**Instructions:**
+
+1.  **Create a new ROS 2 Python package (or add to `my_humanoid_description` if preferred):**
+    ```bash
+    cd <your_ros2_ws>/src
+    ros2 pkg create --build-type ament_python static_tf_publisher --dependencies rclpy tf2_ros geometry_msgs
+    ```
+2.  **Navigate into the package and create the script:**
+    ```bash
+    cd static_tf_publisher/static_tf_publisher
+    touch static_camera_tf_publisher.py
+    ```
+3.  **Edit `static_camera_tf_publisher.py`:**
+    ```python
+    import rclpy
+    from rclpy.node import Node
+    from tf2_ros.static_transform_broadcaster import StaticTransformBroadcaster
+    from geometry_msgs.msg import TransformStamped
+    import math
+
+    class StaticCameraTFBroadcaster(Node):
+
+        def __init__(self):
+            super().__init__('static_camera_tf_broadcaster')
+            self.tf_static_broadcaster = StaticTransformBroadcaster(self)
+            self.declare_parameters(
+                namespace='',
+                parameters=[
+                    ('x', 0.0), ('y', 0.0), ('z', 0.0),
+                    ('roll', 0.0), ('pitch', 0.0), ('yaw', 0.0),
+                    ('frame_id', 'head_link'),
+                    ('child_frame_id', 'camera_link')
+                ]
+            )
+            self.publish_static_tf()
+            self.get_logger().info('Static Camera TF Broadcaster Node started.')
+
+        def publish_static_tf(self):
+            t = TransformStamped()
+
+            t.header.stamp = self.get_clock().now().to_msg()
+            t.header.frame_id = self.get_parameter('frame_id').get_parameter_value().string_value
+            t.child_frame_id = self.get_parameter('child_frame_id').get_parameter_value().string_value
+
+            t.transform.translation.x = self.get_parameter('x').get_parameter_value().double_value
+            t.transform.translation.y = self.get_parameter('y').get_parameter_value().double_value
+            t.transform.translation.z = self.get_parameter('z').get_parameter_value().double_value
+
+            # Convert Euler angles (roll, pitch, yaw) to quaternion
+            roll = self.get_parameter('roll').get_parameter_value().double_value
+            pitch = self.get_parameter('pitch').get_parameter_value().double_value
+            yaw = self.get_parameter('yaw').get_parameter_value().double_value
+
+            cy = math.cos(yaw * 0.5)
+            sy = math.sin(yaw * 0.5)
+            cp = math.cos(pitch * 0.5)
+            sp = math.sin(pitch * 0.5)
+            cr = math.cos(roll * 0.5)
+            sr = math.sin(roll * 0.5)
+
+            t.transform.rotation.w = cr * cp * cy + sr * sp * sy
+            t.transform.rotation.x = sr * cp * cy - cr * sp * sy
+            t.transform.rotation.y = cr * sp * cy + sr * cp * sy
+            t.transform.rotation.z = cr * cp * sy - sr * sp * cy
+
+            self.tf_static_broadcaster.sendTransform(t)
+
+    def main(args=None):
+        rclpy.init(args=args)
+        node = StaticCameraTFBroadcaster()
+        try:
+            rclpy.spin(node)
+        except KeyboardInterrupt:
+            pass
+        node.destroy_node()
+        rclpy.shutdown()
+
+    if __name__ == '__main__':
+        main()
+    ```
+4.  **Edit `setup.py` for `static_tf_publisher`:** Add the entry point.
+    ```python
+    from setuptools import find_packages, setup
+
+    package_name = 'static_tf_publisher'
+
+    setup(
+        name=package_name,
+        version='0.0.0',
+        packages=find_packages(exclude=['test']),
+        data_files=[
+            ('share/' + package_name, ['package.xml']),
+        ],
+        install_requires=['setuptools'],
+        zip_safe=True,
+        maintainer='your_name',
+        maintainer_email='your_email@example.com',
+        description='ROS 2 package for publishing static TF2 transforms.',
+        license='Apache-2.0',
+        tests_require=['pytest'],
+        entry_points={
+            'console_scripts': [
+                'static_camera_tf_publisher = static_tf_publisher.static_camera_tf_publisher:main',
+            ],
+        },
+    )
+    ```
+5.  **Build your package and source your workspace:**
+    ```bash
+    cd <your_ros2_ws>
+    colcon build --packages-select static_tf_publisher
+    source install/setup.bash
+    ```
+6.  **Run the URDF display launch file from Lab 1.3.1 in one terminal:**
+    ```bash
+    ros2 launch my_humanoid_description display_humanoid.launch.py
+    ```
+7.  **In a separate terminal, run the static TF publisher:**
+    ```bash
+    ros2 run static_tf_publisher static_camera_tf_publisher --ros-args -p x:=0.1 -p z:=0.05 -p frame_id:=head_link -p child_frame_id:=camera_link
+    ```
+    *This command will mount a `camera_link` 0.1m forward and 0.05m up from `head_link`.*
+8.  **In RViz2, add a "TF" display.** You should now see the `head_link` and `camera_link` frames, with `camera_link` offset from `head_link`. You can also use `tf2_echo head_link camera_link` in a terminal to see the transform.
+
+### Lab 1.4.2: Listen for a Transform and Display a Point
+
+**Objective:** Create a node that listens for the transform between `base_link` and `camera_link` and transforms a fixed point from `camera_link` to `base_link`, then publishes it as a `geometry_msgs/msg/PointStamped`.
+
+**Prerequisites:** Completed Lab 1.4.1.
+
+**Instructions:**
+
+1.  **In the `static_tf_publisher` package, create `point_transformer.py`:**
+    ```python
+    import rclpy
+    from rclpy.node import Node
+    from tf2_ros import Buffer, TransformListener
+    from geometry_msgs.msg import PointStamped, TransformStamped
+    import tf2_geometry_msgs  # Import to use transform_point function
+
+    class PointTransformer(Node):
+
+        def __init__(self):
+            super().__init__('point_transformer')
+            self.tf_buffer = Buffer()
+            self.tf_listener = TransformListener(self.tf_buffer, self)
+            self.point_publisher = self.create_publisher(PointStamped, '/transformed_point', 10)
+            self.timer = self.create_timer(1.0, self.on_timer) # Check for transform every 1 second
+            self.get_logger().info('Point Transformer Node started.')
+
+        def on_timer(self):
+            # Define a point in the camera_link frame (e.g., 1m directly in front of the camera)
+            point_in_camera_frame = PointStamped()
+            point_in_camera_frame.header.frame_id = 'camera_link'
+            point_in_camera_frame.header.stamp = self.get_clock().now().to_msg()
+            point_in_camera_frame.point.x = 1.0
+            point_in_camera_frame.point.y = 0.0
+            point_in_camera_frame.point.z = 0.0
+
+            target_frame = 'base_link'
+            source_frame = 'camera_link'
+
+            try:
+                # Get the transform from source_frame to target_frame
+                transform = self.tf_buffer.lookup_transform(
+                    target_frame,
+                    source_frame,
+                    rclpy.time.Time() # Get the latest available transform
+                )
+
+                # Transform the point
+                point_in_base_frame = tf2_geometry_msgs.do_transform_point(point_in_camera_frame, transform)
+                self.get_logger().info(
+                    f'Point in {source_frame} ({point_in_camera_frame.point.x:.2f}, {point_in_camera_frame.point.y:.2f}, {point_in_camera_frame.point.z:.2f}) '
+                    f'transformed to {target_frame} ({point_in_base_frame.point.x:.2f}, {point_in_base_frame.point.y:.2f}, {point_in_base_frame.point.z:.2f})'
+                )
+                self.point_publisher.publish(point_in_base_frame)
+
+            except Exception as ex:
+                self.get_logger().warn(f'Could not transform point from {source_frame} to {target_frame}: {ex}')
+
+    def main(args=None):
+        rclpy.init(args=args)
+        node = PointTransformer()
+        rclpy.spin(node)
+        node.destroy_node()
+        rclpy.shutdown()
+
+    if __name__ == '__main__':
+        main()
+    ```
+2.  **Edit `setup.py` for `static_tf_publisher`:** Add the entry point.
+    ```python
+    # ... (previous setup.py content) ...
+        entry_points={
+            'console_scripts': [
+                'static_camera_tf_publisher = static_tf_publisher.static_camera_tf_publisher:main',
+                'point_transformer = static_tf_publisher.point_transformer:main', # Add this line
+            ],
+        },
+    )
+    ```
+3.  **Build your package and source your workspace:**
+    ```bash
+    cd <your_ros2_ws>
+    colcon build --packages-select static_tf_publisher
+    source install/setup.bash
+    ```
+4.  **Ensure Lab 1.3.1 launch file and Lab 1.4.1 static TF publisher are running.**
+5.  **In a separate terminal, run the point transformer:**
+    ```bash
+    ros2 run static_tf_publisher point_transformer
+    ```
+6.  **In RViz2:**
+    *   Add a "PointStamped" display.
+    *   Set its Topic to `/transformed_point`.
+    *   Observe the fixed point (originally 1m in front of the camera) displayed in the `base_link` frame. As you manipulate the `head_yaw_joint` in `joint_state_publisher_gui`, the `camera_link` (and thus the point) should move relative to `base_link`.
+
+## Expected Output
+
+*   A clear understanding of how TF2 organizes spatial relationships.
+*   Ability to publish static transforms for rigidly mounted components.
+*   Ability to listen for transforms between arbitrary frames.
+*   Ability to transform geometric data (e.g., points, poses) from one frame to another.
+*   Visualization of coordinate frames and transformed points in RViz2.
+
+## Assessment Questions
+
+*   Why is TF2 often referred to as providing "time travel" capabilities, and what does this mean in practice for robotics applications?
+*   Describe a scenario where a `StaticTransformBroadcaster` would be more appropriate than a regular `TransformBroadcaster`.
+*   You have a sensor reporting a point in `sensor_frame`. How would you use TF2 to find this point's coordinates in the `world` frame? Outline the steps.
+*   What happens if you try to `lookup_transform` between two frames that are not connected in the TF2 tree?
+
+## Real-world Applications
+
+*   **Robot Navigation:** Transforming sensor data (LiDAR scans, camera detections) from sensor frames into the robot's `base_link` or `odom` frame for mapping and localization.
+*   **Humanoid Body Tracking:** Relating the position of human body parts (e.g., detected by a depth camera) to the humanoid robot's end-effector for interaction.
+*   **Manipulator Control:** Calculating the required end-effector pose in the `base_link` frame and then transforming it to individual joint commands using inverse kinematics.
+*   **Multi-robot Coordination:** Allowing robots to understand each other's positions and orientations in a common `map` frame.
+
+## Edge Cases
+
+*   **Transform Not Available:** If a requested transform is not published or the TF2 buffer is not up-to-date, `lookup_transform` will throw an exception (`tf2_ros.TransformException`).
+*   **TF2 Tree Loops:** Incorrectly defined transforms can create cycles in the TF2 tree, leading to errors and making transformations impossible.
+*   **Time Synchronization Issues:** Poor time synchronization between different nodes publishing transforms can lead to inaccurate or inconsistent transformations.
+*   **Large Number of Frames:** A very complex TF2 tree with many frames can consume significant memory and processing power, especially if transforms are published at high rates.
+
+---
+
+### **Key Entities**
+
+*   **TF2 (Transform Frame 2):** A ROS 2 library for maintaining and querying the relationship between multiple coordinate frames over time.
+*   **Coordinate Frame:** A 3D reference system used to specify positions and orientations. In TF2, frames are organized in a tree structure.
+*   **Transform:** A mathematical description (translation and rotation) that converts coordinates from one frame to another.
+*   **`tf2_ros.TransformBroadcaster`:** A Python class for publishing dynamic (time-varying) transforms on the `/tf` topic.
+*   **`tf2_ros.StaticTransformBroadcaster`:** A Python class for publishing static (time-invariant) transforms on the `/tf_static` topic.
+*   **`tf2_ros.Buffer`:** An internal data structure in TF2 that stores all received transforms, allowing for efficient lookup and "time travel."
+*   **`tf2_ros.TransformListener`:** A Python class that populates the `tf2_ros.Buffer` by subscribing to `/tf` and `/tf_static` topics.
+*   **`geometry_msgs.msg.TransformStamped`:** A ROS 2 message type used to represent a single transform, including its timestamp, parent frame ID (`header.frame_id`), child frame ID (`child_frame_id`), and the translation/rotation components.
+*   **`geometry_msgs.msg.PointStamped`:** A ROS 2 message type representing a 3D point along with its associated coordinate frame and timestamp.
+
+---
+
+### **References**
+
+*   Open Robotics. (2022). *ROS 2 Documentation: TF2 Tutorials*. (Placeholder citation)
+*   Foote, T. (2013). tf2: The next generation of ROS's transform system. *ROSCon 2013*. (Placeholder citation)
+*   Quigley, M., et al. (2009). ROS: an open-source Robot Operating System. *OSROSE. Citeseer*. (Placeholder citation)
+*   Siciliano, B., & Khatib, O. (Eds.). (2016). *Springer Handbook of Robotics*. Springer. (Placeholder citation)

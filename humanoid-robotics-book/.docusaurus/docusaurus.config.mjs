@@ -35,6 +35,7 @@ export default {
       "@docusaurus/preset-classic",
       {
         "docs": {
+          "sidebarPath": "D:\\mk\\giaic\\Book-Hackathon-physical-ai-humanoid\\humanoid-robotics-book\\sidebars.js",
           "path": "docs",
           "routeBasePath": "/"
         },

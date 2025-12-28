@@ -15,10 +15,10 @@
     "id": "introduction-isaac-sim",
     "title": "3.1 Introduction to NVIDIA Isaac Sim"
   },
-  "sidebar": "defaultSidebar",
+  "sidebar": "tutorialSidebar",
   "previous": {
-    "title": "Module 3: Humanoid Robot Dynamics",
-    "permalink": "/Book-Hackathon-physical-ai-humanoid/category/module-3-humanoid-robot-dynamics"
+    "title": "2.5 Unity for High-Fidelity Robotics",
+    "permalink": "/Book-Hackathon-physical-ai-humanoid/module-2/unity-for-robotics"
   },
   "next": {
     "title": "3.2 Synthetic Data & Domain Randomization",

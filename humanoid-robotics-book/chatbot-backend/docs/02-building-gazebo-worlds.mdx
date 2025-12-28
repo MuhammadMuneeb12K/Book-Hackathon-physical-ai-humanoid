@@ -1,0 +1,308 @@
+---
+id: building-gazebo-worlds
+title: 2.2 Building Gazebo Worlds
+---
+Having understood the theoretical underpinnings of digital twins, we now transition to practical implementation using Gazebo, a widely adopted and powerful 3D robot simulator. Gazebo provides a robust physics engine and rich graphical environment, making it an ideal platform for creating physics-accurate simulation worlds where humanoid robots can be tested and developed safely and efficiently. This chapter will guide you through the process of constructing custom Gazebo worlds, laying the foundation for realistic robot simulations.
+
+## Goal
+
+The goal of this chapter is to teach students how to build physics-based simulation environments in Gazebo, configuring basic world properties, importing 3D models, and setting up the stage for humanoid robot interaction.
+
+## Learning Objectives
+
+*   Understand the fundamental components of a Gazebo world file (.world).
+*   Learn to define and configure basic environmental properties such as gravity, lighting, and ground plane.
+*   Import and position static 3D models (e.g., walls, furniture) within a Gazebo world.
+*   Integrate ROS 2 packages with Gazebo for seamless communication.
+*   Launch custom Gazebo worlds and visualize their contents.
+*   Grasp the distinction between SDF (Simulation Description Format) and URDF in Gazebo.
+
+## Prerequisites
+
+*   A functional ROS 2 Humble environment with Gazebo (Ignition Fortress) installed.
+*   Familiarity with XML syntax.
+*   Basic understanding of 3D coordinates and transformations.
+*   Knowledge of URDF from Module 1.
+
+## Key Concepts
+
+*   **Gazebo:** A powerful 3D robot simulator that accurately simulates robots, sensors, and environments, providing a realistic testbed for robotics research.
+*   **SDF (Simulation Description Format):** An XML format for describing robots and environments for Gazebo. It is more comprehensive than URDF, supporting properties like physics, sensors, and plugins.
+*   **World File (.world):** An SDF file that defines an entire simulation environment, including the ground, light sources, static objects, and initial robot placements.
+*   **Model:** A self-contained entity in Gazebo, which can be a robot, an object, or even a building. Models are described using SDF.
+*   **Physics Engine:** The core component of Gazebo that simulates physical interactions like gravity, collisions, and rigid-body dynamics.
+*   **Ground Plane:** A flat surface in a Gazebo world that typically represents the floor or ground.
+*   **Light Sources:** Objects in a Gazebo world that emit light, affecting the visual appearance of models.
+*   **Gazebo Plugins:** Software modules that extend Gazebo's functionality, often used to bridge with ROS 2 or add custom sensor behaviors.
+*   **`gazebo_ros2_control`:** A ROS 2 package that provides an interface between Gazebo and the `ros2_control` framework, enabling control of simulated robots.
+
+## Tools
+
+*   **Gazebo (Ignition/Fortress):** The primary simulation environment.
+*   **ROS 2 Humble:** For launching Gazebo and communicating with simulated robots.
+*   **`ros_gz_sim`:** ROS 2 package for Gazebo (Ignition) integration.
+*   **Code Editor:** Visual Studio Code.
+*   **3D Modeling Software (Optional):** For creating custom models (e.g., Blender, SketchUp) that can be exported to DAE/STL for Gazebo.
+
+## Chapter Sections
+
+### 2.2.1 Introduction to Gazebo and SDF
+
+*   Why Gazebo for humanoid robotics simulation?
+*   Gazebo's capabilities: high-fidelity physics, realistic rendering, sensor simulation.
+*   Overview of SDF: its advantages over URDF for full environment description.
+*   Relationship between URDF and SDF: converting URDF to SDF for Gazebo.
+
+### 2.2.2 The Gazebo World File Structure
+
+*   **`<sdf>` root element:** The main container.
+*   **`<world>` element:** Defines the simulation environment.
+*   **`<gravity>`:** Setting the gravitational acceleration.
+*   **`<light>`:** Defining directional, point, or spot lights.
+*   **`<model name='ground_plane'>`:** Basic ground plane.
+*   **`<include>`:** Importing external SDF models (e.g., from Gazebo Model Database).
+
+### 2.2.3 Creating Static Objects and Environments
+
+*   **Defining Custom Models:**
+    *   `<model>` tag with `<link>`, `<visual>`, `<collision>`, `<inertial>` (similar to URDF but within SDF context).
+    *   Using primitive shapes (box, cylinder, sphere).
+    *   Importing meshes (STL, DAE, OBJ) for complex geometry.
+*   **Positioning Models:** Using `<pose>` (x y z roll pitch yaw) to place objects accurately.
+*   **Example: A Simple Room:** Building walls, a table, and chairs.
+
+### 2.2.4 Integrating ROS 2 with Gazebo
+
+*   **`ros_gz_sim`:** The bridge package for ROS 2 to Ignition Gazebo.
+*   **Launching Gazebo from ROS 2:** Using `ros2 launch` to start Gazebo with a specific world file.
+*   **Spawning Robots:** Using `ros2 spawn_entity.py` to insert URDF/SDF models into a running Gazebo instance.
+*   **Gazebo ROS Plugins:** Overview of plugins that enable communication between simulated entities and ROS 2 (e.g., publishing sensor data, subscribing to joint commands).
+
+### 2.2.5 Launching and Interacting with Custom Worlds
+
+*   Creating a ROS 2 launch file to:
+    *   Start Gazebo (Ignition).
+    *   Load your custom `.world` file.
+    *   Optionally spawn your humanoid robot.
+*   Interacting with Gazebo GUI: moving objects, inspecting properties.
+
+## Required Diagrams
+
+*   **Gazebo World Structure Diagram:** A visual hierarchy of an SDF world file, showing root, world, light, and model elements.
+*   **ROS 2 - Gazebo Integration Flow:** A diagram showing how a ROS 2 launch file starts Gazebo, spawns a robot, and how simulated sensors/actuators communicate with ROS 2 nodes via plugins.
+
+## Hands-on Labs
+
+### Lab 2.2.1: Building a Simple Gazebo Room Environment
+
+**Objective:** Create a Gazebo world file (.world) that defines a simple room with a ground plane, basic lighting, and a few static objects (e.g., walls, a table).
+
+**Prerequisites:** A ROS 2 Humble installation with Gazebo (Ignition Fortress) and `ros_gz_sim` (ROS-Ignition bridge) packages installed.
+
+**Instructions:**
+
+1.  **Create a new ROS 2 package for your Gazebo worlds:**
+    ```bash
+    cd <your_ros2_ws>/src
+    ros2 pkg create --build-type ament_cmake my_gazebo_worlds --dependencies ros_gz_sim
+    ```
+2.  **Navigate into the package and create a `worlds` directory:**
+    ```bash
+    cd my_gazebo_worlds
+    mkdir worlds
+    cd worlds
+    ```
+3.  **Create `simple_room.world`:**
+    ```xml
+    <?xml version="1.0" ?>
+    <sdf version="1.8">
+      <world name="simple_humanoid_room">
+        <!-- A global light source -->
+        <include>
+          <uri>https://fuel.gazebosim.org/1.0/OpenRobotics/models/Sun</uri>
+        </include>
+
+        <!-- A ground plane -->
+        <include>
+          <uri>https://fuel.gazebosim.org/1.0/OpenRobotics/models/Ground Plane</uri>
+        </include>
+
+        <!-- A simple box representing a wall -->
+        <model name="wall_1">
+          <pose>2 0 0.5 0 0 0</pose> <!-- x y z roll pitch yaw -->
+          <link name="link">
+            <visual name="visual">
+              <geometry>
+                <box>
+                  <size>0.1 4 1</size>
+                </box>
+              </geometry>
+              <material>
+                <ambient>0.8 0.8 0.8 1</ambient>
+                <diffuse>0.8 0.8 0.8 1</diffuse>
+                <specular>0.1 0.1 0.1 1</specular>
+              </material>
+            </visual>
+            <collision name="collision">
+              <geometry>
+                <box>
+                  <size>0.1 4 1</size>
+                </box>
+              </geometry>
+            </collision>
+          </link>
+        </model>
+
+        <!-- Another wall -->
+        <model name="wall_2">
+          <pose>-2 0 0.5 0 0 0</pose>
+          <link name="link">
+            <visual name="visual">
+              <geometry>
+                <box>
+                  <size>0.1 4 1</size>
+                </box>
+              </geometry>
+              <material>
+                <ambient>0.8 0.8 0.8 1</ambient>
+                <diffuse>0.8 0.8 0.8 1</diffuse>
+                <specular>0.1 0.1 0.1 1</specular>
+              </material>
+            </visual>
+            <collision name="collision">
+              <geometry>
+                <box>
+                  <size>0.1 4 1</size>
+                </box>
+              </geometry>
+            </collision>
+          </link>
+        </model>
+
+        <!-- A table -->
+        <model name="table_model">
+          <pose>0.5 0.5 0.38 0 0 0</pose>
+          <include>
+            <uri>https://fuel.gazebosim.org/1.0/OpenRobotics/models/Table</uri>
+          </include>
+        </model>
+
+      </world>
+    </sdf>
+    ```
+4.  **Create a launch file to open this world:**
+    Navigate to `my_gazebo_worlds` package and create a `launch` directory:
+    ```bash
+    cd <your_ros2_ws>/src/my_gazebo_worlds
+    mkdir launch
+    cd launch
+    ```
+    Create `launch_room.launch.py`:
+    ```python
+    import os
+    from ament_index_python.packages import get_package_share_directory
+    from launch import LaunchDescription
+    from launch.actions import IncludeLaunchDescription
+    from launch.launch_description_sources import PythonLaunchDescriptionSource
+
+    def generate_launch_description():
+        ld = LaunchDescription()
+
+        # Get the path to the simple_room.world file
+        world_file_path = os.path.join(
+            get_package_share_directory('my_gazebo_worlds'),
+            'worlds',
+            'simple_room.world'
+        )
+
+        # Include the Gazebo launch file with our custom world
+        gazebo_launch = IncludeLaunchDescription(
+            PythonLaunchDescriptionSource([os.path.join(
+                get_package_share_directory('ros_gz_sim'), 'launch'),
+                '/gz_sim.launch.py']),
+            launch_arguments={'gz_args': world_file_path}.items()
+        )
+        ld.add_action(gazebo_launch)
+
+        return ld
+    ```
+5.  **Add install rules to `my_gazebo_worlds/CMakeLists.txt`:**
+    ```cmake
+    cmake_minimum_required(VERSION 3.8 FATAL_ERROR)
+    project(my_gazebo_worlds)
+
+    find_package(ament_cmake REQUIRED)
+    find_package(ros_gz_sim REQUIRED)
+
+    # Install world files
+    install(DIRECTORY worlds
+      DESTINATION share/${PROJECT_NAME}
+    )
+
+    # Install launch files
+    install(DIRECTORY launch
+      DESTINATION share/${PROJECT_NAME}
+    )
+
+    ament_package()
+    ```
+6.  **Build your package and source your workspace:**
+    ```bash
+    cd <your_ros2_ws>
+    colcon build --packages-select my_gazebo_worlds
+    source install/setup.bash
+    ```
+7.  **Launch your custom Gazebo world:**
+    ```bash
+    ros2 launch my_gazebo_worlds launch_room.launch.py
+    ```
+    Gazebo (Ignition GUI) should open, displaying your simple room with walls and a table.
+
+## Expected Output
+
+*   A well-structured Gazebo world file (`.world`) defining a custom environment.
+*   A ROS 2 launch file capable of starting Gazebo with your custom world.
+*   Successful visualization of the custom room environment in Gazebo (Ignition GUI).
+*   Understanding of SDF syntax for defining models and world properties.
+
+## Assessment Questions
+
+*   Explain the primary difference in purpose between URDF and SDF. When would you use one over the other for a robot description intended for Gazebo?
+*   How would you add multiple instances of the same model (e.g., several chairs) to a Gazebo world without copying and pasting its full definition multiple times?
+*   Describe the steps involved in launching a custom Gazebo world from a ROS 2 launch file.
+*   What is the significance of `<pose>` in an SDF model, and how does it relate to 3D transformations?
+
+## Real-world Applications
+
+*   **Factory Floor Simulation:** Recreating industrial environments to test autonomous mobile robots or robotic arms for collision avoidance and path planning.
+*   **Virtual Prototyping:** Designing and testing robot interactions with specific objects or environments before physical construction.
+*   **Urban Environment Simulation:** Generating realistic outdoor scenes for training and evaluating autonomous driving systems or delivery robots.
+*   **Humanoid Home Environment Testing:** Simulating a typical home environment to test humanoid robots for tasks like tidying up, assisting the elderly, or navigating cluttered spaces.
+
+## Edge Cases
+
+*   **Model Loading Errors:** Incorrect paths to meshes or SDF models can prevent them from loading into Gazebo.
+*   **Physics Glitches:** Poorly designed models (e.g., overlapping collision geometries) or extreme physics parameters can lead to unstable or unrealistic simulations.
+*   **Resource Intensiveness:** High-detail 3D models or complex physics interactions in large worlds can consume significant CPU/GPU resources, slowing down the simulation.
+*   **Unit Mismatches:** Inconsistent use of units (e.g., meters vs. millimeters) in model definitions can lead to scale issues in Gazebo.
+
+---
+
+### **Key Entities**
+
+*   **Gazebo:** A powerful open-source 3D dynamic robot simulator capable of accurately rendering environments and simulating complex physics interactions.
+*   **SDF (Simulation Description Format):** An XML-based file format used to describe all elements of a Gazebo simulation, including robots, static objects, sensors, and environmental properties (like gravity and lighting).
+*   **World File (.world):** A specialized SDF file that defines an entire virtual environment within Gazebo, including all its static and dynamic entities.
+*   **Model:** A reusable component in Gazebo (described in SDF) that can represent anything from a simple box to a complex robot.
+*   **Link:** The fundamental rigid body building block of a model in SDF, possessing visual, collision, and inertial properties.
+*   **`ros_gz_sim`:** A ROS 2 package (also known as the ROS-Ignition bridge) that facilitates communication between ROS 2 nodes and Gazebo (Ignition Fortress) simulations.
+*   **`gz_sim.launch.py`:** A common launch file provided by `ros_gz_sim` used to start the Gazebo simulation environment.
+
+---
+
+### **References**
+
+*   Open Robotics. (n.d.). *Gazebo Documentation*. (Placeholder citation)
+*   Open Robotics. (2022). *SDF Specification*. (Placeholder citation)
+*   ROS 2 Tutorials. (n.d.). *Using ROS 2 with Gazebo*. (Placeholder citation)
+*   Koenig, N., & O'Sullivan, J. (2014). Gazebo: Open-Source Multi-Robot Simulator. *IEEE International Conference on Robotics and Automation (ICRA)*. (Placeholder citation)

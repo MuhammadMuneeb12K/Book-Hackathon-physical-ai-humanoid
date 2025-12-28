@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: humanoid_chatbot_db
+    environment:
+      POSTGRES_USER: chatbot_user
+      POSTGRES_PASSWORD: chatbot_pass
+      POSTGRES_DB: humanoid_chatbot
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+  qdrant:
+    image: qdrant/qdrant:latest
+    container_name: humanoid_chatbot_qdrant
+    ports:
+      - "6333:6333"
+      - "6334:6334"
+    volumes:
+      - qdrant_data:/qdrant/storage
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+  qdrant_data:

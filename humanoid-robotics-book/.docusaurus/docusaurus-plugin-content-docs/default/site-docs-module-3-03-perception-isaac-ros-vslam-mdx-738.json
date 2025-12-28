@@ -15,7 +15,7 @@
     "id": "perception-isaac-ros-vslam",
     "title": "3.3 Perception with Isaac ROS (VSLAM)"
   },
-  "sidebar": "defaultSidebar",
+  "sidebar": "tutorialSidebar",
   "previous": {
     "title": "3.2 Synthetic Data & Domain Randomization",
     "permalink": "/Book-Hackathon-physical-ai-humanoid/module-3/synthetic-data-domain-randomization"

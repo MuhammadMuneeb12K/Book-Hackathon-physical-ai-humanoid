@@ -1,0 +1,326 @@
+---
+id: launch-files-multi-node
+title: 1.5 Launch Files & Multi-node Systems
+---
+As robotic systems grow in complexity, managing individual ROS 2 nodes manually becomes impractical. Imagine starting dozens of nodes, each with specific parameters and dependencies, across multiple terminals – it would be a logistical nightmare. This is where ROS 2 Launch Files come in. They provide a powerful, programmatic way to define, configure, and orchestrate multiple ROS 2 nodes, processes, and even entire systems, allowing for efficient startup and management of complex humanoid robot applications.
+
+## Goal
+
+The goal of this chapter is to teach students how to use ROS 2 launch files to orchestrate multi-node systems, enabling them to efficiently manage and deploy complex humanoid robot applications, including setting parameters, remapping topics, and handling node lifecycles.
+
+## Learning Objectives
+
+*   Understand the fundamental structure and purpose of ROS 2 launch files.
+*   Learn to write launch files using Python, the recommended approach for ROS 2.
+*   Master common launch actions: `Node`, `ExecuteProcess`, `IncludeLaunchDescription`.
+*   Configure nodes with parameters, remappings, and namespace settings within launch files.
+*   Orchestrate multiple interdependent nodes and external processes.
+*   Utilize launch arguments to make launch files flexible and reusable.
+*   Debug launch files and troubleshoot common issues.
+
+## Prerequisites
+
+*   Familiarity with Python programming.
+*   Understanding of ROS 2 nodes, topics, services, and parameters.
+*   Experience running individual ROS 2 nodes from previous chapters.
+*   Basic understanding of file paths and directory structures in Linux.
+
+## Key Concepts
+
+*   **Launch File:** A Python script (or XML, though less common in ROS 2) that defines and executes a set of ROS 2 nodes and other processes.
+*   **`LaunchDescription`:** The core object in a launch file, containing a list of actions to execute.
+*   **`Node` Action:** Used to launch a ROS 2 node, specifying its package, executable, name, parameters, etc.
+*   **`ExecuteProcess` Action:** Used to launch any arbitrary external command or process (non-ROS 2 applications).
+*   **`IncludeLaunchDescription` Action:** Allows the modular inclusion of other launch files, promoting reusability.
+*   **`DeclareLaunchArgument`:** Defines arguments that can be passed to the launch file from the command line.
+*   **`LaunchConfiguration`:** Retrieves the value of a declared launch argument.
+*   **Parameters:** Values passed to nodes at startup.
+*   **Remapping:** Changing the name of a topic, service, or action for a specific node without modifying its source code.
+*   **Namespaces:** Grouping ROS 2 nodes and topics under a common hierarchical name, useful for multi-robot systems.
+*   **`ament_index_python`:** A Python package used in launch files to find other ROS 2 packages.
+
+## Tools
+
+*   **ROS 2 Humble:** The robotic framework.
+*   **`ros2 launch`:** Command-line tool to execute launch files.
+*   **`rqt_graph`:** For visualizing the resulting ROS Graph.
+*   **Code Editor:** Visual Studio Code (recommended) with Python support.
+
+## Chapter Sections
+
+### 1.5.1 The Need for Orchestration: Why Use Launch Files?
+
+*   Challenges of manual node management in complex systems.
+*   Benefits: Reproducibility, simplified startup, parameter management, modularity, and debugging.
+*   Evolution from ROS 1 XML launch to ROS 2 Python launch.
+
+### 1.5.2 Basic Python Launch File Structure
+
+*   The `generate_launch_description()` function.
+*   Returning a `LaunchDescription` object.
+*   Importing necessary modules (`LaunchDescription`, `Node`, `ExecuteProcess`, etc.).
+
+### 1.5.3 Launching Single and Multiple Nodes
+
+*   **The `Node` Action:**
+    *   `package`: The name of the ROS 2 package containing the executable.
+    *   `executable`: The name of the executable to run.
+    *   `name`: (Optional) The desired name for the node.
+    *   `output`: Directing node output (`screen`, `log`).
+    *   `arguments`: Command-line arguments for the node.
+*   Launching multiple `Node` actions concurrently.
+
+### 1.5.4 Configuring Nodes: Parameters, Remapping, and Namespaces
+
+*   **Setting Node Parameters:**
+    *   Passing parameters directly (`parameters=[{'param_name': value}]`).
+    *   Loading parameters from YAML files (`parameters=[LaunchConfiguration('params_file')]`).
+*   **Remapping Topics, Services, and Actions:**
+    *   `remappings=[('/old_topic', '/new_topic')]`.
+    *   Use cases for remapping (e.g., adapting nodes to different sensor topics).
+*   **Using Namespaces:**
+    *   `namespace='/robot_a'`.
+    *   Organizing nodes for multi-robot deployments or sub-systems.
+
+### 1.5.5 Advanced Launch File Techniques
+
+*   **`ExecuteProcess`:** Running non-ROS commands (e.g., a simulation environment, a custom Python script).
+*   **`IncludeLaunchDescription`:** Building modular and reusable launch files.
+*   **`DeclareLaunchArgument` and `LaunchConfiguration`:** Making launch files dynamic.
+    *   Providing default values and descriptions.
+    *   Passing arguments from the command line: `ros2 launch my_package my_launch.py robot_id:=humanoid_1`.
+*   **Conditional Launching:** Using `IfCondition` and `UnlessCondition` (e.g., launching a GUI only if a debug flag is set).
+
+### 1.5.6 Debugging Launch Files
+
+*   Common errors: Missing packages, incorrect executable names, bad YAML syntax.
+*   Using `output='screen'` to see node logs.
+*   Inspecting the ROS Graph with `rqt_graph` after launching.
+*   Using `ros2 param dump` to verify parameters.
+
+## Required Diagrams
+
+*   **Launch File Execution Pipeline:** A flowchart showing `ros2 launch` parsing the Python script, executing actions, and bringing up nodes.
+*   **Multi-Node ROS Graph:** A visual representation of several nodes launched via a single launch file, showing their interconnections and potential namespaces.
+*   **Launch File Modular Structure:** A diagram illustrating how one main launch file can include sub-launch files to create a hierarchical system.
+
+## Hands-on Labs
+
+### Lab 1.5.1: Orchestrate Multiple ROS 2 Nodes
+
+**Objective:** Create a launch file that starts the `imu_subscriber` and `joint_publisher` nodes from Lab 1.2.1 and Lab 1.2.2, and also launches `rqt_graph` to visualize their interactions.
+
+**Prerequisites:** Completed Lab 1.2.1 and Lab 1.2.2, with `imu_processor` package built.
+
+**Instructions:**
+
+1.  **Navigate to your `imu_processor` package's `launch` directory.** If it doesn't exist, create it:
+    ```bash
+    cd <your_ros2_ws>/src/imu_processor
+    mkdir launch
+    cd launch
+    ```
+2.  **Create a new launch file named `imu_joint_demo.launch.py`:**
+    ```python
+    import os
+    from ament_index_python.packages import get_package_share_directory
+    from launch import LaunchDescription
+    from launch_ros.actions import Node
+
+    def generate_launch_description():
+        ld = LaunchDescription()
+
+        # Define the IMU Subscriber Node
+        imu_subscriber_node = Node(
+            package='imu_processor',
+            executable='imu_subscriber',
+            name='imu_processor_node',
+            output='screen',
+            emulate_tty=True, # For better logging output in console
+        )
+        ld.add_action(imu_subscriber_node)
+
+        # Define the Joint Publisher Node
+        joint_publisher_node = Node(
+            package='imu_processor',
+            executable='joint_publisher',
+            name='joint_command_publisher_node',
+            output='screen',
+            emulate_tty=True,
+        )
+        ld.add_action(joint_publisher_node)
+
+        # Define the rqt_graph process (non-ROS node)
+        rqt_graph_process = Node(
+            package='rqt_graph',
+            executable='rqt_graph',
+            name='rqt_graph_visualizer',
+            output='screen',
+            emulate_tty=True,
+        )
+        ld.add_action(rqt_graph_process)
+
+        return ld
+    ```
+3.  **Ensure your `imu_processor` package's `setup.py` includes the launch files for installation.** Modify `imu_processor/setup.py` in the `data_files` section:
+    ```python
+    # ...
+        data_files=[
+            ('share/' + package_name, ['package.xml']),
+            (os.path.join('share', package_name, 'launch'), ['launch/imu_joint_demo.launch.py']), # Add this line
+        ],
+    # ...
+    ```
+4.  **Build your `imu_processor` package and source your workspace:**
+    ```bash
+    cd <your_ros2_ws>
+    colcon build --packages-select imu_processor
+    source install/setup.bash
+    ```
+5.  **Launch the multi-node system:**
+    ```bash
+    ros2 launch imu_processor imu_joint_demo.launch.py
+    ```
+    You should see the `imu_subscriber` and `joint_publisher` nodes starting, printing their output, and `rqt_graph` launching in a separate window, visualizing the active nodes and topics.
+
+### Lab 1.5.2: Launching with Parameters and Remappings
+
+**Objective:** Modify the previous launch file to pass a parameter to the `imu_subscriber` node (e.g., change its logging level) and remap the `joint_commands` topic to a different name.
+
+**Prerequisites:** Completed Lab 1.5.1.
+
+**Instructions:**
+
+1.  **Modify `imu_subscriber_node.py` to accept a parameter for logging level:**
+    ```python
+    # ... (inside ImuSubscriber class, __init__ method) ...
+            super().__init__('imu_subscriber')
+            self.declare_parameter('log_level', 'INFO') # Declare a parameter with default value
+
+            log_level_str = self.get_parameter('log_level').get_parameter_value().string_value
+            if log_level_str == 'DEBUG':
+                self.get_logger().set_level(rclpy.logging.LoggingSeverity.DEBUG)
+            elif log_level_str == 'WARN':
+                self.get_logger().set_level(rclpy.logging.LoggingSeverity.WARN)
+            # Add more levels as needed
+            self.get_logger().info(f'IMU Subscriber Node started with log level: {log_level_str}.')
+    # ...
+    ```
+    Rebuild `imu_processor` and source your workspace after this change.
+2.  **Create a new launch file `imu_joint_config_demo.launch.py` in the `launch` directory of `imu_processor`:**
+    ```python
+    import os
+    from ament_index_python.packages import get_package_share_directory
+    from launch import LaunchDescription
+    from launch.actions import DeclareLaunchArgument
+    from launch.substitutions import LaunchConfiguration
+    from launch_ros.actions import Node
+
+    def generate_launch_description():
+        ld = LaunchDescription()
+
+        # Declare a launch argument for the log level
+        log_level_arg = DeclareLaunchArgument(
+            'imu_log_level',
+            default_value='WARN',
+            description='Logging level for the IMU subscriber node (DEBUG, INFO, WARN, ERROR, FATAL)'
+        )
+        ld.add_action(log_level_arg)
+
+        # Define the IMU Subscriber Node with parameter
+        imu_subscriber_node = Node(
+            package='imu_processor',
+            executable='imu_subscriber',
+            name='imu_processor_node',
+            output='screen',
+            emulate_tty=True,
+            parameters=[
+                {'log_level': LaunchConfiguration('imu_log_level')} # Pass the launch argument as a parameter
+            ]
+        )
+        ld.add_action(imu_subscriber_node)
+
+        # Define the Joint Publisher Node with topic remapping
+        joint_publisher_node = Node(
+            package='imu_processor',
+            executable='joint_publisher',
+            name='joint_command_publisher_node',
+            output='screen',
+            emulate_tty=True,
+            remappings=[
+                ('/joint_commands', '/robot_1/joint_states_cmd') # Remap topic
+            ]
+        )
+        ld.add_action(joint_publisher_node)
+
+        # Optional: rqt_graph process remains for visualization
+        rqt_graph_process = Node(
+            package='rqt_graph',
+            executable='rqt_graph',
+            name='rqt_graph_visualizer',
+            output='screen',
+            emulate_tty=True,
+        )
+        ld.add_action(rqt_graph_process)
+
+        return ld
+    ```
+3.  **Update `imu_processor/setup.py` to include the new launch file.**
+4.  **Build and source your workspace.**
+5.  **Launch the system, overriding the default log level:**
+    ```bash
+    ros2 launch imu_processor imu_joint_config_demo.launch.py imu_log_level:=DEBUG
+    ```
+    Observe the console output of `imu_subscriber` to see if the log level changed. Use `ros2 topic list` and `rqt_graph` to confirm the `joint_commands` topic is now remapped to `/robot_1/joint_states_cmd`.
+
+## Expected Output
+
+*   A functional multi-node ROS 2 system launched and managed by a Python launch file.
+*   Nodes configured with parameters passed from the launch file.
+*   ROS 2 topics remapped to different names as specified in the launch file.
+*   An `rqt_graph` visualization that accurately reflects the launched nodes and their remapped topics.
+
+## Assessment Questions
+
+*   What are the advantages of using Python launch files over XML launch files in ROS 2?
+*   You need to start two instances of the same node, each controlling a different part of a humanoid robot. How would you configure your launch file to ensure they operate independently (e.g., using namespaces or remappings)?
+*   Explain how `DeclareLaunchArgument` and `LaunchConfiguration` work together to create flexible launch files.
+*   When would you use `ExecuteProcess` instead of `Node` in a launch file?
+
+## Real-world Applications
+
+*   **Full Robot System Startup:** Launching all necessary drivers, controllers, perception modules, and navigation stacks for a humanoid robot with a single command.
+*   **Multi-robot Deployments:** Using namespaces within launch files to instantiate multiple robots, each with its own isolated set of nodes and topics, in a shared environment.
+*   **Testing and Debugging:** Quickly bringing up specific subsets of a robot's software stack for isolated testing or debugging sessions.
+*   **Parameter Tuning:** Easily changing configuration parameters for different operating conditions (e.g., indoor vs. outdoor navigation parameters) without recompiling code.
+
+## Edge Cases
+
+*   **Launch File Dependencies:** If a launch file includes another launch file or relies on a node from another package, ensuring all dependencies are built and sourced is crucial.
+*   **Name Collisions:** Without proper namespaces or unique node names, launching multiple instances of the same node or package can lead to name collisions and unexpected behavior.
+*   **Resource Contention:** Launching many computationally intensive nodes simultaneously might overwhelm the system resources (CPU, RAM, GPU).
+*   **Incorrect Path to Executable/Package:** Typos in `package` or `executable` names within `Node` actions will result in launch failures.
+
+---
+
+### **Key Entities**
+
+*   **Launch File:** A Python script responsible for defining and executing the startup configuration of a ROS 2 system, including nodes, processes, and their associated parameters and remappings.
+*   **`LaunchDescription`:** The central object in a ROS 2 Python launch file, acting as a container for all the actions to be performed during launch.
+*   **`Node` Action:** A launch action specifically designed to start a ROS 2 executable node, allowing for configuration of package, executable name, node name, parameters, and remappings.
+*   **`ExecuteProcess` Action:** A general-purpose launch action used to run any arbitrary command-line program or shell script, whether it's a ROS 2 executable or not.
+*   **`IncludeLaunchDescription` Action:** A launch action that enables modularity by allowing one launch file to incorporate the actions defined in another launch file.
+*   **`DeclareLaunchArgument`:** A launch action used to define command-line arguments that can be passed to a launch file, providing flexibility for configuration.
+*   **`LaunchConfiguration`:** A substitution object used within a launch file to retrieve the value of a declared launch argument or other launch-time variables.
+*   **Parameters:** Configuration values that are loaded into a ROS 2 node's parameter server at startup.
+*   **Remapping:** The process of changing the name of a ROS 2 entity (like a topic or service) for a specific node during launch, enabling flexible system integration.
+*   **Namespaces:** A hierarchical naming mechanism used to group ROS 2 nodes and topics, preventing naming conflicts and aiding in the organization of complex systems.
+
+---
+
+### **References**
+
+*   Open Robotics. (2022). *ROS 2 Documentation: Launch System*. (Placeholder citation)
+*   ROS 2 Tutorials. (n.d.). *Using Parameters in Launch Files*. (Placeholder citation)
+*   Foote, T. (2019). Python Launch Files in ROS 2. *ROSCon JP 2019*. (Placeholder citation)
+*   Macenski, S., et al. (2020). The ROS 2 Navigation Stack: Design Decisions and Future Work. *International Conference on Robotics and Automation (ICRA) Workshop*. (Placeholder citation)

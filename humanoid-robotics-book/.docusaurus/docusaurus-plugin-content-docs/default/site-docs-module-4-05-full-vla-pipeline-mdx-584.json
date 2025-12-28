@@ -15,13 +15,13 @@
     "id": "full-vla-pipeline",
     "title": "4.5 Full Voice-to-Action Integration Pipeline"
   },
-  "sidebar": "defaultSidebar",
+  "sidebar": "tutorialSidebar",
   "previous": {
     "title": "4.4 Visual Object Grounding",
     "permalink": "/Book-Hackathon-physical-ai-humanoid/module-4/visual-object-grounding"
   },
   "next": {
-    "title": "Miscellaneous",
-    "permalink": "/Book-Hackathon-physical-ai-humanoid/category/miscellaneous"
+    "title": "6.1 Hardware & Lab Setup - Beyond Simulation",
+    "permalink": "/Book-Hackathon-physical-ai-humanoid/hardware-lab-setup/"
   }
 }

@@ -1,0 +1,79 @@
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  name          String?
+  password      String?
+  emailVerified DateTime?
+  image         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  sessions      Session[]
+  chatHistory   ChatMessage[]
+  bookmarks     Bookmark[]
+  preferences   UserPreferences?
+
+  @@map("users")
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  userId    String
+  token     String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+model ChatMessage {
+  id        String   @id @default(cuid())
+  userId    String?
+  query     String   @db.Text
+  response  String   @db.Text
+  sources   Json     @default("[]")
+  timestamp DateTime @default(now())
+
+  user User? @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, timestamp])
+  @@map("chat_messages")
+}
+
+model Bookmark {
+  id        String   @id @default(cuid())
+  userId    String
+  module    String
+  section   String
+  url       String
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("bookmarks")
+}
+
+model UserPreferences {
+  id                String  @id @default(cuid())
+  userId            String  @unique
+  responseComplexity String @default("balanced")
+  theme             String  @default("auto")
+  notifications     Boolean @default(true)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("user_preferences")
+}

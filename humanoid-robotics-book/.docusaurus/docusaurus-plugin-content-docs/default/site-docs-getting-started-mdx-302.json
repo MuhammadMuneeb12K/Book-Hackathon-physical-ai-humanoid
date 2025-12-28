@@ -14,13 +14,13 @@
     "id": "getting-started",
     "title": "Getting Started - Setting Up Your Environment"
   },
-  "sidebar": "defaultSidebar",
+  "sidebar": "tutorialSidebar",
   "previous": {
-    "title": "5.1 Capstone - The Integrated Humanoid Robotics System",
-    "permalink": "/Book-Hackathon-physical-ai-humanoid/capstone/capstone-integration-guide"
+    "title": "Overview - Physical AI & Humanoid Robotics",
+    "permalink": "/Book-Hackathon-physical-ai-humanoid/home/overview"
   },
   "next": {
-    "title": "6.1 Hardware & Lab Setup - Beyond Simulation",
-    "permalink": "/Book-Hackathon-physical-ai-humanoid/hardware-lab-setup/"
+    "title": "1.1 ROS 2 Architecture & DDS - The Robotic Nervous System",
+    "permalink": "/Book-Hackathon-physical-ai-humanoid/module-1/ros2-architecture"
   }
 }

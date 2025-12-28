@@ -1,0 +1,375 @@
+---
+id: llm-cognitive-planning
+title: 4.3 LLM-Based Cognitive Planning
+---
+With the ability to accurately transcribe human voice commands into text, the next critical component of a Vision-Language-Action (VLA) system for humanoid robots is to interpret these commands and translate them into a coherent sequence of robot-executable actions. This chapter delves into the exciting realm of LLM-based cognitive planning, where Large Language Models (LLMs) are leveraged not just for understanding human language, but for complex symbolic reasoning, task decomposition, and generating high-level plans that guide a robot's behavior.
+
+## Goal
+
+The goal of this chapter is to teach students how to use LLMs (e.g., ChatGPT/Claude) to convert natural language commands into sequences of robotic actions, enabling high-level cognitive planning for humanoids within a VLA framework.
+
+## Learning Objectives
+
+*   Understand the role of Large Language Models (LLMs) in robotic cognitive planning.
+*   Grasp how LLMs can perform natural language task decomposition.
+*   Learn techniques for prompting LLMs to generate structured robot action plans.
+*   Differentiate between high-level human commands and low-level robot actions.
+*   Implement a ROS 2 node that communicates with an LLM API to generate action sequences.
+*   Understand the challenges of grounding abstract LLM plans into physical robot capabilities.
+*   Explore strategies for error handling and replanning with LLMs.
+
+## Prerequisites
+
+*   Familiarity with Python programming and `rclpy`.
+*   Understanding of ROS 2 topics and actions.
+*   Conceptual understanding of Large Language Models (LLMs) and their capabilities.
+*   An OpenAI (ChatGPT) or Anthropic (Claude) API key (or access to a local LLM).
+
+## Key Concepts
+
+*   **Large Language Model (LLM):** A type of artificial intelligence model trained on vast amounts of text data, capable of understanding, generating, and reasoning with human-like language.
+*   **Cognitive Planning:** The process of translating a high-level goal into a sequence of sub-goals or actions, often involving symbolic reasoning and state estimation.
+*   **Natural Language Task Decomposition:** Breaking down a complex natural language command into simpler, sequential steps that a robot can execute.
+*   **Prompt Engineering:** The art and science of crafting effective inputs (prompts) to LLMs to elicit desired outputs.
+*   **Function Calling / Tool Use:** The capability of modern LLMs to generate arguments for functions or use external tools to perform actions. Crucial for robotics.
+*   **Action Primitive:** A fundamental, low-level robotic action that can be executed directly by the robot's control system (e.g., `navigate_to(location)`, `grasp_object(object_id)`).
+*   **State Representation:** How the current state of the robot and environment is described to the LLM to inform its planning.
+*   **Feedback Loop:** Providing the LLM with the outcome of executed actions to enable adaptive planning and error correction.
+*   **Plan Validation:** Ensuring that the LLM-generated plan is feasible and safe for the robot to execute.
+
+## Tools
+
+*   **OpenAI API (or Anthropic Claude API):** For accessing powerful LLMs.
+*   **Python `requests` library (or LLM client libraries):** For making API calls.
+*   **ROS 2 Humble:** For integrating the LLM planner node into the robotic system.
+*   **`std_msgs/msg/String`:** For receiving transcribed speech.
+*   **Custom ROS 2 message/action types:** For structured robot plans.
+*   **Code Editor:** Visual Studio Code.
+
+## Chapter Sections
+
+### 4.3.1 The Rise of LLMs in Robotics
+
+*   Bridging the symbolic-subsymbolic gap in AI.
+*   LLMs as general-purpose reasoning engines for high-level tasks.
+*   From generating text to generating executable code/plans.
+
+### 4.3.2 Natural Language Task Decomposition with LLMs
+
+*   How LLMs can break down complex commands like "make coffee" into sub-tasks: "get mug," "brew coffee," "add sugar."
+*   Identifying implied steps and preconditions.
+*   The importance of context and domain knowledge for effective decomposition.
+
+### 4.3.3 Prompt Engineering for Robot Planning
+
+*   **Zero-shot, Few-shot, and Chain-of-Thought Prompting:** Strategies for guiding LLM behavior.
+*   **Defining Robot Capabilities (Tools/Functions):** Informing the LLM about the robot's available actions.
+    *   Example: `navigate_to(location)`, `grasp_object(object_id)`, `report_status(message)`.
+*   **Structured Output:** Requesting LLM to generate plans in a specific format (e.g., JSON, YAML, Python function calls).
+*   **Persona and Role-Playing:** Instructing the LLM to act as a "robot planner."
+
+### 4.3.4 Designing an LLM-Based Planner ROS 2 Node
+
+*   **Input:** Subscribing to a topic with transcribed human commands (e.g., `/speech_to_text`).
+*   **LLM Query:** Formatting the prompt to the LLM API, including the command and robot capabilities.
+*   **Output Parsing:** Interpreting the LLM's generated plan (e.g., a list of action primitives).
+*   **Action Dispatcher:** Publishing parsed actions to a ROS 2 action server or a topic for execution.
+*   **State Representation:** How to inform the LLM about the current state of the robot and environment.
+
+### 4.3.5 Grounding LLM Plans in Physical Reality
+
+*   **Symbolic to Subsymbolic:** Translating LLM's abstract concepts (e.g., "kitchen") into concrete coordinates or object IDs.
+*   **Plan Validation and Safety Checks:** Ensuring the LLM's proposed actions are physically feasible and safe.
+*   **Error Handling and Replanning:** What happens if an action fails? How can the LLM generate an alternative plan?
+
+## Required Diagrams
+
+*   **LLM Cognitive Planning Flow:** A diagram showing transcribed text input -> LLM -> structured action plan -> robot action dispatcher.
+*   **Prompt Engineering Example:** Illustrating a prompt that defines robot tools and a task, and the expected LLM output.
+
+## Hands-on Labs
+
+### Lab 4.3.1: Generate Robot Action Plans with LLM
+
+**Objective:** Create a ROS 2 Python node that subscribes to transcribed speech commands, sends them to an LLM (e.g., OpenAI's GPT-4 or Claude), and publishes a structured sequence of robot action primitives based on the LLM's response.
+
+**Prerequisites:** Completed Lab 4.2.1 (Whisper ASR node), OpenAI/Anthropic API key, Python programming.
+
+**Instructions:**
+
+1.  **Create a new ROS 2 Python package for the LLM planner:**
+    ```bash
+    cd <your_ros2_ws>/src
+    ros2 pkg create --build-type ament_python llm_robot_planner --dependencies rclpy std_msgs
+    ```
+2.  **Install LLM client library:**
+    ```bash
+    pip install openai # Or anthropic for Claude
+    ```
+3.  **Set up your API Key:** Store your OpenAI API key in an environment variable `OPENAI_API_KEY`.
+4.  **Navigate into the package and create `src/llm_robot_planner/llm_planner_node.py`:**
+    ```python
+{`
+    import rclpy
+    from rclpy.node import Node
+    from std_msgs.msg import String
+    import openai # Or anthropic
+    import json
+    import os
+
+    class LLMRobotPlanner(Node):
+
+        def __init__(self):
+            super().__init__('llm_robot_planner')
+            self.subscription = self.create_subscription(
+                String,
+                '/speech_to_text',
+                self.speech_callback,
+                10)
+            self.action_publisher_ = self.create_publisher(String, '/robot_action_plan', 10)
+            self.get_logger().info('LLM Robot Planner Node initialized.')
+
+            # Initialize OpenAI client (or Anthropic for Claude)
+            self.api_key = os.getenv("OPENAI_API_KEY") # Ensure this env var is set
+            if not self.api_key:
+                self.get_logger().error("OPENAI_API_KEY environment variable not set.")
+                # rclpy.shutdown()
+                return
+
+            self.client = openai.OpenAI(api_key=self.api_key) # For OpenAI
+            # For Anthropic: self.client = anthropic.Anthropic(api_key=self.api_key)
+
+            # Define robot capabilities (action primitives) for the LLM
+            self.robot_capabilities = [
+                {
+                    "name": "navigate_to",
+                    "description": "Moves the robot to a specified location.",
+                    "parameters": {
+                        "type": "object",
+                        "properties": {
+                            "location": {"type": "string", "description": "The name of the location (e.g., 'kitchen', 'table')."}
+                        },
+                        "required": ["location"]
+                    }
+                },
+                {
+                    "name": "grasp_object",
+                    "description": "Instructs the robot to pick up a specific object.",
+                    "parameters": {
+                        "type": "object",
+                        "properties": {
+                            "object_name": {"type": "string", "description": "The name of the object to grasp (e.g., 'red apple')."}
+                        },
+                        "required": ["object_name"]
+                    }
+                },
+                {
+                    "name": "place_object",
+                    "description": "Instructs the robot to place the currently held object at a specified location.",
+                    "parameters": {
+                        "type": "object",
+                        "properties": {
+                            "location": {"type": "string", "description": "The name of the location to place the object (e.g., 'counter', 'bin')."}
+                        },
+                        "required": ["location"]
+                    }
+                },
+                 {
+                    "name": "deliver_object_to_person",
+                    "description": "Instructs the robot to deliver the held object to a person at a specified location.",
+                    "parameters": {
+                        "type": "object",
+                        "properties": {
+                            "person_location": {"type": "string", "description": "The location where the person is (e.g., 'living room', 'my side')."}
+                        },
+                        "required": ["person_location"]
+                    }
+                },
+                {
+                    "name": "report_status",
+                    "description": "The robot reports its current status or completion of a task.",
+                    "parameters": {
+                        "type": "object",
+                        "properties": {
+                            "message": {"type": "string", "description": "The status message to report."}
+                        },
+                        "required": ["message"]
+                    }
+                }
+            ]
+
+        self.system_prompt = f"""You are a helpful humanoid robot assistant. Your task is to translate human natural language commands into a sequence of robot actions.
+You have the following tools available:
+{json.dumps(self.robot_capabilities, indent=2)}
+
+Please respond with a JSON array of tool calls. Each element in the array should be a tool call object with 'name' and 'parameters'.
+Example:
+[
+  {{' '}}"name": "navigate_to", "parameters": {{"location": "kitchen"}}{{' '}}},
+  {{' '}}"name": "grasp_object", "parameters": {{"object_name": "red apple"}}{{' '}}},
+  {{' '}}"name": "report_status", "parameters": {{"message": "Task complete!"}}{{' '}}}
+]
+
+Break down complex tasks into logical, sequential steps. Be concise and use only the provided tool functions. If a command is unclear or requires more information, ask clarifying questions using the report_status tool (e.g., {{' '}}"name": "report_status", "parameters": {{"message": "Please specify which object to pick up."}}{{' '}}}).
+Assume objects are visible and reachable unless explicitly stated otherwise.
+"""
+    def speech_callback(self, msg: String):
+        command = msg.data
+        self.get_logger().info(f'Received voice command: "{command}"')
+        # Construct the messages for the LLM
+        messages = [
+            {"role": "system", "content": self.system_prompt},
+            {"role": "user", "content": command}
+        ]
+
+        try:
+            # Call the LLM API
+            # For OpenAI with function calling
+            response = self.client.chat.completions.create(
+                model="gpt-4o", # Use a capable model
+                messages=messages,
+                tools=self.robot_capabilities,
+                tool_choice="auto", # Let the model decide if it needs to use a tool
+                temperature=0.0 # For more deterministic output
+            )
+
+            response_message = response.choices[0].message
+            tool_calls = response_message.tool_calls
+
+            if tool_calls:
+                plan_steps = []
+                for tool_call in tool_calls:
+                    plan_step = {
+                        "name": tool_call.function.name,
+                        "parameters": json.loads(tool_call.function.arguments)
+                    }
+                    plan_steps.append(plan_step)
+                
+                plan_json = json.dumps(plan_steps, indent=2)
+                self.get_logger().info(f"Generated plan:\n{plan_json}")
+                
+                # Publish the structured plan
+                plan_msg = String()
+                plan_msg.data = plan_json
+                self.action_publisher_.publish(plan_msg)
+            else:
+                self.get_logger().warn(f"LLM did not generate tool calls for command: {command}. Response: {response_message.content}")
+                # You might publish a "report_status" message here asking for clarification
+
+        except openai.APIError as e:
+            self.get_logger().error(f"OpenAI API Error: {e}")
+        except Exception as e:
+            self.get_logger().error(f"An unexpected error occurred: {e}")
+
+    def destroy_node(self):
+        super().destroy_node()
+
+def main(args=None):
+    rclpy.init(args=args)
+    llm_planner_node = LLMRobotPlanner()
+    rclpy.spin(llm_planner_node)
+    llm_planner_node.destroy_node()
+    rclpy.shutdown()
+
+if __name__ == '__main__':
+    main()
+`}
+    ```
+5.  **Edit `setup.py` for `llm_robot_planner`:** Add the entry point.
+    ```python
+    from setuptools import find_packages, setup
+
+    package_name = 'llm_robot_planner'
+
+    setup(
+        name=package_name,
+        version='0.0.0',
+        packages=find_packages(exclude=['test']),
+        data_files=[
+            ('share/' + package_name, ['package.xml']),
+        ],
+        install_requires=['setuptools', 'openai'], # Add openai
+        zip_safe=True,
+        maintainer='your_name',
+        maintainer_email='your_email@example.com',
+        description='ROS 2 package for LLM-based robot planning.',
+        license='Apache-2.0',
+        tests_require=['pytest'],
+        entry_points={
+            'console_scripts': [
+                'llm_planner = llm_robot_planner.llm_planner_node:main',
+            ],
+        },
+    )
+    ```
+6.  **Build your package and source your workspace:**
+    ```bash
+    cd <your_ros2_ws>
+    colcon build --packages-select llm_robot_planner
+    source install/setup.bash
+    ```
+7.  **Run the Whisper ASR node (from Lab 4.2.1) in one terminal:**
+    ```bash
+    ros2 run whisper_ros_asr whisper_node
+    ```
+8.  **In a separate terminal, run the LLM Robot Planner node:**
+    ```bash
+    ros2 run llm_robot_planner llm_planner
+    ```
+9.  **Speak a command into your microphone** (e.g., "Robot, please go to the kitchen, pick up the red apple, and bring it to me here.").
+10. **Monitor the `/robot_action_plan` topic:**
+    ```bash
+    ros2 topic echo /robot_action_plan
+    ```
+    You should see the LLM's generated JSON plan, breaking down your command into a sequence of `navigate_to`, `grasp_object`, and `deliver_object_to_person` calls.
+
+## Expected Output
+
+*   A functional ROS 2 node that subscribes to text commands.
+*   Successful interaction with an external LLM API (e.g., OpenAI).
+*   The LLM generating a structured, robot-executable plan (sequence of function calls) in JSON format.
+*   The generated plan published to a ROS 2 topic (`/robot_action_plan`).
+*   Understanding of prompt engineering to guide LLM planning for robotics.
+
+## Assessment Questions
+
+*   How does an LLM contribute to "cognitive planning" for a robot, going beyond simple natural language understanding?
+*   Describe the process of "function calling" or "tool use" in LLMs and explain its significance for bridging natural language commands with robot action primitives.
+*   Design a prompt for an LLM that would enable a humanoid robot to assist in a simple cooking task, providing the LLM with relevant action primitives (e.g., `cut_ingredient`, `add_to_pot`, `stir`).
+*   What are the security implications of integrating an external LLM API into a robotic system, especially one operating in a physical environment?
+
+## Real-world Applications
+
+*   **Complex Task Automation:** Humanoid robots performing multi-step household chores or industrial assembly tasks from high-level natural language instructions.
+*   **Human-Robot Teaming:** Robots acting as intelligent assistants, understanding ambiguous human requests and generating flexible plans to achieve shared goals.
+*   **Adaptive Mission Planning:** Robots autonomously generating and adjusting their plans in dynamic, uncertain environments based on verbal updates or changing objectives.
+*   **Robotics in Education and Training:** Simplifying the programming of complex robot behaviors by allowing students to define tasks in natural language.
+
+## Edge Cases
+
+*   **LLM Hallucinations:** The LLM might generate actions or parameters that are nonsensical or do not align with the robot's capabilities.
+*   **Context Window Limitations:** For very long or highly complex tasks, the LLM's context window might be exceeded, leading to incomplete or flawed plans.
+*   **API Rate Limits and Cost:** Frequent API calls to powerful LLMs can incur significant costs and hit rate limits, requiring careful management.
+*   **Misinterpretation of State:** If the LLM's understanding of the robot's current state or environment is outdated or incorrect, it can generate an unexecutable plan.
+
+---
+
+### **Key Entities**
+
+*   **Large Language Model (LLM):** An advanced AI model capable of processing, understanding, and generating human language, used here for interpreting complex commands and generating action plans.
+*   **Cognitive Planning:** The high-level reasoning process that transforms abstract goals (derived from natural language) into a concrete, sequential plan of robot actions.
+*   **Natural Language Task Decomposition:** The ability of an LLM to break down a single, complex natural language command into a series of smaller, more manageable sub-tasks or action primitives.
+*   **Prompt Engineering:** The technique of carefully designing the input (prompt) to an LLM, including instructions, examples, and definitions of available tools, to guide it toward generating a desired output format and content.
+*   **Function Calling / Tool Use:** A feature of modern LLMs that allows them to generate structured calls to predefined functions (or "tools") based on user prompts, which is critical for converting natural language into robot-executable commands.
+*   **Action Primitive:** A discrete, low-level operation that a robot is physically capable of executing (e.g., `navigate_to`, `grasp_object`), forming the building blocks of an LLM-generated plan.
+*   **API Key:** A secret token used to authenticate requests to external LLM services, ensuring secure access and billing.
+*   **`std_msgs/msg/String`:** A basic ROS 2 message type suitable for transmitting raw text commands from ASR and structured JSON plans from the LLM.
+
+---
+
+### **References**
+
+*   Huang, K., et al. (2022). Inner Monologue: Empowering Large Language Models to Reason about Physical Interactions. *arXiv preprint arXiv:2207.05697*. (Placeholder citation)
+*   OpenAI. (n.d.). *Function calling and other API updates*. (Placeholder citation)
+*   Ahn, L., et al. (2022). SayCan: Learning Language Grounded Robotic Skills from Natural Language Instructions. *Conference on Robot Learning (CoRL)*. (Placeholder citation)
+*   Wang, X., et al. (2023). Voyager: An Open-Ended Embodied Agent with Large Language Models. *arXiv preprint arXiv:2305.16291*. (Placeholder citation)

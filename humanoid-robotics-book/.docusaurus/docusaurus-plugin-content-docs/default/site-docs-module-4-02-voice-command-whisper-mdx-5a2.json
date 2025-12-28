@@ -15,7 +15,7 @@
     "id": "voice-command-whisper",
     "title": "4.2 Voice Command Systems with Whisper"
   },
-  "sidebar": "defaultSidebar",
+  "sidebar": "tutorialSidebar",
   "previous": {
     "title": "4.1 What Is Vision-Language-Action (VLA)?",
     "permalink": "/Book-Hackathon-physical-ai-humanoid/module-4/what-is-vla"

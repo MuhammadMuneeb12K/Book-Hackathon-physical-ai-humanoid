@@ -15,10 +15,10 @@
     "id": "ros2-architecture",
     "title": "1.1 ROS 2 Architecture & DDS - The Robotic Nervous System"
   },
-  "sidebar": "defaultSidebar",
+  "sidebar": "tutorialSidebar",
   "previous": {
-    "title": "Module 1: The Robotic Nervous System (ROS 2)",
-    "permalink": "/Book-Hackathon-physical-ai-humanoid/category/module-1-the-robotic-nervous-system-ros-2"
+    "title": "Getting Started - Setting Up Your Environment",
+    "permalink": "/Book-Hackathon-physical-ai-humanoid/getting-started"
   },
   "next": {
     "title": "1.2 Building Python Nodes with rclpy",

@@ -11,10 +11,10 @@
   "tags": [],
   "version": "current",
   "frontMatter": {},
-  "sidebar": "defaultSidebar",
+  "sidebar": "tutorialSidebar",
   "previous": {
-    "title": "Miscellaneous",
-    "permalink": "/Book-Hackathon-physical-ai-humanoid/category/miscellaneous"
+    "title": "5.1 Capstone - The Integrated Humanoid Robotics System",
+    "permalink": "/Book-Hackathon-physical-ai-humanoid/capstone/capstone-integration-guide"
   },
   "next": {
     "title": "7.1 Appendices - Resources and Further Reading",

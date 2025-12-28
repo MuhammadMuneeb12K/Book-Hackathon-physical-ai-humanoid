@@ -11,8 +11,8 @@
   "tags": [],
   "version": "current",
   "frontMatter": {},
-  "sidebar": "defaultSidebar",
-  "previous": {
+  "sidebar": "tutorialSidebar",
+  "next": {
     "title": "Overview - Physical AI & Humanoid Robotics",
     "permalink": "/Book-Hackathon-physical-ai-humanoid/home/overview"
   }

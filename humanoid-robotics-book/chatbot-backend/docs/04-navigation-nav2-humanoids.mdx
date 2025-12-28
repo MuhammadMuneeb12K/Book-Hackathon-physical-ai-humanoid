@@ -1,0 +1,323 @@
+---
+id: navigation-nav2-humanoids
+title: 3.4 Navigation with Nav2 for Humanoids
+---
+Having equipped our humanoid robot with the ability to perceive its environment and localize itself through VSLAM, the next logical step is to enable it to move autonomously. This chapter focuses on navigation, specifically using Nav2 – the powerful ROS 2 navigation stack – tailored for humanoid robots. Nav2 provides a robust framework for global and local path planning, obstacle avoidance, and executive control, allowing simulated humanoid robots to navigate complex environments intelligently and safely.
+
+## Goal
+
+The goal of this chapter is to teach students how to use Nav2 for humanoid robot path planning, allowing simulated humanoid robots to navigate complex environments autonomously within Isaac Sim, building upon VSLAM for localization and mapping.
+
+## Learning Objectives
+
+*   Understand the modular architecture of the Nav2 stack and its key components.
+*   Differentiate between global and local planning strategies for robot navigation.
+*   Learn how to configure Nav2 for a humanoid robot, considering its unique locomotion challenges.
+*   Integrate Nav2 with VSLAM outputs for accurate localization and map updates.
+*   Implement a full navigation pipeline: from setting a goal to autonomous movement.
+*   Visualize Nav2's planning output (global/local paths, costmaps) in RViz2.
+*   Troubleshoot common navigation issues and tune Nav2 parameters for optimal performance.
+
+## Prerequisites
+
+*   Familiarity with ROS 2 concepts (nodes, topics, services, actions, parameters).
+*   Understanding of TF2 (coordinate frames and transformations).
+*   Knowledge of VSLAM for localization and mapping (from the previous chapter).
+*   A simulated humanoid robot in Isaac Sim capable of receiving joint commands for movement (e.g., from Module 1, Lab 1.2.2).
+*   A pre-built map of the environment (e.g., from VSLAM or a static map).
+
+## Key Concepts
+
+*   **Nav2:** The ROS 2 Navigation Stack, a collection of modular packages for autonomous mobile robot navigation.
+*   **Global Planner:** Generates a long-term, collision-free path from the robot's current location to a goal location, typically based on a static map.
+*   **Local Planner (Controller):** Generates short-term, velocity commands to follow the global path and avoid dynamic obstacles.
+*   **Costmap:** A grid-based representation of the environment, where each cell contains a cost associated with traversing it (e.g., obstacles, unknown areas). Nav2 uses global and local costmaps.
+*   **Localization:** Determining the robot's precise position and orientation within a map. Nav2 relies on external localization sources (e.g., VSLAM, AMCL).
+*   **Waypoint Navigation:** Guiding the robot through a sequence of predefined points.
+*   **Recovery Behaviors:** Strategies Nav2 employs to escape difficult situations (e.g., getting stuck, blocked by an obstacle).
+*   **`nav_to_pose` Action:** The primary ROS 2 action for sending navigation goals to Nav2.
+*   **`robot_localization`:** A meta-package in ROS 2 that provides sensor fusion for accurate state estimation (combining IMU, odometry, VSLAM outputs).
+
+## Tools
+
+*   **NVIDIA Isaac Sim:** Simulated environment and humanoid robot.
+*   **ROS 2 Humble:** The robotic framework.
+*   **Nav2 Stack:** The core navigation packages (e.g., `nav2_bringup`, `nav2_planner`, `nav2_controller`, `nav2_bt_navigator`).
+*   **RViz2:** For visualizing the robot, map, costmaps, and planned paths.
+*   **`robot_localization`:** For fusing sensor data (optional, but highly recommended).
+
+## Chapter Sections
+
+### 3.4.1 Overview of the Nav2 Navigation Stack
+
+*   Modular architecture: separation of concerns (global plan, local plan, recovery, localization).
+*   Key nodes: `planner_server`, `controller_server`, `smoother_server`, `behavior_tree_navigator`, `bt_navigator`.
+*   Data flow: map, localization estimate, goal -> planner -> controller -> robot commands.
+
+### 3.4.2 Global Planning: Finding the Route
+
+*   **Global Planners:** e.g., `NavFn`, `Dijkstra`, `A*`, `SmacPlanner`.
+*   **Map Representation:** Nav2's global costmap.
+*   **Path Generation:** Calculating the shortest/optimal path while avoiding known obstacles.
+*   **Configuring Global Planner Parameters:** Customizing obstacle inflation, resolution, etc.
+
+### 3.4.3 Local Planning: Following the Path and Avoiding Obstacles
+
+*   **Local Planners (Controllers):** e.g., `DWBController` (Dynamic Window Bounding), `TEBController` (Timed-Elastic Band).
+*   **Local Costmap:** Dynamic obstacle detection from real-time sensor data.
+*   **Trajectory Generation:** Creating a short-term, dynamically feasible path.
+*   **Velocity Commands:** Outputting `geometry_msgs/msg/Twist` messages for robot actuation.
+*   **Configuring Local Planner Parameters:** Speed limits, acceleration limits, collision avoidance margins.
+
+### 3.4.4 Localization and Map Management for Humanoids
+
+*   **Map Server:** Loading static maps (`nav2_map_server`).
+*   **Localization with VSLAM:** Using the pose output from VSLAM (or AMCL) to update the robot's position within the global map.
+*   **`robot_localization`:** Fusing IMU, odometry, and VSLAM data for a robust state estimate. This is particularly important for humanoid balance.
+*   The `map`, `odom`, and `base_link` frames in the context of Nav2.
+
+### 3.4.5 Humanoid-Specific Navigation Considerations
+
+*   **Locomotion Model:** Nav2 typically assumes differential drive or omnidirectional robots. Adapting it for bipedal walking is a significant challenge.
+    *   **Solution:** Abstracting the bipedal gait controller as a "locomotion plugin" that takes `Twist` commands and translates them to joint commands.
+*   **Balance and Stability:** Incorporating balance control into velocity commands.
+*   **Stairs and Uneven Terrain:** Advanced capabilities beyond basic Nav2.
+
+### 3.4.6 Building a Nav2 Launch File and Sending Goals
+
+*   **`nav2_bringup`:** Using the provided launch files as a starting point.
+*   **Customizing Parameters:** Overriding default parameters in YAML files or directly in the launch file.
+*   **Sending Goals:** Using the "2D Goal Pose" tool in RViz2, or programmatically via the `nav_to_pose` action.
+*   **Monitoring Nav2:** Checking logs, `ros2 topic echo`, and RViz2 visualizations.
+
+## Required Diagrams
+
+*   **Nav2 Planning Stack:** A block diagram illustrating the flow from localization to global plan, local plan, and velocity commands.
+*   **Global vs. Local Costmaps:** A visual representation of how these two costmaps are used by Nav2.
+*   **Humanoid Locomotion Abstraction:** A diagram showing how Nav2's `Twist` commands are translated into complex joint movements by a bipedal controller.
+
+## Hands-on Labs
+
+### Lab 3.4.1: Execute Nav2 Path Planning for a Humanoid Robot
+
+**Objective:** Configure Nav2 to enable autonomous navigation for a simulated humanoid robot in Isaac Sim, using a static map, and send a goal via RViz2.
+
+**Prerequisites:** Completed Lab 3.1.1 (Isaac Sim with humanoid), Lab 3.3.1 (VSLAM for localization, or use an equivalent localization source like odometry). A simulated humanoid that can receive `geometry_msgs/msg/Twist` commands and translate them into bipedal motion (this requires a simple gait controller, which will be simplified for this lab).
+
+**Instructions:**
+
+1.  **Prepare a Simplified Humanoid for Nav2:**
+    *   For this lab, we will *abstract* the humanoid's bipedal locomotion. Instead of complex gait, assume a simple `cmd_vel` to base_link motion. This is a common simplification for initial Nav2 integration.
+    *   **Create a `humanoid_cmd_vel_converter` node (Python):** This node will subscribe to `/cmd_vel` (output from Nav2) and print/log the velocity commands. In a real system, this would translate `cmd_vel` into joint commands for the bipedal gait.
+
+        ```python
+        # <your_ros2_ws>/src/humanoid_nav_utils/humanoid_nav_utils/cmd_vel_converter.py
+        import rclpy
+        from rclpy.node import Node
+        from geometry_msgs.msg import Twist
+
+        class HumanoidCmdVelConverter(Node):
+
+            def __init__(self):
+                super().__init__('humanoid_cmd_vel_converter')
+                self.subscription = self.create_subscription(
+                    Twist,
+                    '/cmd_vel',
+                    self.cmd_vel_callback,
+                    10
+                )
+                self.get_logger().info('Humanoid Cmd Vel Converter Node started. Waiting for /cmd_vel...')
+
+            def cmd_vel_callback(self, msg: Twist):
+                self.get_logger().info(
+                    f'Received /cmd_vel: Linear X={msg.linear.x:.2f}, Angular Z={msg.angular.z:.2f}'
+                )
+                # In a real system, this is where you'd translate Twist to joint commands for bipedal gait
+                # For this lab, we just log.
+                # You could also use a ros_gz_sim plugin for directly controlling the humanoid model's base link
+                # if your Isaac Sim humanoid model can be controlled via external forces or velocities.
+
+        def main(args=None):
+            rclpy.init(args=args)
+            node = HumanoidCmdVelConverter()
+            rclpy.spin(node)
+            node.destroy_node()
+            rclpy.shutdown()
+
+        if __name__ == '__main__':
+            main()
+        ```
+        Create a new package `humanoid_nav_utils` and add this node, then build it.
+
+2.  **Generate a Map:**
+    *   For simplicity, we'll use a pre-existing map or create a simple one from a simulated environment. If you have run VSLAM in a simple environment, you can save its map.
+    *   Alternatively, in Isaac Sim, create a simple room with walls and export it as an image. Use `ros2 run nav2_map_server map_saver_cli -f map_name` in a terminal *after* building a map with VSLAM/SLAM. For this lab, assume you have a `map.yaml` and `map.pgm` (e.g., in `humanoid_nav_utils/maps` folder).
+3.  **Prepare Nav2 Configuration Files:**
+    *   Nav2 requires several YAML configuration files. Copy example configs from `nav2_bringup/params/nav2_params.yaml` and customize them for your humanoid robot.
+    *   Key parameters to adjust:
+        *   `robot_radius`: Set based on your humanoid's footprint.
+        *   `controller_server`: PID gains, speed limits (for `cmd_vel` output).
+        *   `planner_server`: Planner type, costmap resolution.
+        *   `local_costmap`, `global_costmap`: Sensor sources (e.g., `/simple_humanoid/lidar/scan` if using your simulated LiDAR).
+        *   `transform_tolerance`: Time tolerance for TF2 lookups.
+    *   Store these in `humanoid_nav_utils/params`.
+4.  **Create a Nav2 Launch File (`humanoid_nav2_bringup.launch.py`):**
+    ```python
+    import os
+    from ament_index_python.packages import get_package_share_directory
+    from launch import LaunchDescription
+    from launch.actions import IncludeLaunchDescription, DeclareLaunchArgument
+    from launch.launch_description_sources import PythonLaunchDescriptionSource
+    from launch.substitutions import LaunchConfiguration, PathJoinSubstitution
+    from launch_ros.actions import Node
+    from nav2_common.launch import RewrittenYaml
+
+    def generate_launch_description():
+        ld = LaunchDescription()
+
+        # Declare arguments
+        map_yaml_file = LaunchConfiguration('map_yaml_file')
+        params_file = LaunchConfiguration('params_file')
+        use_sim_time = LaunchConfiguration('use_sim_time')
+
+        declare_map_yaml_cmd = DeclareLaunchArgument(
+            'map_yaml_file',
+            default_value=os.path.join(get_package_share_directory('humanoid_nav_utils'), 'maps', 'my_simple_map.yaml'), # Replace with your map
+            description='Full path to map file to load'
+        )
+        declare_params_file_cmd = DeclareLaunchArgument(
+            'params_file',
+            default_value=os.path.join(get_package_share_directory('humanoid_nav_utils'), 'params', 'humanoid_nav2_params.yaml'), # Replace with your params
+            description='Full path to param file to load'
+        )
+        declare_use_sim_time_cmd = DeclareLaunchArgument(
+            'use_sim_time',
+            default_value='True',
+            description='Use simulation (Gazebo/Isaac Sim) clock if true'
+        )
+
+        # Rewritten YAML for parameter substitution
+        # Replace '/odom' with '/simple_humanoid/odom' if your odom topic is namespaced
+        # Also adjust for your lidar topic if it's different.
+        param_substitutions = {
+            'use_sim_time': use_sim_time,
+            # 'global_costmap.global_costmap.ros__parameters.scan.topic': '/simple_humanoid/lidar/scan', # Example if needed
+            # 'local_costmap.local_costmap.ros__parameters.scan.topic': '/simple_humanoid/lidar/scan'
+        }
+        configured_params = RewrittenYaml(
+            source_file=params_file,
+            root_key='',
+            param_rewrites=param_substitutions,
+            convert_types=True
+        )
+
+        # Nav2 Bringup
+        nav2_bringup_launch = IncludeLaunchDescription(
+            PythonLaunchDescriptionSource(os.path.join(
+                get_package_share_directory('nav2_bringup'), 'launch', 'bringup_launch.py')),
+            launch_arguments={
+                'map': map_yaml_file,
+                'use_sim_time': use_sim_time,
+                'params_file': configured_params,
+                'autostart': 'true',
+                'namespace': '', # No namespace for this simple example
+            }.items()
+        )
+
+        # Add our humanoid_cmd_vel_converter
+        cmd_vel_converter_node = Node(
+            package='humanoid_nav_utils', # Assuming this package exists
+            executable='cmd_vel_converter',
+            name='humanoid_cmd_vel_converter',
+            output='screen',
+            parameters=[{'use_sim_time': use_sim_time}]
+        )
+
+        # RViz2 Node
+        # Use a default Nav2 RViz config or create a custom one
+        rviz_config_file = os.path.join(get_package_share_directory('nav2_bringup'), 'rviz', 'nav2_default_view.rviz')
+        rviz_node = Node(
+            package='rviz2',
+            executable='rviz2',
+            name='rviz2',
+            output='screen',
+            arguments=['-d', rviz_config_file],
+            parameters=[{'use_sim_time': use_sim_time}]
+        )
+
+        ld.add_action(declare_map_yaml_cmd)
+        ld.add_action(declare_params_file_cmd)
+        ld.add_action(declare_use_sim_time_cmd)
+        ld.add_action(nav2_bringup_launch)
+        ld.add_action(cmd_vel_converter_node)
+        ld.add_action(rviz_node)
+
+        return ld
+    ```
+5.  **Build your `humanoid_nav_utils` package and source your workspace:**
+    ```bash
+    cd <your_ros2_ws>
+    colcon build --packages-select humanoid_nav_utils nav2_bringup # Ensure nav2_bringup is built
+    source install/setup.bash
+    ```
+6.  **Launch Isaac Sim with your humanoid (e.g., from `display_humanoid.launch.py`).** Ensure it publishes `/tf` from `odom` to `base_link` and sensor data (e.g., `/simple_humanoid/lidar/scan`).
+7.  **In a separate terminal, launch Nav2:**
+    ```bash
+    ros2 launch humanoid_nav_utils humanoid_nav2_bringup.launch.py
+    ```
+8.  **In RViz2:**
+    *   Set the "Fixed Frame" to `map`.
+    *   Use the "2D Pose Estimate" tool to give Nav2 an initial pose (click on the map where your robot is).
+    *   Use the "2D Goal Pose" tool to set a navigation goal.
+    *   Observe Nav2 planning a path (global and local) and publishing `cmd_vel` messages, which should be logged by your `humanoid_cmd_vel_converter`.
+
+## Expected Output
+
+*   A running Nav2 stack in conjunction with your simulated humanoid in Isaac Sim.
+*   Nav2 successfully planning a global path from the robot's current pose to a given goal.
+*   Nav2 publishing `geometry_msgs/msg/Twist` commands to guide the robot along the path.
+*   Visualization of global and local paths, costmaps, and the robot's pose in RViz2.
+*   Understanding of the core components of Nav2 and their interaction in a navigation task.
+
+## Assessment Questions
+
+*   Explain the difference in responsibilities between a global planner and a local planner within the Nav2 stack.
+*   How would you adapt Nav2's typical configuration (designed for wheeled robots) to better suit a bipedal humanoid robot, considering it can't simply rotate in place?
+*   What is a costmap in Nav2, and why are there typically two (global and local)?
+*   Describe the steps involved in sending a navigation goal to Nav2, either through RViz2 or programmatically.
+
+## Real-world Applications
+
+*   **Autonomous Patrols:** Humanoid security robots navigating complex indoor environments to monitor premises.
+*   **Assistance in Homes/Offices:** Humanoid helper robots moving between rooms, avoiding obstacles, and reaching specific locations to perform tasks.
+*   **Disaster Response:** Humanoid robots navigating hazardous, unstructured terrain to inspect damage or assist in search and rescue operations.
+*   **Logistics and Warehousing:** Humanoid robots transporting items or performing tasks requiring movement in human-centric industrial settings.
+
+## Edge Cases
+
+*   **Unreachable Goals:** Nav2 will fail if the goal is inside an obstacle or is in an area that the robot cannot reach.
+*   **Dynamic Obstacles:** While local planners can handle some dynamic obstacles, very fast or unpredictable moving obstacles can cause the robot to get stuck or collide.
+*   **Poor Localization:** Errors in the VSLAM (or other localization source) will lead to Nav2 planning paths based on an incorrect robot position, potentially causing collisions.
+*   **Humanoid Gait Controller Limitations:** If the `cmd_vel_converter` (bipedal gait controller) cannot accurately translate Nav2's desired `Twist` into stable humanoid motion, the robot may fall or fail to reach its goal.
+
+---
+
+### **Key Entities**
+
+*   **Nav2 (Navigation2):** The ROS 2 framework for autonomous mobile robot navigation, providing capabilities for global path planning, local control, and recovery behaviors.
+*   **Global Planner:** A component of Nav2 responsible for calculating an overall, long-term path from the robot's start to its goal, considering a global map and known obstacles.
+*   **Local Planner (Controller):** A component of Nav2 that generates short-term, dynamically feasible velocity commands (`geometry_msgs/msg/Twist`) to follow the global path while avoiding immediate, potentially dynamic, obstacles.
+*   **Costmap:** A 2D grid-based map used by Nav2 to represent the traversability of the environment, incorporating information about static obstacles, dynamic obstacles, and inflation layers.
+*   **`nav_to_pose` Action:** The ROS 2 action interface used to send navigation goals to the Nav2 stack, enabling a robot to autonomously move to a specified pose.
+*   **`robot_localization`:** A meta-package that provides advanced state estimation capabilities, fusing data from multiple sensors (e.g., IMU, odometry, VSLAM) to produce a more accurate and robust pose estimate for Nav2.
+*   **`cmd_vel` Topic:** The standard ROS 2 topic (publishing `geometry_msgs/msg/Twist` messages) where navigation controllers output desired linear and angular velocities for the robot.
+*   **Waypoint Navigation:** The process of guiding a robot through a series of intermediate points (waypoints) to reach a final destination, often used for complex missions.
+
+---
+
+### **References**
+
+*   Macenski, S., et al. (2020). The ROS 2 Navigation Stack: Design Decisions and Future Work. *International Conference on Robotics and Automation (ICRA) Workshop*. (Placeholder citation)
+*   Open Robotics. (n.d.). *Nav2 Documentation*. (Placeholder citation)
+*   Arkin, R. C. (1998). *Behavior-Based Robotics*. MIT Press. (Placeholder citation)
+*   Kuipers, B. (2000). The spatial semantic hierarchy. *Artificial Intelligence, 119*(1-2), 191-233. (Placeholder citation)

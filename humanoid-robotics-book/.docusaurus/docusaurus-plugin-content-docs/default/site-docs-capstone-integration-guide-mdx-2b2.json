@@ -14,13 +14,13 @@
     "id": "capstone-integration-guide",
     "title": "5.1 Capstone - The Integrated Humanoid Robotics System"
   },
-  "sidebar": "defaultSidebar",
+  "sidebar": "tutorialSidebar",
   "previous": {
-    "title": "7.1 Appendices - Resources and Further Reading",
-    "permalink": "/Book-Hackathon-physical-ai-humanoid/appendices/"
+    "title": "6.1 Hardware & Lab Setup - Beyond Simulation",
+    "permalink": "/Book-Hackathon-physical-ai-humanoid/hardware-lab-setup/"
   },
   "next": {
-    "title": "Getting Started - Setting Up Your Environment",
-    "permalink": "/Book-Hackathon-physical-ai-humanoid/getting-started"
+    "title": "Technical Plan: Physical AI & Humanoid Robotics Project",
+    "permalink": "/Book-Hackathon-physical-ai-humanoid/misc/technical-plan"
   }
 }

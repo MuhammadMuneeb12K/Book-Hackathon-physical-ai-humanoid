@@ -14,13 +14,13 @@
     "id": "overview",
     "title": "Overview - Physical AI & Humanoid Robotics"
   },
-  "sidebar": "defaultSidebar",
+  "sidebar": "tutorialSidebar",
   "previous": {
-    "title": "6.1 Hardware & Lab Setup - Beyond Simulation",
-    "permalink": "/Book-Hackathon-physical-ai-humanoid/hardware-lab-setup/"
-  },
-  "next": {
     "title": "Welcome to the Humanoid Robotics Book",
     "permalink": "/Book-Hackathon-physical-ai-humanoid/"
+  },
+  "next": {
+    "title": "Getting Started - Setting Up Your Environment",
+    "permalink": "/Book-Hackathon-physical-ai-humanoid/getting-started"
   }
 }

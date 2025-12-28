@@ -15,7 +15,7 @@
     "id": "synthetic-data-domain-randomization",
     "title": "3.2 Synthetic Data & Domain Randomization"
   },
-  "sidebar": "defaultSidebar",
+  "sidebar": "tutorialSidebar",
   "previous": {
     "title": "3.1 Introduction to NVIDIA Isaac Sim",
     "permalink": "/Book-Hackathon-physical-ai-humanoid/module-3/introduction-isaac-sim"
